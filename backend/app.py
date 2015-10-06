@@ -8,5 +8,5 @@ app = Flask(__name__)
 def get_Session():
     return str(uuid.uuid4());
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+if __name__ == '__main__': #Port will transform to 5001, 5002 for test, prod
+    app.run(host='0.0.0.0', debug=True, port=5000)
