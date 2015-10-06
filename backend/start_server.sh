@@ -18,11 +18,12 @@ fi
 
 echo 'Server location: ' $targetScript 
 
-#File contains list of currently running servers
-running_servers='/usr/share/epioneers/clueless/env/running_servers'
-pid=`cat $running_servers | grep "DEV" | awk '{print $2}'`
+directoryName=`dirname $targetScript`
+fileName=`basename $targetScript`
 
 #Kill existing process, if it exists
+pid=`ps -ef | grep $directoryName | grep $fileName | grep -v 'grep' | awk '{print $2}'`
+
 if [[ -z "$pid"  ]]; then
 	echo 'No existing running server found'
 else
@@ -35,9 +36,9 @@ if [ ! -f $targetScript ]; then
 	echo 'Unable to locate server file'
 	exit 4
 else
-	cd `dirname $targetScript`
+	cd $directoryName
 	echo 'Starting server'
-	nohup ./app.py &
+	nohup ./${fileName} &
 	pid=$!
 	cd -
 fi
