@@ -43,10 +43,5 @@ else
 	cd -
 fi
 
-#Put pid back into list
-grep -v $1 $running_servers > tmpRunningServers
-mv tmpRunningServers $running_servers
-echo $1 $pid >> $running_servers
-
 #Success
 exit 0
