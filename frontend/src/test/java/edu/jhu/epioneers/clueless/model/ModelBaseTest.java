@@ -5,7 +5,7 @@ import org.junit.Test;
 /**
  * Created by Phillip on 11/2/2015.
  */
-public class ModelBaseTests {
+public class ModelBaseTest {
 
     private String name = "name";
     private int id = 3;
@@ -33,10 +33,9 @@ public class ModelBaseTests {
     {
         //Arrange
         Gson gson = new Gson();
-        ModelBase model = gson.fromJson(json, ModelBase.class);
 
         //Act
-        String result = gson.toJson(model);
+        ModelBase model = gson.fromJson(json, ModelBase.class);
 
         //Assert
         assert(model.getId()==id && model.getName().equals(name));

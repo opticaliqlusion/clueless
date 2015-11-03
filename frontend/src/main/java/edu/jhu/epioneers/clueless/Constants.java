@@ -1,7 +1,5 @@
 package edu.jhu.epioneers.clueless;
 
-import java.net.URL;
-
 /**
  * Created by Phillip on 10/31/2015.
  */
