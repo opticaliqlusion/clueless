@@ -1,6 +1,6 @@
 package edu.jhu.epioneers.clueless.viewmodel;
 
-import edu.jhu.epioneers.clueless.model.CharacterModel;
+import edu.jhu.epioneers.clueless.model.ModelBase;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -9,18 +9,18 @@ import javafx.collections.ObservableList;
  */
 public class ChooseCharacterViewModel {
     public ChooseCharacterViewModel() {
-        CharacterModel model1 = new CharacterModel();
-        model1.set_name("Char 1");
-        CharacterModel model2 = new CharacterModel();
-        model2.set_name("Char 2");
-        CharacterModel model3 = new CharacterModel();
-        model3.set_name("Char 3");
-        CharacterModel model4 = new CharacterModel();
-        model4.set_name("Char 4");
-        CharacterModel model5 = new CharacterModel();
-        model5.set_name("Char 5");
-        CharacterModel model6 = new CharacterModel();
-        model6.set_name("Char 6");
+        ModelBase model1 = new ModelBase();
+        model1.setName("Char 1");
+        ModelBase model2 = new ModelBase();
+        model2.setName("Char 2");
+        ModelBase model3 = new ModelBase();
+        model3.setName("Char 3");
+        ModelBase model4 = new ModelBase();
+        model4.setName("Char 4");
+        ModelBase model5 = new ModelBase();
+        model5.setName("Char 5");
+        ModelBase model6 = new ModelBase();
+        model6.setName("Char 6");
 
         _availableCharacters = FXCollections.observableArrayList();
         _availableCharacters.add(model1);
@@ -34,6 +34,6 @@ public class ChooseCharacterViewModel {
     }
 
 
-    private ObservableList<CharacterModel> _availableCharacters;
-    private ObservableList<CharacterModel> _inUseCharacters;
+    private ObservableList<ModelBase> _availableCharacters;
+    private ObservableList<ModelBase> _inUseCharacters;
 }
