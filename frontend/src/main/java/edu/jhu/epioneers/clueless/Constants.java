@@ -1,7 +1,7 @@
 package edu.jhu.epioneers.clueless;
 
 /**
- * Created by Phillip on 10/31/2015.
+ * Contains constants used by the application
  */
 public final class Constants {
     public static final String LobbyLayout = "/layout/LobbyLayout.fxml";

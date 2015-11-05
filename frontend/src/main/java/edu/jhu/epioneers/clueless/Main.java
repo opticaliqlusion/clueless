@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 import java.net.URL;
 
 /**
- * Created by Phillip on 10/31/2015.
+ * Entry point of the program.  Initializes FXML components and LobbyLayout.
  */
 public class Main extends Application {
     @Override

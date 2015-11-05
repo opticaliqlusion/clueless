@@ -12,7 +12,7 @@
     <TableView fx:id="tableView" GridPane.rowIndex="1" GridPane.columnSpan="8" GridPane.rowSpan="10">
         <columns>
             <TableColumn text="Game" visible="true">
-                <cellValueFactory><PropertyValueFactory property="gameName" />
+                <cellValueFactory><PropertyValueFactory property="name" />
                 </cellValueFactory>
             </TableColumn>
             <TableColumn text="Players" visible="true">

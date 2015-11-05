@@ -6,51 +6,34 @@ import javafx.beans.property.StringProperty;
 /**
  * Created by Phillip on 10/31/2015.
  */
-public class GameSummaryModel {
-    private final int _maximumPlayers = 6;
+public class GameSummaryModel extends ModelBase {
+    private final int maximumPlayers = 6;
 
-    private String _gameName;
-    private int _currentPlayers;
-    private int _id;
-    private GameState _gameState;
-
-    public void set_gameName(String value)
-    {
-        _gameName=value;
-    }
-
-    public final StringProperty gameNameProperty() { return new SimpleStringProperty(_gameName); }
+    private int currentPlayers;
+    private GameState gameState;
 
     public final StringProperty gameStatusProperty() {
         StringProperty prop = new SimpleStringProperty();
 
-        if(_gameState ==GameState.IN_PROCESS) {
+        if(gameState ==GameState.IN_PROCESS) {
             prop.setValue("IN PROCESS");
         } else {
-            prop.setValue(_currentPlayers +"/"+ _maximumPlayers);
+            prop.setValue(currentPlayers +"/"+ maximumPlayers);
         }
 
         return prop;
     }
 
     public boolean canJoin() {
-        return _gameState ==GameState.WAITING_FOR_PLAYERS
-                && _currentPlayers != _maximumPlayers;
+        return gameState ==GameState.WAITING_FOR_PLAYERS
+                && currentPlayers != maximumPlayers;
     }
 
-    public void set_currentPlayers(int _currentPlayers) {
-        this._currentPlayers = _currentPlayers;
+    public void setCurrentPlayers(int currentPlayers) {
+        this.currentPlayers = currentPlayers;
     }
 
-    public void set_gameState(GameState _gameState) {
-        this._gameState = _gameState;
-    }
-
-    public int get_id() {
-        return _id;
-    }
-
-    public void set_id(int _id) {
-        this._id = _id;
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
     }
 }

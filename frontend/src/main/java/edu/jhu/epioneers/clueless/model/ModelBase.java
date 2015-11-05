@@ -1,10 +1,19 @@
 package edu.jhu.epioneers.clueless.model;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 /**
- * Created by Phillip on 10/31/2015.
+ * Base model for all entity data objects
  */
 public class ModelBase {
+    /**
+     * Name, or descriptive identifier
+     */
     private String name;
+    /**
+     * Database id field
+     */
     private int id;
 
     public String getName() {
@@ -17,6 +26,12 @@ public class ModelBase {
 
     public int getId() {
         return id;
+    }
+
+    public final StringProperty nameProperty() {
+        StringProperty prop = new SimpleStringProperty();
+        prop.setValue(name);
+        return prop;
     }
 
     public void setId(int id) {

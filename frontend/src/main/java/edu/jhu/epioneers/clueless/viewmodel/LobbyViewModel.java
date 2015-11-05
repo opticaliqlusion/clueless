@@ -1,29 +1,52 @@
 package edu.jhu.epioneers.clueless.viewmodel;
 
+import edu.jhu.epioneers.clueless.Constants;
+import edu.jhu.epioneers.clueless.communication.RequestHandler;
 import edu.jhu.epioneers.clueless.model.GameSummaryModel;
 import edu.jhu.epioneers.clueless.model.GameState;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.stage.Stage;
 
 /**
- * Created by Phillip on 10/31/2015.
+ * ViewModel for the lobby screen
  */
-public class LobbyViewModel {
+public class LobbyViewModel extends ViewModelBase {
+    /**
+     * The current list of games in progress or waiting for players
+     */
     private ObservableList<GameSummaryModel> _games;
+
+    /**
+     * Represents if the Join Game button is disabled
+     */
     private SimpleBooleanProperty _joinGameDisabled = new SimpleBooleanProperty(true);
 
-    public ChangeListener<GameSummaryModel> onSelectedGameChanged = new ChangeListener<GameSummaryModel>() {
-        @Override
-        public void changed(ObservableValue<? extends GameSummaryModel> observable, GameSummaryModel oldValue, GameSummaryModel newValue) {
-            _joinGameDisabled.setValue(newValue == null || !newValue.canJoin());
-        }
-    };
+    public LobbyViewModel(RequestHandler requestHandler) {
+        super(requestHandler);
+    }
 
-    public LobbyViewModel() {
-        SyncGameData();
+    @Override
+    protected void Sync() {
+        //TEMP DATA
+        GameSummaryModel game1 = new GameSummaryModel();
+
+        game1.setCurrentPlayers(6);
+        game1.setName("Game 1");
+        game1.setGameState(GameState.IN_PROCESS);
+
+        GameSummaryModel game2 = new GameSummaryModel();
+
+        game2.setCurrentPlayers(0);
+        game2.setGameState(GameState.WAITING_FOR_PLAYERS);
+        game2.setName("Game 2");
+
+        _games = FXCollections.observableArrayList();
+        _games.add(game1);
+        _games.add(game2);
+        //END TEMP DATA
     }
 
     public ObservableList<GameSummaryModel> get_games() {
@@ -34,23 +57,27 @@ public class LobbyViewModel {
         return _joinGameDisabled;
     }
 
-    public void SyncGameData() {
-        //TEMP DATA
-        GameSummaryModel game1 = new GameSummaryModel();
 
-        game1.set_currentPlayers(6);
-        game1.set_gameName("Game 1");
-        game1.set_gameState(GameState.IN_PROCESS);
+    /**
+     * Begins create game flow.
+     * @param stage Current stage
+     */
+    public void newGame(Stage stage) {
+        changeScene(stage, Constants.ChooseCharacterLayout);
+    }
 
-        GameSummaryModel game2 = new GameSummaryModel();
+    public void selectedGameChanged(GameSummaryModel selectedModel) {
+        _joinGameDisabled.setValue(selectedModel == null || !selectedModel.canJoin());
+    }
 
-        game2.set_currentPlayers(0);
-        game2.set_gameState(GameState.WAITING_FOR_PLAYERS);
-        game2.set_gameName("Game 2");
+    /**
+     * Begins the join game flow.  The selected game is stored in the ViewModelContext.
+     * @param stage Current stage
+     * @param selectedItem Selected game
+     */
+    public void joinGame(Stage stage, GameSummaryModel selectedItem) {
+        getContext().setSelectedGame(selectedItem);
 
-        _games = FXCollections.observableArrayList();
-        _games.add(game1);
-        _games.add(game2);
-        //END TEMP DATA
+        changeScene(stage, Constants.ChooseCharacterLayout);
     }
 }

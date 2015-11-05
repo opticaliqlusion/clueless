@@ -1,14 +1,15 @@
 package edu.jhu.epioneers.clueless.view;
 
+import edu.jhu.epioneers.clueless.communication.RequestHandler;
 import edu.jhu.epioneers.clueless.viewmodel.ChooseCharacterViewModel;
 
 /**
- * Created by Phillip on 10/31/2015.
+ * Used to bind data from the ChooseCharacterViewModel to the FXML layout
  */
 public class ChooseCharacterView extends ViewBase<ChooseCharacterViewModel> {
     @Override
     protected ChooseCharacterViewModel createModel() {
-        return new ChooseCharacterViewModel();
+        return new ChooseCharacterViewModel(new RequestHandler());
     }
 
     @Override
