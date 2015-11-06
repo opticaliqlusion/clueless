@@ -1,6 +1,11 @@
 import time
 import BaseHTTPServer
 import cgi
+import urllib
+import urlparse
+
+import logic_engine
+import json
 
 # Example python custom handler code courtesy stackoverflow
 # http://stackoverflow.com/questions/4233218/python-basehttprequesthandler-post-variables
@@ -10,30 +15,72 @@ HOST_NAME = '0.0.0.0'
 PORT_NUMBER = 65500
 
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
-    def do_HEAD(s):
-        s.send_response(200)
-        s.send_header("Content-type", "text/html")
-        s.end_headers()
+    def do_HEAD(self):
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
 
-    def do_GET(s):
+    def do_GET(self):
         """Respond to a GET request."""
-        s.send_response(200)
-        s.send_header("Content-type", "text/html")
-        s.end_headers()
-        s.wfile.write("<html><head><title>Title goes here.</title></head>")
-        s.wfile.write("<body><p>This is a test.</p>")
-        s.wfile.write("<p>You accessed path: %s</p>" % s.path)
-        s.wfile.write("</body></html>")
-        
-    def do_POST(s):
-        ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
-        if ctype == 'multipart/form-data':
-            postvars = cgi.parse_multipart(self.rfile, pdict)
-        elif ctype == 'application/x-www-form-urlencoded':
-            length = int(self.headers.getheader('content-length'))
-            postvars = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
-        else:
-            postvars = {}
+
+        url   =  urlparse.urlparse(self.path)
+        path  = url.path
+        query = urlparse.parse_qs(url.query)
+
+        print(query)
+
+        if path == '/get_pending_games':
+            # no variables needed
+            response = logic_engine.get_pending_games()
+
+        elif path == '/get_valid_moves':
+            # game id, player id
+            response = logic_engine.get_valid_moves(query['idGame'], query['idPlayer'])
+
+        elif path == '/get_board_state':
+            # game id
+            response = logic_engine.get_board_state(query['idGame'])
+
+        response = json.dumps(response)
+
+        self.send_response(200)
+        self.send_header("Content-type", "text/html")
+        self.end_headers()
+
+        self.wfile.write(json.dumps(response))
+
+    def do_POST(self):
+        length = int(self.headers["Content-Length"])
+
+        query = urlparse.parse_qs(self.rfile.read(length))
+        print(self.path)
+        print(query)
+
+        if self.path == '/join_game':
+            response = logic_engine.add_player_to_game(query['idGame'])
+
+        if self.path == '/start_game':
+            response = logic_engine.start_game(query['idGame'])
+
+        elif self.path == '/move_player':
+            response = logic_engine.move_player(query['idGame'], query['idPlayer'], query['idRoom'])
+
+        elif self.path == '/make_suggestion':
+            response = logic_engine.make_suggestion(query['idGame'], query['idPlayer'], query['cards'])
+
+        elif self.path == '/make_accusation':
+            response = logic_engine.make_accusation(query['idGame'], query['idPlayer'], query['cards'])
+
+        elif self.path == '/disprove_suggestion':
+            response = logic_engine.disprove_suggestion(query['idGame'], query['idPlayer'], query['idCard'])
+
+        response = json.dumps(response)
+
+        self.send_response(200)
+        self.send_header("Content-Length", str(len(response)))
+        self.end_headers()
+
+        self.wfile.write(response)
 
 if __name__ == '__main__':
     server_class = BaseHTTPServer.HTTPServer
