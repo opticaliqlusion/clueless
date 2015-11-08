@@ -5,6 +5,15 @@ package edu.jhu.epioneers.clueless.communication;
  * @param <T> Type of data object being returned
  */
 public class Response<T> {
+    public transient final int HTTP_OK = 200;
+
+    public Response(T defaultData) {
+        httpStatusCode = HTTP_OK;
+        data = defaultData;
+    }
+    public Response() {
+        httpStatusCode = HTTP_OK;
+    }
     /**
      * HTTP status code of the repsonse
      */
@@ -13,7 +22,7 @@ public class Response<T> {
     /**
      * Additional status code returned by the server.  Optional and defaults to 0.
      */
-    private int additionalStatusCode;
+    private Integer additionalStatusCode;
 
     /**
      * Additional status message returned by the server. Optional and defaults to null.

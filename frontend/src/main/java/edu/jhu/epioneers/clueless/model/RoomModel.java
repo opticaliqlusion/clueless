@@ -1,9 +1,12 @@
 package edu.jhu.epioneers.clueless.model;
 
-/**
- * Created by Phillip on 11/4/2015.
+/***
+ * Represents a room entity
  */
 public class RoomModel extends PositionModel {
+    /***
+     * Coordinates of secret passage associated with the room
+     */
     private PositionModel secretPassage;
 
     public PositionModel getSecretPassage() {
