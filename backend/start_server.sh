@@ -6,11 +6,11 @@ fi
 
 #Identifies target environment
 if [[ $1 == 'DEV' ]]; then
-	targetScript='/usr/share/epioneers/clueless/server_dev/app.py'
+	targetScript='/usr/share/epioneers/clueless/server_dev/webserver.py'
 elif [[ $1 == 'TEST' ]]; then
-	targetScript='/usr/share/epioneers/clueless/server_test/app.py'
+	targetScript='/usr/share/epioneers/clueless/server_test/webserver.py'
 elif [[ $1 == 'PROD' ]]; then
-	targetScript='/usr/share/epioneers/clueless/server_prod/app.py'
+	targetScript='/usr/share/epioneers/clueless/server_prod/webserver.py'
 else
 	echo 'Invalid environment specified'
 	exit 2
