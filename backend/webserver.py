@@ -17,7 +17,7 @@ PORT_NUMBER = 65500
 class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_HEAD(self):
         self.send_response(200)
-        self.send_header("Content-type", "text/html")
+        self.send_header("Content-type", "application/json")
         self.end_headers()
 
     def do_GET(self):
@@ -44,7 +44,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         response = json.dumps(response)
 
         self.send_response(200)
-        self.send_header("Content-type", "text/html")
+        self.send_header("Content-type", "application/json")
         self.end_headers()
 
         self.wfile.write(json.dumps(response))
