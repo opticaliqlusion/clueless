@@ -22,7 +22,7 @@ directoryName=`dirname $targetScript`
 fileName=`basename $targetScript`
 
 #Kill existing process, if it exists
-pid=`ps -ef | grep $directoryName | grep $fileName | grep -v 'grep' | awk '{print $2}'`
+pid=`ps -ef | grep "python" | grep $fileName | grep -v 'grep' | awk '{print $2}'`
 
 if [[ -z "$pid"  ]]; then
 	echo 'No existing running server found'
@@ -38,7 +38,7 @@ if [ ! -f $targetScript ]; then
 else
 	cd $directoryName
 	echo 'Starting server'
-	nohup ./${fileName} &
+	nohup python ./${fileName} &
 	pid=$!
 	cd -
 fi
