@@ -1,7 +1,9 @@
 package edu.jhu.epioneers.clueless.viewmodel;
 
 import edu.jhu.epioneers.clueless.Constants;
+import edu.jhu.epioneers.clueless.communication.GetPendingGamesReponse;
 import edu.jhu.epioneers.clueless.communication.RequestHandler;
+import edu.jhu.epioneers.clueless.communication.Response;
 import edu.jhu.epioneers.clueless.model.GameSummaryModel;
 import edu.jhu.epioneers.clueless.model.GameState;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -30,23 +32,22 @@ public class LobbyViewModel extends ViewModelBase {
 
     @Override
     protected void Sync() {
-        //TEMP DATA
+        _games = FXCollections.observableArrayList();
+
         GameSummaryModel game1 = new GameSummaryModel();
 
-        game1.setCurrentPlayers(6);
-        game1.setName("Game 1");
-        game1.setGameState(GameState.IN_PROCESS);
+        Response<GetPendingGamesReponse> games = requestHandler.makeGETRequest(Constants.GET_PENDING_GAMES_PATH);
 
-        GameSummaryModel game2 = new GameSummaryModel();
-
-        game2.setCurrentPlayers(0);
-        game2.setGameState(GameState.WAITING_FOR_PLAYERS);
-        game2.setName("Game 2");
-
-        _games = FXCollections.observableArrayList();
-        _games.add(game1);
-        _games.add(game2);
-        //END TEMP DATA
+        if(games.getHttpStatusCode()==games.HTTP_OK) {
+            for(Integer game : games.getData().getGames().keySet()) {
+                GameSummaryModel gameSummaryModel = new GameSummaryModel();
+                gameSummaryModel.setId(game);
+                game1.setName("Game "+game);
+                game1.setGameState(GameState.WAITING_FOR_PLAYERS);
+            }
+        } else {
+            //TODO Trigger error scenario
+        }
     }
 
     public ObservableList<GameSummaryModel> get_games() {

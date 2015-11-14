@@ -41,8 +41,6 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             # game id
             response = logic_engine.get_board_state(query['idGame'])
 
-        response = json.dumps(response)
-
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
@@ -74,13 +72,11 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         elif self.path == '/disprove_suggestion':
             response = logic_engine.disprove_suggestion(query['idGame'], query['idPlayer'], query['idCard'])
 
-        response = json.dumps(response)
-
         self.send_response(200)
         self.send_header("Content-Length", str(len(response)))
         self.end_headers()
 
-        self.wfile.write(response)
+        self.wfile.write(json.dumps(response))
 
 if __name__ == '__main__':
     server_class = BaseHTTPServer.HTTPServer

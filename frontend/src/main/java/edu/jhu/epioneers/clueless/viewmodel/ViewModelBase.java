@@ -16,7 +16,7 @@ public abstract class ViewModelBase {
     /**
      * Communicates to the game server
      */
-    private RequestHandler requestHandler;
+    protected RequestHandler requestHandler;
 
     /**
      * Persists data between ViewModels

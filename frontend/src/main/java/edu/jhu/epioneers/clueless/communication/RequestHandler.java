@@ -2,6 +2,7 @@ package edu.jhu.epioneers.clueless.communication;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import edu.jhu.epioneers.clueless.Constants;
 //import org.apache.http.client.methods.HttpPost;
 //import org.apache.http.impl.client.HttpClients;
 //import org.apache.http.client.HttpClient;
@@ -16,23 +17,24 @@ import java.net.URL;
 public class RequestHandler {
     /**
      * Makes GET request to the server and returns the deserialized JSON response
-     * @param url Url of request
+     * @param path Url of request
      * @param <T> Type of data object to deserialize
      * @return Generic response type
      */
-    public <T> Response<T> makeGETRequest(String url)
+    public <T> Response<T> makeGETRequest(String path)
     {
         //TODO Proof of concept only for compilation purposes only, use Apache classes
         try {
-            URL requestUrl = new URL(url);
+            URL requestUrl = new URL(Constants.SERVER_URL+path);
 
             BufferedReader br = new BufferedReader(new InputStreamReader(requestUrl.openStream()));
+            String response = "";
             String strTemp = "";
             while (null != (strTemp = br.readLine())) {
-                System.out.println(strTemp);
+                response+=strTemp;
             }
             Gson gson = new Gson();
-            return gson.fromJson(strTemp,new TypeToken<Response<T>>(){}.getType());
+            return gson.fromJson(response,new TypeToken<Response<T>>(){}.getType());
 
         } catch (Exception e) {
             e.printStackTrace();
