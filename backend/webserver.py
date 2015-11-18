@@ -36,17 +36,17 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         #@todo
         if path == '/get_pending_games':
             # no variables needed
-            response = logic_engine.get_pending_games()
-
-
+            gamedata = logic_engine.get_pending_games()
+            response = dict()
+            response['games'] = gamedata
+        elif self.path == '/get_characters':
+            response = logic_engine.get_characters()
 
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
 
-        gamesData = dict()
-        gamesData['games'] = response
-        test = self.getSuccessData(gamesData)
+        test = self.getSuccessData(response)
         self.wfile.write(test)
 
     def do_POST(self):

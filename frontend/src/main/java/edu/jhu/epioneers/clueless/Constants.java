@@ -13,4 +13,5 @@ public final class Constants {
     public static final String SERVER_URL="http://75.118.10.202:65500/";
 
     public static final String GET_PENDING_GAMES_PATH="get_pending_games";
+    public static final String GET_CHARACTERS_PATH="get_characters";
 }

@@ -67,6 +67,7 @@ public class LobbyViewModel extends ViewModelBase {
      * @param stage Current stage
      */
     public void newGame(Stage stage) {
+        getContext().setSelectedGame(null);
         changeScene(stage, Constants.ChooseCharacterLayout);
     }
 
