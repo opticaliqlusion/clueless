@@ -18,6 +18,12 @@ db_name = 'clueless.db'
 
 Base = declarative_base()
 engine = sqlalchemy.create_engine('sqlite:///%s' % db_name)
+conn = engine.connect()
+session = sessionmaker(bind=engine)()
+
+def enum(*sequential, **named):
+    enums = dict(zip(sequential, range(len(sequential))), **named)
+    return type('Enum', (), enums)
 
 class players(Base):
     __tablename__ = 'players'
@@ -25,13 +31,17 @@ class players(Base):
     def __repr__(self):
         return '<player(id=%d)>' % (self.idPlayers)
 
+game_states = enum('pending', 'playing', 'finished')
+turn_state = enum('selecting_move', 'making_suggestion', 'soliciting_disprovals')
+
 class games(Base):
     __tablename__ = 'games'
     # whose turn is it
     # what is the state of the game (soliciting disprovals, waiting on moves?)
     idGames = Column(Integer, primary_key=True)
+    state   = Column(Integer)
     def __repr__(self):
-        return '<game(id=%d)>' % (self.idGames)
+        return '<game(id=%d, state=%d)>' % (self.idGames, self.state)
 
 class characters(Base):
     __tablename__ = 'characters'
@@ -64,17 +74,41 @@ class relation_room_adjacency(Base):
 
 class relation_player_game(Base):
     __tablename__ = 'relation_player_game'
-    idPlayer = Column(Integer, primary_key=True)
-    idGame = Column(Integer, primary_key=True)
-    __table_args__ = (ForeignKeyConstraint([idPlayer, idGame], [players.idPlayers, games.idGames]), {})
+    idPlayer = Column(Integer, ForeignKey("players.idPlayers"), primary_key=True)
+    idGame = Column(Integer, ForeignKey("games.idGames"), primary_key=True)
+    #__table_args__ = (ForeignKeyConstraint([idPlayer, idGame], [players.idPlayers, games.idGames]), {})
 
 # relation card_player_games
 
 # relation character_player_games
 
+def get_pending_games():
+    return [ i for i in conn.execute(select([games]).where(games.state == game_states.pending)) ]
+
+def add_player_to_game(idGames, idPlayer=None):
+    game = None
+
+    # create the game if it doesnt exist
+    if not idGames:
+        game = games(state=game_states.pending)
+        session.add(game)
+        session.commit()
+    else:
+        game = session.query(games).filter(games.idGames.in_([idGames])).first()
+
+    # create the player, if it doesn't exist
+    if not idPlayer:
+        player = players()
+        session.add(player)
+        session.commit()
+
+    # add the player to the game
+    player_game = relation_player_game(idGame = game.idGames, idPlayer = player.idPlayers)
+
+    return {'idPlayer':player.idPlayers, 'idGame':game.idGames}
+
 def init_db():
     Base.metadata.create_all(engine)
-    session = sessionmaker(bind=engine)()
 
     room_names   = ['Conservatory', 'Ballroom', 'Kitchen', 'Dining Room', 'Lounge', 'Hall', 'Study', 'Library', 'Billiard Room']
     char_names   = ['Miss Scarlet','Col. Mustard', 'Mrs. White', 'Mr. Green', 'Mrs. Peacock', 'Prof. Plum']
@@ -115,7 +149,6 @@ def init_db():
     ]
 
     def create_relation_room(room_a, room_b, hallway=True):
-        conn = engine.connect()
         room1 = [ i for i in conn.execute(select([rooms]).where(rooms.name==room_a)) ][0]
         room2 = [ i for i in conn.execute(select([rooms]).where(rooms.name==room_b)) ][0]
 
@@ -144,4 +177,7 @@ def init_db():
 
     for room_a, room_b in rooms_adjacent:
         create_relation_room(room_a, room_b, hallway=False)
+
+
+        return
 

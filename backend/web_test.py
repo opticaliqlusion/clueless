@@ -1,13 +1,28 @@
-import urllib2, urllib
+import urllib2, urllib, json, random
 
-url = 'http://127.0.0.1:65500/join_game'
+address = 'http://127.0.0.1:65500/%s'
 
-values = {'name' : 'Michael Foord',
-          'location' : 'Northampton',
-          'language' : 'Python' }
+def perform_webserver_query(path, values):
+    url = address % (path,)
+    data = urllib.urlencode(values)
+    req = urllib2.Request(url, data)
+    return json.loads(urllib2.urlopen(req).read())
 
-data = urllib.urlencode(values)
-req = urllib2.Request(url, data)
-response = urllib2.urlopen(req)
-the_page = response.read()
-print the_page
+# create a new game
+game_create_response = perform_webserver_query('join_game', { 'idGame': 0 })
+print(game_create_response)
+playerid = game_create_response['idPlayer']
+
+# join that game as a different user
+response = perform_webserver_query('join_game', { 'idGame': game_create_response['idGame'] })
+print(response)
+
+# start the game
+start_game_response = perform_webserver_query('start_game', { 'idGame': response['idGame'], 'idPlayer': playerid })
+print(start_game_response)
+
+moves = perform_webserver_query('get_valid_moves', { 'idGame': response['idGame'], 'idPlayer': playerid })
+print(moves)
+
+move_player_response =  perform_webserver_query('move_player', { 'idGame': response['idGame'], 'idPlayer': playerid, 'idRoom': random.choice(moves)})
+print(move_player_response)

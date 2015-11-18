@@ -29,17 +29,12 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         print(query)
 
+        #@todo
         if path == '/get_pending_games':
             # no variables needed
             response = logic_engine.get_pending_games()
 
-        elif path == '/get_valid_moves':
-            # game id, player id
-            response = logic_engine.get_valid_moves(query['idGame'], query['idPlayer'])
 
-        elif path == '/get_board_state':
-            # game id
-            response = logic_engine.get_board_state(query['idGame'])
 
         response = json.dumps(response)
 
@@ -56,11 +51,22 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         print(self.path)
         print(query)
 
+        #if self.path == '/create_game':
+        #    response = logic_engine.create_game()
+
         if self.path == '/join_game':
             response = logic_engine.add_player_to_game(query['idGame'])
 
+        elif self.path == '/get_valid_moves':
+            # game id, player id
+            response = logic_engine.get_valid_moves(query['idGame'], query['idPlayer'])
+
+        elif self.path == '/get_board_state':
+            # game id
+            response = logic_engine.get_board_state(query['idGame'])
+
         if self.path == '/start_game':
-            response = logic_engine.start_game(query['idGame'])
+            response = logic_engine.start_game(query['idGame'], query['idPlayer'])
 
         elif self.path == '/move_player':
             response = logic_engine.move_player(query['idGame'], query['idPlayer'], query['idRoom'])
