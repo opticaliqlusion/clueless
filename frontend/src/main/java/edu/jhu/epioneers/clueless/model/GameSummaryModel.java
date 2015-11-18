@@ -3,8 +3,8 @@ package edu.jhu.epioneers.clueless.model;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-/**
- * Created by Phillip on 10/31/2015.
+/***
+ * Contains summary information for games in the lobby view
  */
 public class GameSummaryModel extends ModelBase {
     private final int maximumPlayers = 6;
