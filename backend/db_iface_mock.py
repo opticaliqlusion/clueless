@@ -190,7 +190,7 @@ for room in [i for i in Room.static_list if i.type == RoomTypes.ROOM]:
     r = Card(room.name, CardTypes.ROOM)
 
 def get_pending_games():
-    return [i for i in games_list if i.meta_state == GameStates.PENDING]
+    return [i for i in Game.static_list if i.meta_state == GameStates.PENDING]
 
 def add_player_to_game(idGame, idPlayer=None):
 
