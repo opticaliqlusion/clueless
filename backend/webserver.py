@@ -61,7 +61,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         elif self.path == '/get_board_state':
             # game id
-            response = logic_engine.get_board_state(query['idGame'])
+            response = logic_engine.get_board_state(query['idGame'], query['idPlayer'])
 
         if self.path == '/start_game':
             response = logic_engine.start_game(query['idGame'], query['idPlayer'])
@@ -78,11 +78,12 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         elif self.path == '/disprove_suggestion':
             response = logic_engine.disprove_suggestion(query['idGame'], query['idPlayer'], query['idCard'])
 
+        response = json.dumps(response)
         self.send_response(200)
         self.send_header("Content-Length", str(len(response)))
         self.end_headers()
 
-        self.wfile.write(json.dumps(response))
+        self.wfile.write(response)
 
 if __name__ == '__main__':
     server_class = BaseHTTPServer.HTTPServer

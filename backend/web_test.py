@@ -6,10 +6,12 @@ def perform_webserver_query(path, values):
     url = address % (path,)
     data = urllib.urlencode(values)
     req = urllib2.Request(url, data)
-    return json.loads(urllib2.urlopen(req).read())
+    resp = urllib2.urlopen(req).read()
+    return json.loads(resp)
 
 # create a new game
 game_create_response = perform_webserver_query('join_game', { 'idGame': 0 })
+
 print(game_create_response)
 playerid = game_create_response['idPlayer']
 
