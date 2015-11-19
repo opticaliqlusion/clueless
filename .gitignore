@@ -4,4 +4,6 @@
 .idea
 backend/.idea/
 frontend/.idea/
+frontend/target/
 *.pyc
+*.class

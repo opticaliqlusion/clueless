@@ -1,7 +1,6 @@
 package edu.jhu.epioneers.clueless.communication;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import edu.jhu.epioneers.clueless.Constants;
 //import org.apache.http.client.methods.HttpPost;
 //import org.apache.http.impl.client.HttpClients;
