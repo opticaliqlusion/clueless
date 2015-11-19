@@ -1,4 +1,7 @@
 *.bak
 .metadata
 .settings
+.idea
+backend/.idea/
+frontend/.idea/
 *.pyc

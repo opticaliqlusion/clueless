@@ -1,5 +1,6 @@
 package edu.jhu.epioneers.clueless.viewmodel;
 
+import com.google.gson.reflect.TypeToken;
 import edu.jhu.epioneers.clueless.Constants;
 import edu.jhu.epioneers.clueless.communication.GetPendingGamesReponse;
 import edu.jhu.epioneers.clueless.communication.RequestHandler;
@@ -36,10 +37,12 @@ public class LobbyViewModel extends ViewModelBase {
 
         GameSummaryModel game1 = new GameSummaryModel();
 
-        Response<GetPendingGamesReponse> games = requestHandler.makeGETRequest(Constants.GET_PENDING_GAMES_PATH);
+        Response<GetPendingGamesReponse> games = requestHandler.makeGETRequest(Constants.GET_PENDING_GAMES_PATH,
+                new TypeToken<Response<GetPendingGamesReponse>>(){}.getType());
 
         if(games.getHttpStatusCode()==games.HTTP_OK) {
-            for(Integer game : games.getData().getGames().keySet()) {
+            GetPendingGamesReponse gameData = games.getData();
+            for(Integer game : gameData.getGames().keySet()) {
                 GameSummaryModel gameSummaryModel = new GameSummaryModel();
                 gameSummaryModel.setId(game);
                 game1.setName("Game "+game);
@@ -64,6 +67,7 @@ public class LobbyViewModel extends ViewModelBase {
      * @param stage Current stage
      */
     public void newGame(Stage stage) {
+        getContext().setSelectedGame(null);
         changeScene(stage, Constants.ChooseCharacterLayout);
     }
 

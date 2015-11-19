@@ -6,6 +6,10 @@ class GameState():
     def __init__():
         return
 
+
+def get_characters():
+    return db_iface.get_characters()
+
 def get_pending_games():
     return db_iface.get_pending_games()
 

@@ -9,6 +9,7 @@ import edu.jhu.epioneers.clueless.Constants;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.lang.reflect.Type;
 import java.net.URL;
 
 /**
@@ -21,7 +22,7 @@ public class RequestHandler {
      * @param <T> Type of data object to deserialize
      * @return Generic response type
      */
-    public <T> Response<T> makeGETRequest(String path)
+    public <T> Response<T> makeGETRequest(String path, Type type)
     {
         //TODO Proof of concept only for compilation purposes only, use Apache classes
         try {
@@ -33,8 +34,9 @@ public class RequestHandler {
             while (null != (strTemp = br.readLine())) {
                 response+=strTemp;
             }
+
             Gson gson = new Gson();
-            return gson.fromJson(response,new TypeToken<Response<T>>(){}.getType());
+            return gson.fromJson(response,type);
 
         } catch (Exception e) {
             e.printStackTrace();
