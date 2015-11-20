@@ -13,6 +13,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.stage.Stage;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Map;
+
 /**
  * ViewModel for the lobby screen
  */
@@ -35,18 +39,17 @@ public class LobbyViewModel extends ViewModelBase {
     protected void Sync() {
         _games = FXCollections.observableArrayList();
 
-        GameSummaryModel game1 = new GameSummaryModel();
-
         Response<GetPendingGamesReponse> games = requestHandler.makeGETRequest(Constants.GET_PENDING_GAMES_PATH,
                 new TypeToken<Response<GetPendingGamesReponse>>(){}.getType());
 
         if(games.getHttpStatusCode()==games.HTTP_OK) {
             GetPendingGamesReponse gameData = games.getData();
-            for(Integer game : gameData.getGames().keySet()) {
+
+            for(Map.Entry<Integer,ArrayList<Integer>> game : gameData.getGames().entrySet()) {
                 GameSummaryModel gameSummaryModel = new GameSummaryModel();
-                gameSummaryModel.setId(game);
-                game1.setName("Game "+game);
-                game1.setGameState(GameState.WAITING_FOR_PLAYERS);
+                gameSummaryModel.setId(game.getKey());
+                gameSummaryModel.setName("Game "+game.getKey());
+                gameSummaryModel.setInUseCharacters(game.getValue());
             }
         } else {
             //TODO Trigger error scenario

@@ -1,7 +1,5 @@
 package edu.jhu.epioneers.clueless.communication;
 
-import edu.jhu.epioneers.clueless.model.GameState;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 

@@ -3,14 +3,20 @@ package edu.jhu.epioneers.clueless.model;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
+import java.util.ArrayList;
+
 /***
  * Contains summary information for games in the lobby view
  */
 public class GameSummaryModel extends ModelBase {
     private final int maximumPlayers = 6;
 
-    private int currentPlayers;
     private GameState gameState;
+    private ArrayList<Integer> inUseCharacters;
+
+    private int getCurrentPlayers() {
+        return inUseCharacters.size();
+    }
 
     public final StringProperty gameStatusProperty() {
         StringProperty prop = new SimpleStringProperty();
@@ -18,7 +24,7 @@ public class GameSummaryModel extends ModelBase {
         if(gameState ==GameState.IN_PROCESS) {
             prop.setValue("IN PROCESS");
         } else {
-            prop.setValue(currentPlayers +"/"+ maximumPlayers);
+            prop.setValue(getCurrentPlayers() +"/"+ maximumPlayers);
         }
 
         return prop;
@@ -26,14 +32,18 @@ public class GameSummaryModel extends ModelBase {
 
     public boolean canJoin() {
         return gameState ==GameState.WAITING_FOR_PLAYERS
-                && currentPlayers != maximumPlayers;
-    }
-
-    public void setCurrentPlayers(int currentPlayers) {
-        this.currentPlayers = currentPlayers;
+                && getCurrentPlayers() != maximumPlayers;
     }
 
     public void setGameState(GameState gameState) {
         this.gameState = gameState;
+    }
+
+    public ArrayList<Integer> getInUseCharacters() {
+        return inUseCharacters;
+    }
+
+    public void setInUseCharacters(ArrayList<Integer> inUseCharacters) {
+        this.inUseCharacters = inUseCharacters;
     }
 }

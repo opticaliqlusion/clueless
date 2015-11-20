@@ -2,6 +2,7 @@ package edu.jhu.epioneers.clueless.viewmodel;
 
 import edu.jhu.epioneers.clueless.communication.IdNameType;
 import edu.jhu.epioneers.clueless.model.GameSummaryModel;
+import edu.jhu.epioneers.clueless.model.ModelBase;
 
 import java.util.ArrayList;
 
@@ -28,13 +29,13 @@ public class ViewModelContext {
         this.selectedGame = selectedGame;
     }
 
-    private ArrayList<IdNameType> allCharacters;
+    private ArrayList<ModelBase> allCharacters;
 
-    public ArrayList<IdNameType> getAllCharacters() {
+    public ArrayList<ModelBase> getAllCharacters() {
         return allCharacters;
     }
 
-    public void setAllCharacters(ArrayList<IdNameType> allCharacters) {
+    public void setAllCharacters(ArrayList<ModelBase> allCharacters) {
         this.allCharacters = allCharacters;
     }
 }
