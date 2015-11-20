@@ -1,8 +1,10 @@
+from __future__ import print_function
 import time
 import BaseHTTPServer
 import cgi
 import urllib
 import urlparse
+import sys
 
 import logic_engine
 import json
@@ -53,8 +55,8 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         length = int(self.headers["Content-Length"])
 
         query = urlparse.parse_qs(self.rfile.read(length))
-        print(self.path)
-        print(query)
+        print(self.path, file=sys.stderr)
+        print(query, file=sys.stderr)
 
         #if self.path == '/create_game':
         #    response = logic_engine.create_game()
