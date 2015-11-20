@@ -3,8 +3,9 @@ import urllib2, urllib, json, random
 address = 'http://127.0.0.1:65500/%s'
 
 def perform_webserver_query(path, values):
+    data = json.dumps(values)
     url = address % (path,)
-    data = urllib.urlencode(values)
+    #data = urllib.urlencode(values)
     req = urllib2.Request(url, data)
     resp = urllib2.urlopen(req).read()
     return json.loads(resp)
