@@ -45,6 +45,6 @@ public class IntegrationTest {
 
         //Assert
         assert (characters.getHttpStatusCode()==characters.HTTP_OK);
-        assert (characters.getData().getPlayerId()>0);
+        assert (characters.getData().getIdPlayer()>0);
     }
 }

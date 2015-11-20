@@ -55,7 +55,7 @@ public class JsonTest {
 
         model.setPlayerGameIdMap(playerGameIdMap);
         model.setIdCurrentTurn(1);
-        model.setPlayerId(2);
+        model.setIdPlayer(2);
         model.setGameState(4);
 
         ArrayList<String> logs = new ArrayList<String>();

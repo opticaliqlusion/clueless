@@ -7,6 +7,8 @@ import java.util.HashMap;
  * The response of the get_board_state service operation
  */
 public class GetBoardStateResponse {
+    private int idGame;
+
     /***
      * Maps player ids to rooms
      */
@@ -35,7 +37,7 @@ public class GetBoardStateResponse {
     /***
      * Id of the current player
      */
-    private int playerId;
+    private int idPlayer;
 
     /***
      * The list of cards for the current player
@@ -82,12 +84,12 @@ public class GetBoardStateResponse {
         this.lastLogId = lastLogId;
     }
 
-    public int getPlayerId() {
-        return playerId;
+    public int getIdPlayer() {
+        return idPlayer;
     }
 
-    public void setPlayerId(int playerId) {
-        this.playerId = playerId;
+    public void setIdPlayer(int idPlayer) {
+        this.idPlayer = idPlayer;
     }
 
     public ArrayList<Integer> getCardIds() {
@@ -96,5 +98,13 @@ public class GetBoardStateResponse {
 
     public void setCardIds(ArrayList<Integer> cardIds) {
         this.cardIds = cardIds;
+    }
+
+    public int getIdGame() {
+        return idGame;
+    }
+
+    public void setIdGame(int idGame) {
+        this.idGame = idGame;
     }
 }

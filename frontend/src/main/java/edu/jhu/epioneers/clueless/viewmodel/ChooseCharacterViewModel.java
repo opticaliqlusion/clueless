@@ -56,7 +56,8 @@ public class ChooseCharacterViewModel extends ViewModelBase {
      * @param characterId Id for the character to be chosen
      */
     public void chooseCharacter(Stage window, int characterId) {
-        GameSummaryModel existingGame = getContext().getSelectedGame();
+        ViewModelContext context = getContext();
+        GameSummaryModel existingGame = context.getSelectedGame();
         JoinGameRequest request  = new JoinGameRequest();
         request.setIdCharacter(characterId);
 
@@ -64,8 +65,16 @@ public class ChooseCharacterViewModel extends ViewModelBase {
             request.setIdGame(existingGame.getId());
         }
 
-        Response<Object> response = requestHandler.makePOSTRequest(Constants.JOIN_GAME_PATH, request,
+        Response<GetBoardStateResponse> response = requestHandler.makePOSTRequest(Constants.JOIN_GAME_PATH, request,
                 new TypeToken<Response<GetBoardStateResponse>>(){}.getType());
+
+        if(response.getHttpStatusCode() == response.HTTP_OK) {
+            context.setIdGame(response.getData().getIdGame());
+            context.setIdCharacter(characterId);
+            context.setIdPlayer(response.getData().getIdPlayer());
+        } else {
+            //TODO Trigger error scenario
+        }
     }
 
     public ObservableList<ModelBase> getAvailableCharacters() {

@@ -84,11 +84,16 @@ class Game(PersistableBase):
         # import pdb; pdb.set_trace()
         return {
             # TODO Hack if room or char map is null
-            'playerRooms': {i.id: (None if i.room is None else i.room.id) for i in self.players},
+            'playerGameIdMap': {i.id: (None if i.room is None else i.room.id) for i in self.players},
             'characterMap': {self.players[i].id: self.character_map[i] for i in range(len(self.character_map))},
-            'playerTurn': self.player_current_turn_index,
-            'turnState': self.turn_state,
-            'playerCards': playerCards
+            'idCurrentTurn': self.player_current_turn_index,
+            'gameState': self.turn_state,
+            'cardIds': playerCards,
+            # TODO Actual log data
+            'logs': [],
+            'lastLogId': 0,
+            'idGame': self.id,
+            'idPlayer': idPlayer
         }
 
 

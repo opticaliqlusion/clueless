@@ -16,6 +16,11 @@ public class ViewModelContext {
         return instance;
     }
 
+    //These three fields contain static game data for the current player
+    private int idGame;
+    private int idCharacter;
+    private int idPlayer;
+
     /**
      * Currently selected game for the choose character screen
      */
@@ -37,5 +42,29 @@ public class ViewModelContext {
 
     public void setAllCharacters(ArrayList<ModelBase> allCharacters) {
         this.allCharacters = allCharacters;
+    }
+
+    public int getIdGame() {
+        return idGame;
+    }
+
+    public void setIdGame(int idGame) {
+        this.idGame = idGame;
+    }
+
+    public int getIdCharacter() {
+        return idCharacter;
+    }
+
+    public void setIdCharacter(int idCharacter) {
+        this.idCharacter = idCharacter;
+    }
+
+    public int getIdPlayer() {
+        return idPlayer;
+    }
+
+    public void setIdPlayer(int idPlayer) {
+        this.idPlayer = idPlayer;
     }
 }
