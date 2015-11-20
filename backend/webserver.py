@@ -48,46 +48,47 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_header("Content-type", "application/json")
         self.end_headers()
 
-        test = self.getSuccessData(response)
-        self.wfile.write(test)
+        self.wfile.write(self.getSuccessData(response))
 
     def do_POST(self):
         length = int(self.headers["Content-Length"])
 
-        query = urlparse.parse_qs(self.rfile.read(length))
+        data = self.rfile.read(length)
+        jsondata = json.loads(data)
+
         print(self.path, file=sys.stderr)
-        print(query, file=sys.stderr)
+        print(data, file=sys.stderr)
 
         #if self.path == '/create_game':
         #    response = logic_engine.create_game()
 
         if self.path == '/join_game':
-            response = logic_engine.add_player_to_game(query['idGame'])
+            response = logic_engine.add_player_to_game(jsondata['idGame'])
 
         elif self.path == '/get_valid_moves':
             # game id, player id
-            response = logic_engine.get_valid_moves(query['idGame'], query['idPlayer'])
+            response = logic_engine.get_valid_moves(jsondata['idGame'], jsondata['idPlayer'])
 
         elif self.path == '/get_board_state':
             # game id
-            response = logic_engine.get_board_state(query['idGame'], query['idPlayer'])
+            response = logic_engine.get_board_state(jsondata['idGame'], jsondata['idPlayer'])
 
-        if self.path == '/start_game':
-            response = logic_engine.start_game(query['idGame'], query['idPlayer'])
+        elif self.path == '/start_game':
+            response = logic_engine.start_game(jsondata['idGame'], jsondata['idPlayer'])
 
         elif self.path == '/move_player':
-            response = logic_engine.move_player(query['idGame'], query['idPlayer'], query['idRoom'])
+            response = logic_engine.move_player(jsondata['idGame'], jsondata['idPlayer'], jsondata['idRoom'])
 
         elif self.path == '/make_suggestion':
-            response = logic_engine.make_suggestion(query['idGame'], query['idPlayer'], query['cards'])
+            response = logic_engine.make_suggestion(jsondata['idGame'], jsondata['idPlayer'], jsondata['cards'])
 
         elif self.path == '/make_accusation':
-            response = logic_engine.make_accusation(query['idGame'], query['idPlayer'], query['cards'])
+            response = logic_engine.make_accusation(jsondata['idGame'], jsondata['idPlayer'], jsondata['cards'])
 
         elif self.path == '/disprove_suggestion':
-            response = logic_engine.disprove_suggestion(query['idGame'], query['idPlayer'], query['idCard'])
+            response = logic_engine.disprove_suggestion(jsondata['idGame'], jsondata['idPlayer'], jsondata['idCard'])
 
-        response = json.dumps(response)
+        response = self.getSuccessData(response)
         self.send_response(200)
         self.send_header("Content-Length", str(len(response)))
         self.end_headers()

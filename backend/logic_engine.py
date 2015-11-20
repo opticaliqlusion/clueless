@@ -13,24 +13,19 @@ def get_characters():
 def get_pending_games():
     return db_iface.get_pending_games()
 
-def add_player_to_game(idGames, idPlayer=None):
-    idGame = int(idGames[0])
-    return db_iface.add_player_to_game(idGame, idPlayer)
-
+def add_player_to_game(idGame, idPlayer=None):
+    addPlayerResult = db_iface.add_player_to_game(idGame, idPlayer)
+    return get_board_state(addPlayerResult['idGame'], addPlayerResult['idPlayer'])
 def start_game(idGame, idPlayer):
-    idGame, idPlayer = int(idGame[0]), int(idPlayer[0])
     return db_iface.start_game(idGame, idPlayer)
 
 def get_valid_moves(idGame, idPlayer):
-    idGame, idPlayer = int(idGame[0]), int(idPlayer[0])
     return db_iface.get_valid_moves(idGame, idPlayer)
 
 def get_board_state(idGame, idPlayer):
-    idGame, idPlayer = int(idGame[0]), int(idPlayer[0])
     return db_iface.get_board_state(idGame, idPlayer)
 
 def move_player(idGame, idPlayer, idRoom):
-    idGame, idPlayer, idRoom = int(idGame[0]), int(idPlayer[0]), int(idRoom[0])
     return db_iface.move_player(idGame, idPlayer, idRoom)
     
 def make_suggestion(idGame, idPlayer, cards):
