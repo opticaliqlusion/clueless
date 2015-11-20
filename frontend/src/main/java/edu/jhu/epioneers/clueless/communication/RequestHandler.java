@@ -2,6 +2,11 @@ package edu.jhu.epioneers.clueless.communication;
 
 import com.google.gson.Gson;
 import edu.jhu.epioneers.clueless.Constants;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.HttpClients;
 //import org.apache.http.client.methods.HttpPost;
 //import org.apache.http.impl.client.HttpClients;
 //import org.apache.http.client.HttpClient;
@@ -23,7 +28,7 @@ public class RequestHandler {
      */
     public <T> Response<T> makeGETRequest(String path, Type type)
     {
-        //TODO Proof of concept only for compilation purposes only, use Apache classes
+        //TODO Use Apache classes?
         try {
             URL requestUrl = new URL(Constants.SERVER_URL+path);
 
@@ -41,22 +46,55 @@ public class RequestHandler {
             e.printStackTrace();
         }
 
-        return null;
+        return getFailureResponse();
     }
 
     /**
      * Makes POST request to the server and returns the deserialized JSON response
-     * @param url Url of request
+     * @param path Path of request
      * @param data Object to serialize and POST to the server
      * @param <T> Type of data object to deserialize
      * @return Generic response type
      */
-    public <T> Response<T> makePOSTRequest(String url, Object data)
+    public <T> Response<T> makePOSTRequest(String path, Object data, Type type)
     {
-        //HttpClient httpclient = HttpClients.createDefault();
-        //HttpPost httppost = new HttpPost("http://www.a-domain.com/foo/");
+        try {
+            HttpClient httpclient = HttpClients.createDefault();
+            HttpPost httppost = new HttpPost(Constants.SERVER_URL+path);
+            Gson gson = new Gson();
 
-        return null;
+            StringEntity input = new StringEntity(gson.toJson(data));
+            input.setContentType("application/json");
+            httppost.setEntity(input);
+
+            HttpResponse httpResponse = httpclient.execute(httppost);
+
+            BufferedReader br = new BufferedReader(
+                    new InputStreamReader((httpResponse.getEntity().getContent())));
+
+            String response = "";
+            String strTemp = "";
+            while (null != (strTemp = br.readLine())) {
+                response+=strTemp;
+            }
+
+            return gson.fromJson(response, type);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+        return getFailureResponse();
+    }
+
+    private <T> Response<T> getFailureResponse() {
+        Response<T> response = new Response<T>();
+        response.setHttpStatusCode(500);
+        response.setMessage("An unknown error has occurred");
+        response.setAdditionalStatusCode(1);
+
+        return response;
     }
 
     /**

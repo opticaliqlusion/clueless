@@ -3,6 +3,7 @@ package edu.jhu.epioneers.clueless.viewmodel;
 import com.google.gson.reflect.TypeToken;
 import edu.jhu.epioneers.clueless.Constants;
 import edu.jhu.epioneers.clueless.communication.*;
+import edu.jhu.epioneers.clueless.model.ModelBase;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -58,7 +59,7 @@ public abstract class ViewModelBase {
      */
     protected abstract void Sync();
 
-    protected ArrayList<IdNameType> getAllCharacters()
+    protected ArrayList<ModelBase> getAllCharacters()
     {
         if(context.getAllCharacters()==null)
         {
