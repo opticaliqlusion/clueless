@@ -318,6 +318,8 @@ def get_valid_moves(idGame, idPlayer):
 
     return [i.id for i in player.room.adjacent_rooms]
 
+def get_all_cards():
+    return Card.static_list;
 
 def get_board_state(idGame, idPlayer):
     game = Game.get_by_id(idGame)

@@ -22,6 +22,15 @@ def start_game(idGame, idPlayer):
 def get_valid_moves(idGame, idPlayer):
     return db_iface.get_valid_moves(idGame, idPlayer)
 
+def get_all_cards():
+    cards = db_iface.get_all_cards()
+    cardsDictionary = []
+
+    for card in cards:
+        cardsDictionary.append(card.__dict__)
+
+    return cardsDictionary
+
 def get_board_state(idGame, idPlayer):
     return db_iface.get_board_state(idGame, idPlayer)
 

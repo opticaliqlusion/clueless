@@ -47,7 +47,8 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         elif self.path == '/get_valid_moves':
             # game id, player id
             response = logic_engine.get_valid_moves(query['idGame'], query['idPlayer'])
-
+        elif self.path == '/get_all_cards':
+            response = logic_engine.get_all_cards()
         elif self.path.startswith('/get_board_state'):
             # game id
             response = logic_engine.get_board_state(int(query['idGame'][0]), int(query['idPlayer'][0]))

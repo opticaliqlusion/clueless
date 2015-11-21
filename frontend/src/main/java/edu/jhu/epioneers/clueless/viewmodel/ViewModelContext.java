@@ -3,6 +3,7 @@ package edu.jhu.epioneers.clueless.viewmodel;
 import edu.jhu.epioneers.clueless.communication.IdNameType;
 import edu.jhu.epioneers.clueless.model.GameSummaryModel;
 import edu.jhu.epioneers.clueless.model.ModelBase;
+import javafx.collections.ObservableList;
 
 import java.util.ArrayList;
 
@@ -36,6 +37,9 @@ public class ViewModelContext {
 
     private ArrayList<ModelBase> allCharacters;
 
+    private ObservableList<ModelBase> weaponCards;
+    private ObservableList<ModelBase> characterCards;
+
     public ArrayList<ModelBase> getAllCharacters() {
         return allCharacters;
     }
@@ -66,5 +70,21 @@ public class ViewModelContext {
 
     public void setIdPlayer(int idPlayer) {
         this.idPlayer = idPlayer;
+    }
+
+    public ObservableList<ModelBase> getWeaponCards() {
+        return weaponCards;
+    }
+
+    public void setWeaponCards(ObservableList<ModelBase> weaponCards) {
+        this.weaponCards = weaponCards;
+    }
+
+    public ObservableList<ModelBase> getCharacterCards() {
+        return characterCards;
+    }
+
+    public void setCharacterCards(ObservableList<ModelBase> characterCards) {
+        this.characterCards = characterCards;
     }
 }

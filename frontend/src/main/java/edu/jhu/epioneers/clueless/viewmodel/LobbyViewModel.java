@@ -38,6 +38,7 @@ public class LobbyViewModel extends ViewModelBase {
 
     @Override
     public void Sync() {
+        getCharacterCards();
         _games = FXCollections.observableArrayList();
 
         Response<GetPendingGamesReponse> games = requestHandler.makeGETRequest(Constants.GET_PENDING_GAMES_PATH,
