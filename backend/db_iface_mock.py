@@ -48,7 +48,8 @@ class Player(PersistableBase):
     def __repr__(self):
         return '<Player(id=%d)>' % (self.id,)
 
-    def __init__(self):
+    def __init__(self, idCharacter):
+        self.idCharacter = idCharacter
         self.cards = []
         self.room = None
         super(Player, self).__init__()
@@ -87,7 +88,8 @@ class Game(PersistableBase):
             'playerGameIdMap': {i.id: (None if i.room is None else i.room.id) for i in self.players},
             'characterMap': {self.players[i].id: self.character_map[i] for i in range(len(self.character_map))},
             'idCurrentTurn': self.player_current_turn_index,
-            'gameState': self.turn_state,
+            'gameState': self.meta_state,
+            'turnState': self.turn_state,
             'cardIds': playerCards,
             # TODO Actual log data
             'logs': [],
@@ -224,10 +226,20 @@ def get_characters():
 
 
 def get_pending_games():
-    return [i for i in Game.static_list if i.meta_state == GameStates.PENDING]
+    # The full extent of my python skills
+    pendingGames = dict()
+
+    for i in Game.static_list:
+        if i.meta_state == GameStates.PENDING:
+            pendingGames[i.id] = []
+
+            for p in i.players:
+                pendingGames[i.id].append(p.idCharacter)
+
+    return pendingGames
 
 
-def add_player_to_game(idGame, idPlayer=None):
+def add_player_to_game(idGame, idPlayer, idCharacter):
     game = None
 
     # find or create the game
@@ -241,13 +253,13 @@ def add_player_to_game(idGame, idPlayer=None):
         return
 
     if not idPlayer:
-        player = Player()
+        player = Player(idCharacter)
     else:
         player = Player.get_by_id(idPlayer)
 
     game.players.append(player)
 
-    return {'idGame': game.id, 'idPlayer': player.id, 'idCharacter': game.players.index(player)}
+    return {'idGame': game.id, 'idPlayer': player.id, 'idCharacter': player.idCharacter}
 
 
 def start_game(idGame, idPlayer):

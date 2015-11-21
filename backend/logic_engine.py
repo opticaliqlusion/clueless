@@ -13,8 +13,8 @@ def get_characters():
 def get_pending_games():
     return db_iface.get_pending_games()
 
-def add_player_to_game(idGame, idPlayer=None):
-    addPlayerResult = db_iface.add_player_to_game(idGame, idPlayer)
+def add_player_to_game(idGame, idPlayer, idCharacter):
+    addPlayerResult = db_iface.add_player_to_game(idGame, idPlayer, idCharacter)
     return get_board_state(addPlayerResult['idGame'], addPlayerResult['idPlayer'])
 def start_game(idGame, idPlayer):
     return db_iface.start_game(idGame, idPlayer)

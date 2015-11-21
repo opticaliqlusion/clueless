@@ -20,10 +20,11 @@ import java.util.ArrayList;
 public class ChooseCharacterViewModel extends ViewModelBase {
     public ChooseCharacterViewModel(RequestHandler requestHandler) {
         super(requestHandler);
+        Sync();
     }
 
     @Override
-    protected void Sync() {
+    public void Sync() {
         availableCharacters = FXCollections.observableArrayList();
         inUseCharacters = FXCollections.observableArrayList();
 
@@ -55,7 +56,7 @@ public class ChooseCharacterViewModel extends ViewModelBase {
      * @param window
      * @param characterId Id for the character to be chosen
      */
-    public void chooseCharacter(Stage window, int characterId) {
+    public void chooseCharacter(Stage stage, int characterId) {
         ViewModelContext context = getContext();
         GameSummaryModel existingGame = context.getSelectedGame();
         JoinGameRequest request  = new JoinGameRequest();
@@ -72,6 +73,8 @@ public class ChooseCharacterViewModel extends ViewModelBase {
             context.setIdGame(response.getData().getIdGame());
             context.setIdCharacter(characterId);
             context.setIdPlayer(response.getData().getIdPlayer());
+
+            changeScene(stage, Constants.BoardLayout);
         } else {
             //TODO Trigger error scenario
         }

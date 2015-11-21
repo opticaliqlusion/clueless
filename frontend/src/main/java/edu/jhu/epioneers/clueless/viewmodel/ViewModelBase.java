@@ -28,7 +28,6 @@ public abstract class ViewModelBase {
 
     public ViewModelBase(RequestHandler requestHandler) {
         this.requestHandler = requestHandler;
-        Sync();
     }
 
     /**
@@ -39,7 +38,7 @@ public abstract class ViewModelBase {
     public void changeScene(Stage stage, String layout) {
         //TODO Figure out error pattern
         try {
-            Parent root = FXMLLoader.load(getClass().getResource(Constants.ChooseCharacterLayout));
+            Parent root = FXMLLoader.load(getClass().getResource(layout));
             Scene scene = new Scene(root);
             stage.setScene(scene);
             stage.show();
@@ -57,7 +56,7 @@ public abstract class ViewModelBase {
      * Function should be overridden in the implementation class to sync ViewModel
      * data from the game server and context
      */
-    protected abstract void Sync();
+    public abstract void Sync();
 
     protected ArrayList<ModelBase> getAllCharacters()
     {

@@ -31,8 +31,7 @@ public class GameSummaryModel extends ModelBase {
     }
 
     public boolean canJoin() {
-        return gameState ==GameState.WAITING_FOR_PLAYERS
-                && getCurrentPlayers() != maximumPlayers;
+        return getCurrentPlayers() != maximumPlayers;
     }
 
     public void setGameState(GameState gameState) {

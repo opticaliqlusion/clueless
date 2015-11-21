@@ -44,6 +44,14 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         elif self.path == '/get_characters':
             response = logic_engine.get_characters()
 
+        elif self.path == '/get_valid_moves':
+            # game id, player id
+            response = logic_engine.get_valid_moves(query['idGame'], query['idPlayer'])
+
+        elif self.path.startswith('/get_board_state'):
+            # game id
+            response = logic_engine.get_board_state(int(query['idGame'][0]), int(query['idPlayer'][0]))
+
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
@@ -63,15 +71,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         #    response = logic_engine.create_game()
 
         if self.path == '/join_game':
-            response = logic_engine.add_player_to_game(jsondata['idGame'])
-
-        elif self.path == '/get_valid_moves':
-            # game id, player id
-            response = logic_engine.get_valid_moves(jsondata['idGame'], jsondata['idPlayer'])
-
-        elif self.path == '/get_board_state':
-            # game id
-            response = logic_engine.get_board_state(jsondata['idGame'], jsondata['idPlayer'])
+            response = logic_engine.add_player_to_game(jsondata['idGame'], None, jsondata['idCharacter'])
 
         elif self.path == '/start_game':
             response = logic_engine.start_game(jsondata['idGame'], jsondata['idPlayer'])

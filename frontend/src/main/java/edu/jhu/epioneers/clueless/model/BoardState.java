@@ -35,7 +35,11 @@ public enum BoardState {
     /**
      * When the game is ended
      */
-    GameOver(6);
+    GameOver(6),
+    /***
+     * Waiting for your turn
+     */
+    WaitingForTurn(7);
 
     private int value;
 

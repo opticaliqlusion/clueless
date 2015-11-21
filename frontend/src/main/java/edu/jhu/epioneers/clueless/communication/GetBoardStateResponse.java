@@ -24,6 +24,8 @@ public class GetBoardStateResponse {
      */
     private int gameState;
 
+    private int turnState;
+
     /***
      * A list of logs to output to the console
      */
@@ -106,5 +108,13 @@ public class GetBoardStateResponse {
 
     public void setIdGame(int idGame) {
         this.idGame = idGame;
+    }
+
+    public int getTurnState() {
+        return turnState;
+    }
+
+    public void setTurnState(int turnState) {
+        this.turnState = turnState;
     }
 }

@@ -33,10 +33,11 @@ public class LobbyViewModel extends ViewModelBase {
 
     public LobbyViewModel(RequestHandler requestHandler) {
         super(requestHandler);
+        Sync();
     }
 
     @Override
-    protected void Sync() {
+    public void Sync() {
         _games = FXCollections.observableArrayList();
 
         Response<GetPendingGamesReponse> games = requestHandler.makeGETRequest(Constants.GET_PENDING_GAMES_PATH,
@@ -50,6 +51,7 @@ public class LobbyViewModel extends ViewModelBase {
                 gameSummaryModel.setId(game.getKey());
                 gameSummaryModel.setName("Game "+game.getKey());
                 gameSummaryModel.setInUseCharacters(game.getValue());
+                _games.add(gameSummaryModel);
             }
         } else {
             //TODO Trigger error scenario
