@@ -114,6 +114,20 @@ public class BoardViewModel extends ViewModelBase {
      * Starts the game
      */
     public void startGame() {
+        ViewModelContext context = getContext();
+        GamePlayerRequestBase request = new GamePlayerRequestBase();
+        request.setIdPlayer(context.getIdPlayer());
+        request.setIdGame(context.getIdGame());
+
+        Response<GetBoardStateResponse> response = requestHandler.makePOSTRequest(Constants.START_GAME_PATH, request,
+                new TypeToken<Response<GetBoardStateResponse>>() {
+                }.getType());
+
+        if(response.getHttpStatusCode()==response.HTTP_OK) {
+            //TODO Do something with the start_game response
+        } else {
+            //TODO Error scenario
+        }
 
     }
 

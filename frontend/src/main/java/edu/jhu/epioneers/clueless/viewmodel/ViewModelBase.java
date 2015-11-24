@@ -86,6 +86,7 @@ public abstract class ViewModelBase {
         if(context.getWeaponCards()==null) {
             ObservableList<ModelBase> weaponCards = FXCollections.observableArrayList();
             ObservableList<ModelBase> characterCards = FXCollections.observableArrayList();
+            ObservableList<ModelBase> roomCards = FXCollections.observableArrayList();
 
             Response<GetAllCardsResponse> response = requestHandler.makeGETRequest(Constants.GET_ALL_CARDS_PATH,
                     new TypeToken<Response<GetAllCardsResponse>>() {
@@ -100,6 +101,8 @@ public abstract class ViewModelBase {
                     //TODO Magic numbers
                     if(card.getType()==0) { //weapon
                         weaponCards.add(addModel);
+                    } else if(card.getType()==1) { //room
+                        roomCards.add(addModel);
                     } else if(card.getType()==2) { //character
                         characterCards.add(addModel);
                     }
@@ -109,6 +112,7 @@ public abstract class ViewModelBase {
             }
 
             context.setWeaponCards(weaponCards);
+            context.setRoomCards(roomCards);
             context.setCharacterCards(characterCards);
         }
     }

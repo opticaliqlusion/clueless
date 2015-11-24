@@ -86,7 +86,8 @@ class Game(PersistableBase):
         return {
             # TODO Hack if room or char map is null
             'playerGameIdMap': {i.id: (None if i.room is None else i.room.id) for i in self.players},
-            'characterMap': {self.players[i].id: self.character_map[i] for i in range(len(self.character_map))},
+            # TODO I don't think we need this?
+            # 'characterMap': {self.players[i].id: self.character_map[i] for i in range(len(self.character_map))},
             'idCurrentTurn': self.player_current_turn_index,
             'gameState': self.meta_state,
             'turnState': self.turn_state,
@@ -292,7 +293,7 @@ def start_game(idGame, idPlayer):
             game.players[i].cards.append(card_list_characters.pop())
 
         i = (i + 1) % len(game.players)
-
+    # TODO Is this a requirement? Or are positions predetermined?
     # generate players' starting positions, randomly
     card_list_rooms = [Room.get_by_name(i.name) for i in Card.static_list if i.type == CardTypes.ROOM]
     random.shuffle(card_list_rooms)

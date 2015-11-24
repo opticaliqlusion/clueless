@@ -4,9 +4,13 @@ import edu.jhu.epioneers.clueless.communication.RequestHandler;
 import edu.jhu.epioneers.clueless.viewmodel.BoardViewModel;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableObjectValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -32,6 +36,7 @@ public class BoardView extends ViewBase<BoardViewModel> {
         lblStatus.textProperty().bind(getModel().statusTextProperty());
         btnStartGame.visibleProperty().bind(getModel().canStartGameProperty());
 
+        /* TODO Sync will be something like this but not completely figured out
         ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 
         ses.scheduleAtFixedRate(new Runnable() {
@@ -40,5 +45,13 @@ public class BoardView extends ViewBase<BoardViewModel> {
                 getModel().Sync();
             }
         }, 10, 10, TimeUnit.SECONDS);
+        */
+
+        btnStartGame.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getModel().startGame();
+            }
+        });
     }
 }
