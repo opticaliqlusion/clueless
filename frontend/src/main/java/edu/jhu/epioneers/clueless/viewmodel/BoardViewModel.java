@@ -2,15 +2,14 @@ package edu.jhu.epioneers.clueless.viewmodel;
 
 import com.google.gson.reflect.TypeToken;
 import edu.jhu.epioneers.clueless.Constants;
-import edu.jhu.epioneers.clueless.communication.GamePlayerRequestBase;
-import edu.jhu.epioneers.clueless.communication.GetBoardStateResponse;
-import edu.jhu.epioneers.clueless.communication.RequestHandler;
-import edu.jhu.epioneers.clueless.communication.Response;
+import edu.jhu.epioneers.clueless.communication.*;
 import edu.jhu.epioneers.clueless.model.BoardState;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 /**
  * Represents the game board and corresponding logic
@@ -20,6 +19,8 @@ public class BoardViewModel extends ViewModelBase {
     private BooleanProperty canStartGame;
     private StringProperty statusText;
     private BooleanProperty canMove;
+
+    private ObservableList<Integer> availableMoves = FXCollections.observableArrayList();
 
     /**
      * Indicates if the user can start the game
@@ -136,15 +137,44 @@ public class BoardViewModel extends ViewModelBase {
      */
     public void beginMove() {
         boardState=BoardState.StartMove;
+        ViewModelContext context = getContext();
+
+        Response<GetValidMovesResponse> response = requestHandler.makeGETRequest(Constants.GET_VALID_MOVES_PATH + "?idGame=" + context.getIdGame() + "&idPlayer=" + context.getIdPlayer(),
+                new TypeToken<Response<GetValidMovesResponse>>() {
+                }.getType());
+
+        if(response.getHttpStatusCode()==response.HTTP_OK) {
+            availableMoves.setAll(response.getData());
+
+            //TODO Setup layout
+        } else {
+            //TODO Error scenario
+        }
+
     }
 
-    /**
+    /***
      * Sends the move request to the server
-     * @param x Postion X
-     * @param y Postion Y
+     * @param idRoom Id of the room to move to
      */
-    public void moveToPosition(int x, int y) {
-        canMove.setValue(false);
+    public void moveToRoom(int idRoom) {
+        canMove.setValue(false); //TODO Implement this fully
+
+        MovePlayerRequest request = new MovePlayerRequest();
+        ViewModelContext context = getContext();
+        request.setIdGame(context.getIdGame());
+        request.setIdPlayer(context.getIdPlayer());
+        request.setIdRoom(idRoom);
+
+        Response<GetBoardStateResponse> response = requestHandler.makePOSTRequest(Constants.MOVE_PLAYER_REQUEST, request,
+                new TypeToken<Response<GetBoardStateResponse>>() {
+                }.getType());
+
+        if(response.getHttpStatusCode()==response.HTTP_OK) {
+            //TODO Do something
+        } else {
+            //TODO Trigger error scenario
+        }
     }
 
     /**

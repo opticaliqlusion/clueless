@@ -7,5 +7,5 @@ import java.util.ArrayList;
 /**
  * Created by Phillip on 11/18/2015.
  */
-public class GetAllCharactersResponse extends ArrayList<ModelBase> {
+public class IdNameListResponse extends ArrayList<ModelBase> {
 }

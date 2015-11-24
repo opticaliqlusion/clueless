@@ -60,15 +60,23 @@ public abstract class ViewModelBase {
      */
     public abstract void Sync();
 
-    protected ArrayList<ModelBase> getAllCharacters()
-    {
+    protected ArrayList<ModelBase> getAllCharacters() {
         if(context.getAllCharacters()==null)
         {
-            context.setAllCharacters((GetAllCharactersResponse) requestHandler.makeGETRequest(Constants.GET_CHARACTERS_PATH,
-                    new TypeToken<Response<GetAllCharactersResponse>>(){}.getType()).getData());
+            context.setAllCharacters((IdNameListResponse) requestHandler.makeGETRequest(Constants.GET_CHARACTERS_PATH,
+                    new TypeToken<Response<IdNameListResponse>>(){}.getType()).getData());
         }
 
         return context.getAllCharacters();
+    }
+
+    protected ArrayList<IdNameType> getAllRooms() {
+        if(context.getAllRooms()==null) {
+            context.setAllRooms((IdNameTypeListResponse) requestHandler.makeGETRequest(Constants.GET_ALL_ROOMS_PATH,
+                    new TypeToken<Response<IdNameTypeListResponse>>(){}.getType()).getData());
+        }
+
+        return context.getAllRooms();
     }
 
     public ObservableList<ModelBase> getWeaponCards() {
@@ -88,8 +96,8 @@ public abstract class ViewModelBase {
             ObservableList<ModelBase> characterCards = FXCollections.observableArrayList();
             ObservableList<ModelBase> roomCards = FXCollections.observableArrayList();
 
-            Response<GetAllCardsResponse> response = requestHandler.makeGETRequest(Constants.GET_ALL_CARDS_PATH,
-                    new TypeToken<Response<GetAllCardsResponse>>() {
+            Response<IdNameTypeListResponse> response = requestHandler.makeGETRequest(Constants.GET_ALL_CARDS_PATH,
+                    new TypeToken<Response<IdNameTypeListResponse>>() {
                     }.getType());
 
             if(response.getHttpStatusCode()==response.HTTP_OK) {

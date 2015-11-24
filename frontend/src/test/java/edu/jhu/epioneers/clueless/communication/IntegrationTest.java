@@ -25,8 +25,8 @@ public class IntegrationTest {
         RequestHandler handler = new RequestHandler();
 
         //Act
-        Response<GetAllCharactersResponse> characters = handler.makeGETRequest(Constants.GET_CHARACTERS_PATH,
-                new TypeToken<Response<GetAllCharactersResponse>>(){}.getType());
+        Response<IdNameListResponse> characters = handler.makeGETRequest(Constants.GET_CHARACTERS_PATH,
+                new TypeToken<Response<IdNameListResponse>>(){}.getType());
 
         //Assert
         assert (characters.getHttpStatusCode()==characters.HTTP_OK);

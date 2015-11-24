@@ -36,6 +36,7 @@ public class ViewModelContext {
     }
 
     private ArrayList<ModelBase> allCharacters;
+    private ArrayList<IdNameType> allRooms;
 
     private ObservableList<ModelBase> weaponCards;
     private ObservableList<ModelBase> characterCards;
@@ -95,5 +96,13 @@ public class ViewModelContext {
 
     public void setRoomCards(ObservableList<ModelBase> roomCards) {
         this.roomCards = roomCards;
+    }
+
+    public ArrayList<IdNameType> getAllRooms() {
+        return allRooms;
+    }
+
+    public void setAllRooms(ArrayList<IdNameType> allRooms) {
+        this.allRooms = allRooms;
     }
 }

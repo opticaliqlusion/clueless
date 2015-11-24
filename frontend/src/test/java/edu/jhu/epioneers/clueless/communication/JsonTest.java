@@ -81,7 +81,7 @@ public class JsonTest {
     public void When_GetAllCardsResponse_serialized_Then_expected_returned()
     {
         //Arrange
-        GetAllCardsResponse model = new GetAllCardsResponse();
+        IdNameTypeListResponse model = new IdNameTypeListResponse();
 
         IdNameType card1 = new IdNameType();
         card1.setId(1);
@@ -96,7 +96,7 @@ public class JsonTest {
         model.add(card2);
 
         //Act
-        String result = gson.toJson(new Response<GetAllCardsResponse>(model));
+        String result = gson.toJson(new Response<IdNameTypeListResponse>(model));
 
         //Assert
         assert(result.equals("{\"httpStatusCode\":200,\"data\":[{\"id\":1,\"name\":\"Card 1\",\"type\":0},{\"id\":1,\"name\":\"Card 2\",\"type\":0}]}"));
