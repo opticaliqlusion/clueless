@@ -45,9 +45,6 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             response = logic_engine.get_characters()
         elif self.path == '/get_room_names':
             response = logic_engine.get_room_names()
-        elif self.path == '/get_valid_moves':
-            # game id, player id
-            response = logic_engine.get_valid_moves(query['idGame'], query['idPlayer'])
         elif self.path == '/get_all_cards':
             response = logic_engine.get_all_cards()
         elif self.path.startswith('/get_board_state'):
@@ -72,11 +69,15 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         #if self.path == '/create_game':
         #    response = logic_engine.create_game()
         #import pdb; pdb.set_trace()
+
         if self.path == '/join_game':
             response = logic_engine.add_player_to_game(jsondata['idGame'], None, jsondata['idCharacter'])
 
         elif self.path == '/start_game':
             response = logic_engine.start_game(jsondata['idGame'], jsondata['idPlayer'])
+
+        elif self.path == '/get_valid_moves':
+            response = logic_engine.get_valid_moves(jsondata['idGame'], jsondata['idPlayer'])
 
         elif self.path == '/move_player':
             response = logic_engine.move_player(jsondata['idGame'], jsondata['idPlayer'], jsondata['idRoom'])
@@ -89,6 +90,9 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         elif self.path == '/disprove_suggestion':
             response = logic_engine.disprove_suggestion(jsondata['idGame'], jsondata['idPlayer'], jsondata['idCard'])
+            
+        elif self.path == '/end_player_turn':
+            response = logic_engine.end_player_turn(jsondata['idGame'], jsondata['idPlayer'])
 
         response = self.getSuccessData(response)
         self.send_response(200)

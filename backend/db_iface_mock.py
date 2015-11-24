@@ -1,24 +1,28 @@
 import os, sys, random
 
-
 def enum(*sequential, **named):
     enums = dict(zip(sequential, range(len(sequential))), **named)
     return type('Enum', (), enums)
 
-
 RoomTypes = enum('ROOM', 'HALL')
 GameStates = enum('PENDING', 'PLAYING', 'FINISHED')
-TurnState = enum('SELECTING_MOVE', 'MAKING_SUGGESTION', 'SOLICITING_DISPROVALS')
+TurnState = enum('SELECTING_MOVE', 'MAKING_SUGGESTION', 'SOLICITING_DISPROVALS', 'WAITING_FOR_END')
 CardTypes = enum('WEAPON', 'ROOM', 'CHARACTER')
 
+log_message_dict = {
+        'start_game':'playerId=%s started the game',
+        'move_player':'playerId=%s moved from %s to %s',
+        'make_suggestion':'playerId=%s made suggestion %s',
+        'render_disprobal':'playerId=%s disproved suggestion by revealing %s',
+        'make_accusation':'playerId=%s made accusation %s, resulting in %s',
+        'end_player_turn':'playerId=%s ended their turn',
+    }
 
 class GameStateViolation(Exception):
     pass
 
-
 class NoSuchObjectException(Exception):
     pass
-
 
 class PersistableBase(object):
     static_list = []
@@ -31,12 +35,10 @@ class PersistableBase(object):
 
         self.static_list.append(self)
 
-
 class Character(PersistableBase):
     def __init__(self, id, name):
         self.id = id
         self.name = name
-
 
 class Player(PersistableBase):
     static_list = []
@@ -54,7 +56,6 @@ class Player(PersistableBase):
         self.room = None
         super(Player, self).__init__()
 
-
 class Game(PersistableBase):
     static_list = []
 
@@ -68,7 +69,7 @@ class Game(PersistableBase):
         self.character_map = []
         self.player_current_turn_index = 0
         self.turn_state = None
-
+        self.log = []
         self.solution = []
 
         super(Game, self).__init__()
@@ -93,12 +94,11 @@ class Game(PersistableBase):
             'turnState': self.turn_state,
             'cardIds': playerCards,
             # TODO Actual log data
-            'logs': [],
+            'logs': self.log,
             'lastLogId': 0,
             'idGame': self.id,
             'idPlayer': idPlayer
         }
-
 
 class Room(PersistableBase):
     static_list = []
@@ -120,7 +120,6 @@ class Room(PersistableBase):
     def __repr__(self):
         return '<Room(id=%d, name=%s)>' % (self.id, self.name)
 
-
 class Card(PersistableBase):
     static_list = []
 
@@ -139,7 +138,6 @@ class Card(PersistableBase):
 
     def __repr__(self):
         return '<Card(id=%d, name=%s)>' % (self.id, self.name)
-
 
 card_names_and_types = [
     ('Rope', CardTypes.WEAPON),
@@ -212,35 +210,23 @@ for i in rooms_adjacent:
 for room in [i for i in Room.static_list if i.type == RoomTypes.ROOM]:
     r = Card(room.name, CardTypes.ROOM)
 
+# create the characters
+char_name_list = ['Char 1', 'Char 2', 'Char 3', 'Char 4', 'Char 5', 'Char 6']
+for i in range(len(char_name_list)):
+    character = Character(i, char_name_list[i])
 
-# TODO this is here just to get data back to the client
-
+# static stuff
 def get_characters():
-    characters = [Character(1, "Char 1").__dict__,
-                  Character(2, "Char 2").__dict__,
-                  Character(3, "Char 3").__dict__,
-                  Character(4, "Char 4").__dict__,
-                  Character(5, "Char 5").__dict__,
-                  Character(6, "Char 6").__dict__]
-
-    return characters
-
-
-def get_pending_games():
-    # The full extent of my python skills
-    pendingGames = dict()
-
-    for i in Game.static_list:
-        if i.meta_state == GameStates.PENDING:
-            pendingGames[i.id] = []
-
-            for p in i.players:
-                pendingGames[i.id].append(p.idCharacter)
-
-    return pendingGames
+    return [ {'id':i.id, 'name':i.name} for i in Character.static_list ]
 
 def get_room_names():
     return [ {'id':i.id, 'name':i.name, 'type':i.type} for i in Room.static_list ]
+
+def get_all_cards():
+    return [ {'id':i.id, 'name':i.name, 'type':i.type} for i in Card.static_list ]
+
+def get_pending_games():
+    return [ {'id':i.id, 'players':[j.id for j in i.players] } for i in Game.static_list if i.meta_state == GameStates.PENDING ]
 
 def add_player_to_game(idGame, idPlayer, idCharacter):
     game = None
@@ -263,7 +249,6 @@ def add_player_to_game(idGame, idPlayer, idCharacter):
     game.players.append(player)
 
     return {'idGame': game.id, 'idPlayer': player.id, 'idCharacter': player.idCharacter}
-
 
 def start_game(idGame, idPlayer):
     # first, change the meta_state of the game
@@ -308,8 +293,11 @@ def start_game(idGame, idPlayer):
 
     # finally, tell the game its time to start playing
     game.turn_state = TurnState.SELECTING_MOVE
+    state = game.serialize(idPlayer=idPlayer)
 
-    return game.serialize(idPlayer=idPlayer)
+    # push the log
+    game.log.append(log_message_dict['start_game'] % (idPlayer,))
+    return state
 
 
 def get_valid_moves(idGame, idPlayer):
@@ -317,18 +305,16 @@ def get_valid_moves(idGame, idPlayer):
     player = Player.get_by_id(idPlayer)
 
     if not player in game.players:
-        return
+        raise NoSuchObjectException('No player found for idGame=%d and idPlayer=%d' % (idGame, idPlayer))
 
     return [i.id for i in player.room.adjacent_rooms]
-
-def get_all_cards():
-    return Card.static_list;
 
 def get_board_state(idGame, idPlayer):
     game = Game.get_by_id(idGame)
     player = Player.get_by_id(idPlayer)
+
     if not player in game.players:
-        return
+        raise NoSuchObjectException('No player found for idGame=%d and idPlayer=%d' % (idGame, idPlayer))
 
     return game.serialize(idPlayer=idPlayer)
 
@@ -349,9 +335,33 @@ def move_player(idGame, idPlayer, idRoom):
     if not idRoom in [i.id for i in player.room.adjacent_rooms]:
         raise GameStateViolation('idRoom=%d and idRoom=%d not adjacent' % (current_room.id, idRoom))
 
-    print('moving player %d to room %d' % (idPlayer, idRoom))
+    oldRoom = player.room
     player.room = Room.get_by_id(idRoom)
 
-    game.turn_state = TurnState.MAKING_SUGGESTION
+    # TODO change this to TurnState.MAKING_SUGGESTION, this is just for testing
+    game.turn_state = TurnState.WAITING_FOR_END
+    state = game.serialize(idPlayer=idPlayer)
+    game.log.append(log_message_dict['move_player'] % (idPlayer, oldRoom.id, player.room.id))
+    return state
 
-    return game.serialize(idPlayer=idPlayer)
+def end_player_turn(idGame, idPlayer):
+    game = Game.get_by_id(idGame)
+    player = Player.get_by_id(idPlayer)
+
+    if not player in game.players:
+        raise NoSuchObjectException('No player found for idGame=%d and idPlayer=%d' % (idGame, idPlayer))
+
+    if not game.turn_state == TurnState.WAITING_FOR_END:
+        raise GameStateViolation('idGame=%d not in state WAITING_FOR_END' % (idGame,))
+
+    if not game.players[game.player_current_turn_index].id == idPlayer:
+        raise GameStateViolation(
+            'it is idPlayer=%d turn, NOT idPlayer=%d' % (game.players[game.player_current_turn_index].id, idPlayer))
+
+    game.turn_state = TurnState.SELECTING_MOVE
+    game.player_current_turn_index = (game.player_current_turn_index + 1) % len(game.players)
+
+    state = game.serialize(idPlayer=idPlayer)
+    game.log.append(log_message_dict['end_player_turn'] % (idPlayer,))
+
+    return state

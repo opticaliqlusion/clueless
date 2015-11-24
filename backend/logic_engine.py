@@ -11,7 +11,7 @@ def get_characters():
 
 def get_room_names():
     return db_iface.get_room_names()
-    
+
 def get_pending_games():
     return db_iface.get_pending_games()
 
@@ -26,13 +26,7 @@ def get_valid_moves(idGame, idPlayer):
     return db_iface.get_valid_moves(idGame, idPlayer)
 
 def get_all_cards():
-    cards = db_iface.get_all_cards()
-    cardsDictionary = []
-
-    for card in cards:
-        cardsDictionary.append(card.__dict__)
-
-    return cardsDictionary
+    return db_iface.get_all_cards()
 
 def get_board_state(idGame, idPlayer):
     return db_iface.get_board_state(idGame, idPlayer)
@@ -50,7 +44,7 @@ def disprove_suggestion(idGame, idPlayer, idCard):
     return
 
 def end_player_turn(idGame, idPlayer):
-    return
+    return db_iface.end_player_turn(idGame, idPlayer)
 
 def main():
     return
