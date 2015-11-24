@@ -239,6 +239,8 @@ def get_pending_games():
 
     return pendingGames
 
+def get_room_names():
+    return [ {'id':i.id, 'name':i.name, 'type':i.type} for i in Room.static_list ]
 
 def add_player_to_game(idGame, idPlayer, idCharacter):
     game = None
@@ -329,7 +331,6 @@ def get_board_state(idGame, idPlayer):
         return
 
     return game.serialize(idPlayer=idPlayer)
-
 
 def move_player(idGame, idPlayer, idRoom):
     game = Game.get_by_id(idGame)

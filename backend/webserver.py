@@ -43,7 +43,8 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             response['games'] = gamedata
         elif self.path == '/get_characters':
             response = logic_engine.get_characters()
-
+        elif self.path == '/get_room_names':
+            response = logic_engine.get_room_names()
         elif self.path == '/get_valid_moves':
             # game id, player id
             response = logic_engine.get_valid_moves(query['idGame'], query['idPlayer'])
@@ -70,7 +71,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         #if self.path == '/create_game':
         #    response = logic_engine.create_game()
-
+        #import pdb; pdb.set_trace()
         if self.path == '/join_game':
             response = logic_engine.add_player_to_game(jsondata['idGame'], None, jsondata['idCharacter'])
 
