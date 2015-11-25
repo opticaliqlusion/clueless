@@ -26,6 +26,10 @@ playerid = game_create_response['data']['idPlayer']
 pending_games = perform_webserver_query('get_pending_games')
 print(pending_games)
 
+# test get characters
+characters_reply = perform_webserver_query('get_characters')
+print(characters_reply)
+
 # join that game as a different user
 response = perform_webserver_query('join_game', { 'idGame': game_create_response['data']['idGame'], 'idCharacter' : 1 })
 print(response)

@@ -36,9 +36,18 @@ class PersistableBase(object):
         self.static_list.append(self)
 
 class Character(PersistableBase):
-    def __init__(self, id, name):
-        self.id = id
+    static_list = []
+
+    @staticmethod
+    def get_by_id(id):
+        return [i for i in Player.static_list if i.id == id][0]
+
+    def __repr__(self):
+        return '<Character(id=%d)>' % (self.id,)
+
+    def __init__(self, name):
         self.name = name
+        super(Character, self).__init__()
 
 class Player(PersistableBase):
     static_list = []
@@ -213,7 +222,7 @@ for room in [i for i in Room.static_list if i.type == RoomTypes.ROOM]:
 # create the characters
 char_name_list = ['Char 1', 'Char 2', 'Char 3', 'Char 4', 'Char 5', 'Char 6']
 for i in range(len(char_name_list)):
-    character = Character(i, char_name_list[i])
+    character = Character(char_name_list[i])
 
 # static stuff
 def get_characters():
