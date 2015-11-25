@@ -235,7 +235,7 @@ def get_all_cards():
     return [ {'id':i.id, 'name':i.name, 'type':i.type} for i in Card.static_list ]
 
 def get_pending_games():
-    return [ {'id':i.id, 'players':[j.id for j in i.players] } for i in Game.static_list if i.meta_state == GameStates.PENDING ]
+    return [ {i.id : [ j.idCharacter for j in i.players ] } for i in Game.static_list if i.meta_state == GameStates.PENDING ]
 
 def add_player_to_game(idGame, idPlayer, idCharacter):
     game = None
