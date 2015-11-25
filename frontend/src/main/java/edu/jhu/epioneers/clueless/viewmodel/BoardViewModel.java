@@ -15,7 +15,6 @@ import javafx.collections.ObservableList;
  * Represents the game board and corresponding logic
  */
 public class BoardViewModel extends ViewModelBase {
-
     private BooleanProperty canStartGame;
     private StringProperty statusText;
     private BooleanProperty canMove;
@@ -71,39 +70,44 @@ public class BoardViewModel extends ViewModelBase {
                 +"&idPlayer="+context.getIdPlayer(), new TypeToken<Response<GetBoardStateResponse>>(){}.getType());
 
         if(response.getHttpStatusCode()==response.HTTP_OK) {
-            int gameState = response.getData().getGameState();
-            int turnState = response.getData().getTurnState();
-
-            //TODO fix magic numbers
-            if(gameState==0) {  //Game has not started
-                boardState=response.getData().getPlayerGameIdMap().size()>1?BoardState.ReadyToStart:BoardState.WaitingForPlayers;
-            } else if(gameState==1) {  //Game in progress
-                int idCurrentTurn = response.getData().getIdCurrentTurn();
-
-                if(idCurrentTurn==context.getIdPlayer()) { //Current user's turn
-
-                    //Update only if the user does not know it is already their turn
-                    if(boardState==BoardState.ReadyToStart
-                        || boardState== BoardState.WaitingForPlayers
-                        || boardState== BoardState.WaitingForTurn) {
-                        if(turnState==0 || turnState==1) { //Base turn
-                            canMove.setValue(true);
-                            boardState=BoardState.BaseTurn;
-                        } else if(turnState==2) { //Disapproval flow
-                            boardState=BoardState.DisproveSuggestion;
-                        }
-                    }
-                } else {
-                    boardState=BoardState.WaitingForTurn;
-                }
-            } else if(gameState==2) { //Game over
-                boardState=BoardState.GameOver;
-            }
-
-            setStateProperties();
+            syncFromData(response.getData());
         } else {
             //TODO Error scenario
         }
+    }
+
+    private void syncFromData(GetBoardStateResponse data) {
+        ViewModelContext context = getContext();
+        int gameState = data.getGameState();
+        int turnState = data.getTurnState();
+
+        //TODO fix magic numbers
+        if(gameState==0) {  //Game has not started
+            boardState=data.getPlayerGameIdMap().size()>1?BoardState.ReadyToStart:BoardState.WaitingForPlayers;
+        } else if(gameState==1) {  //Game in progress
+            int idCurrentTurn = data.getIdCurrentTurn();
+
+            if(idCurrentTurn==context.getIdPlayer()) { //Current user's turn
+
+                //Update only if the user does not know it is already their turn
+                if(boardState==BoardState.ReadyToStart
+                        || boardState== BoardState.WaitingForPlayers
+                        || boardState== BoardState.WaitingForTurn) {
+                    if(turnState==0 || turnState==1) { //Base turn
+                        canMove.setValue(true);
+                        boardState=BoardState.BaseTurn;
+                    } else if(turnState==2) { //Disapproval flow
+                        boardState=BoardState.DisproveSuggestion;
+                    }
+                }
+            } else {
+                boardState=BoardState.WaitingForTurn;
+            }
+        } else if(gameState==2) { //Game over
+            boardState=BoardState.GameOver;
+        }
+
+        setStateProperties();
     }
 
     private void setStateProperties() {
@@ -125,7 +129,7 @@ public class BoardViewModel extends ViewModelBase {
                 }.getType());
 
         if(response.getHttpStatusCode()==response.HTTP_OK) {
-            //TODO Do something with the start_game response
+            syncFromData(response.getData());
         } else {
             //TODO Error scenario
         }

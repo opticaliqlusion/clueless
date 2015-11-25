@@ -1,5 +1,6 @@
 package edu.jhu.epioneers.clueless.view;
 
+import edu.jhu.epioneers.clueless.Constants;
 import edu.jhu.epioneers.clueless.communication.RequestHandler;
 import edu.jhu.epioneers.clueless.model.GameSummaryModel;
 import edu.jhu.epioneers.clueless.viewmodel.LobbyViewModel;
@@ -11,6 +12,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Used to bind data from the LobbyViewModel to the FXML layout
@@ -59,5 +64,22 @@ public class LobbyView extends ViewBase<LobbyViewModel> {
                 model.joinGame((Stage) btnNewGame.getScene().getWindow(), tableView.getSelectionModel().getSelectedItem());
             }
         });
+
+        scheduleSync();
+    }
+
+    private void scheduleSync() {
+        ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
+
+        ses.schedule(new Runnable() {
+            @Override
+            public void run() {
+                getModel().Sync();
+
+                if(!getModel().isModelDisposed()) {
+                    scheduleSync();
+                }
+            }
+        }, Constants.SyncDelay, TimeUnit.SECONDS);
     }
 }

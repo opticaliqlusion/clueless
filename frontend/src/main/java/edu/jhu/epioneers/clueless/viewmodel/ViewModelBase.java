@@ -27,6 +27,7 @@ public abstract class ViewModelBase {
      * Persists data between ViewModels
      */
     private ViewModelContext context = ViewModelContext.getInstance();
+    private boolean modelDisposed = false;
 
     public ViewModelBase(RequestHandler requestHandler) {
         this.requestHandler = requestHandler;
@@ -40,6 +41,7 @@ public abstract class ViewModelBase {
     public void changeScene(Stage stage, String layout) {
         //TODO Figure out error pattern
         try {
+            modelDisposed = true;
             Parent root = FXMLLoader.load(getClass().getResource(layout));
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -123,5 +125,9 @@ public abstract class ViewModelBase {
             context.setRoomCards(roomCards);
             context.setCharacterCards(characterCards);
         }
+    }
+
+    public boolean isModelDisposed() {
+        return modelDisposed;
     }
 }

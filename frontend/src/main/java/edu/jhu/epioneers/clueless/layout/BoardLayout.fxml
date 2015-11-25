@@ -1,10 +1,45 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
 <GridPane fx:controller="edu.jhu.epioneers.clueless.view.BoardView"
           xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10">
-    <Label fx:id="lblStatus" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="12" />
 
-    <Button fx:id="btnStartGame" text="Start Game" GridPane.rowIndex="1" GridPane.columnSpan="3" GridPane.columnIndex="8"
+    <columnConstraints>
+        <ColumnConstraints percentWidth="75"/>
+        <ColumnConstraints percentWidth="25" />
+    </columnConstraints>
+
+    <Label fx:id="lblStatus" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" />
+    <GridPane fx:id="grdBoard" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="1" hgap="0" vgap="0">
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="roomStudy"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="0" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="hallStudyHall"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="0" GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="roomHall"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="0" GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="hallHallLounge"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="0" GridPane.columnIndex="4" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="roomLounge"/>
+
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="hallStudyLibrary"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="1" GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="hallHallBilliard"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="1" GridPane.columnIndex="4" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="hallLoungeDining"/>
+
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="roomLibrary"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="hallLibraryBilliard"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="2" GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="roomBilliard"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="2" GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="hallBilliardDining"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="2" GridPane.columnIndex="4" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="roomDining"/>
+
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="hallLibraryConservatory"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="3" GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="hallBilliardBallroom"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="3" GridPane.columnIndex="4" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="hallDiningKitchen"/>
+
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="roomConservatory"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="4" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="hallConservatoryBallroom"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="4" GridPane.columnIndex="2" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="roomBallroom"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="4" GridPane.columnIndex="3" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="hallBallroomKitchen"/>
+        <ImageView fitHeight="100" fitWidth="100" GridPane.rowIndex="4" GridPane.columnIndex="4" GridPane.columnSpan="1" GridPane.rowSpan="1" fx:id="roomKitchen"/>
+    </GridPane>
+
+    <Button fx:id="btnStartGame" text="Start Game" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
             GridPane.rowSpan="1" alignment="TOP_CENTER" />
 </GridPane>

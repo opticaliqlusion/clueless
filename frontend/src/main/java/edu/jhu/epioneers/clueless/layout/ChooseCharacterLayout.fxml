@@ -2,6 +2,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.ImageView?>
 <GridPane fx:controller="edu.jhu.epioneers.clueless.view.ChooseCharacterView"
           xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10">
     <Label text="Choose your character" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="12" />
@@ -9,5 +11,4 @@
 
     <Button fx:id="btnJoinGame" text="Join Game" GridPane.rowIndex="1" GridPane.columnSpan="3" GridPane.columnIndex="8"
             GridPane.rowSpan="1" alignment="TOP_CENTER" />
-
 </GridPane>

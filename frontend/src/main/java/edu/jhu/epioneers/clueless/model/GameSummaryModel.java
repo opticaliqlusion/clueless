@@ -9,6 +9,20 @@ import java.util.ArrayList;
  * Contains summary information for games in the lobby view
  */
 public class GameSummaryModel extends ModelBase {
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj==null || getClass() != obj.getClass()) {
+            return false;
+        }
+
+        GameSummaryModel castObject = (GameSummaryModel) obj;
+
+        return castObject.getId() == getId()
+                && castObject.getName() == getName()
+                && castObject.getCurrentPlayers() == getCurrentPlayers();
+    }
+
     private final int maximumPlayers = 6;
 
     private GameState gameState;
