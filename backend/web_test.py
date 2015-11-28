@@ -50,5 +50,3 @@ for i in range(10):
         
         end_turn_response =  perform_webserver_query('end_player_turn', { 'idGame': response['data']['idGame'], 'idPlayer': id})
         print(end_turn_response)
-
-        

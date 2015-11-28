@@ -92,22 +92,20 @@ class Game(PersistableBase):
             player = [i for i in self.players if i.id == idPlayer][0]
             playerCards = [i.id for i in player.cards]
 
-        # import pdb; pdb.set_trace()
         return {
             # TODO Hack if room or char map is null
             'playerGameIdMap': {i.id: (None if i.room is None else i.room.id) for i in self.players},
             # TODO I don't think we need this?
             # 'characterMap': {self.players[i].id: self.character_map[i] for i in range(len(self.character_map))},
-            'idCurrentTurn': self.player_current_turn_index,
+            'idCurrentTurn': self.players[self.player_current_turn_index].id,
             'gameState': self.meta_state,
             'turnState': self.turn_state,
             'cardIds': playerCards,
-            # TODO Actual log data
             'logs': self.log,
             'lastLogId': 0,
             'idGame': self.id,
             'idPlayer': idPlayer
-        }
+            }
 
 class Room(PersistableBase):
     static_list = []
