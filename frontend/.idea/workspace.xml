@@ -36,23 +36,41 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="BoardViewModel.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="BoardViewModel.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/BoardViewModel.java">
           <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.64155847">
+              <caret line="225" column="0" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
+              <folding>
+                <element signature="e#1143#1144#0" expanded="true" />
+                <element signature="e#1178#1179#0" expanded="true" />
+                <element signature="e#1229#1230#0" expanded="true" />
+                <element signature="e#1262#1263#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Constants.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Constants.java">
+          <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="113" column="53" selection-start-line="113" selection-start-column="53" selection-end-line="113" selection-end-column="53" />
+              <caret line="24" column="70" selection-start-line="24" selection-start-column="70" selection-end-line="24" selection-end-column="70" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ViewModelBase.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/ViewModelBase.java">
+      <file leaf-file-name="BoardLayout.fxml" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/layout/BoardLayout.fxml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+            <state vertical-scroll-proportion="-4.172414">
+              <caret line="45" column="19" selection-start-line="45" selection-start-column="19" selection-end-line="45" selection-end-column="29" />
               <folding />
             </state>
+          </provider>
+          <provider editor-type-id="JavaFX-Scene-Builder">
+            <state />
           </provider>
         </entry>
       </file>
@@ -60,85 +78,8 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/view/BoardView.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="82" column="26" selection-start-line="82" selection-start-column="26" selection-end-line="82" selection-end-column="26" />
+              <caret line="69" column="61" selection-start-line="69" selection-start-column="61" selection-end-line="69" selection-end-column="61" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="FXMLLoader.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_11/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="2591" column="29" selection-start-line="2591" selection-start-column="29" selection-end-line="2591" selection-end-column="29" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5376623">
-              <caret line="19" column="56" selection-start-line="19" selection-start-column="56" selection-end-line="19" selection-end-column="56" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="GetValidMovesResponse.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/communication/GetValidMovesResponse.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="8" column="18" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="34" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IdNameTypeListResponse.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/communication/IdNameTypeListResponse.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IdNameType.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/communication/IdNameType.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="IdNameListResponse.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/communication/IdNameListResponse.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ViewModelContext.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/ViewModelContext.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-              <folding>
-                <element signature="e#2433#2434#0" expanded="true" />
-                <element signature="e#2465#2466#0" expanded="true" />
-                <element signature="e#2626#2627#0" expanded="true" />
-                <element signature="e#2657#2658#0" expanded="true" />
-                <element signature="e#2720#2721#0" expanded="true" />
-                <element signature="e#2760#2761#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -198,21 +139,21 @@
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/view/ViewBase.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/communication/GetBoardStateResponse.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/model/BoardState.java" />
-        <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/layout/BoardLayout.fxml" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/ChooseCharacterViewModel.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/model/GameSummaryModel.java" />
         <option value="$PROJECT_DIR$/src/test/java/edu/jhu/epioneers/clueless/communication/JsonTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/LobbyViewModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/view/BoardView.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/communication/GetAllCharactersResponse.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/communication/IdNameListResponse.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/ViewModelContext.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/communication/GetAllCardsResponse.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/communication/IdNameTypeListResponse.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/ViewModelBase.java" />
-        <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/BoardViewModel.java" />
-        <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Constants.java" />
         <option value="$PROJECT_DIR$/pom.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/layout/BoardLayout.fxml" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/view/BoardView.java" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Constants.java" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/BoardViewModel.java" />
       </list>
     </option>
   </component>
@@ -264,7 +205,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -547,8 +487,9 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
+      <pane id="Scope" />
       <pane id="PackagesPane" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -997,16 +938,17 @@
       <workItem from="1447968318572" duration="14776000" />
       <workItem from="1448031641418" duration="21187000" />
       <workItem from="1448332728343" duration="4437000" />
-      <workItem from="1448491699122" duration="484000" />
+      <workItem from="1448491699122" duration="612000" />
+      <workItem from="1448723818497" duration="6431000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="112554000" />
+    <option name="totallyTimeSpent" value="119113000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="7" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1016,7 +958,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3496063" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3496063" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.22327965" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1025,7 +967,7 @@
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.2976378" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.42677164" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1084,37 +1026,21 @@
           <properties />
           <option name="timeStamp" value="29" />
         </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/view/BoardView.java</url>
-          <line>82</line>
-          <properties />
-          <option name="timeStamp" value="58" />
-        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="59" />
+      <option name="time" value="67" />
     </breakpoint-manager>
-    <watches-manager />
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="canStartGame" language="JAVA" custom="" />
+        <watch expression="boardState" language="JAVA" custom="" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
     <option name="FILTER_TARGETS" value="false" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/communication/MakeSuggestionRequest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="9" column="39" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/communication/MovePlayerRequest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="7" column="32" selection-start-line="7" selection-start-column="32" selection-end-line="7" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/model/PlayerModel.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1248,7 +1174,7 @@
         <state vertical-scroll-proportion="0.0">
           <caret line="646" column="0" selection-start-line="646" selection-start-column="0" selection-end-line="646" selection-end-column="0" />
           <folding>
-            <element signature="e#24879#24880#0" expanded="true" />
+            <element signature="e#24879#24880#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1277,7 +1203,7 @@
         <state vertical-scroll-proportion="0.33494365">
           <caret line="37" column="18" selection-start-line="37" selection-start-column="18" selection-end-line="37" selection-end-column="18" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="imports" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1331,17 +1257,6 @@
         <state vertical-scroll-proportion="0.49275362">
           <caret line="33" column="22" selection-start-line="33" selection-start-column="22" selection-end-line="33" selection-end-column="22" />
         </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/layout/BoardLayout.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.1034484">
-          <caret line="7" column="31" selection-start-line="7" selection-start-column="19" selection-end-line="7" selection-end-column="31" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/layout/LobbyLayout.fxml">
@@ -1441,13 +1356,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#457#458#0" expanded="false" />
-            <element signature="e#486#487#0" expanded="false" />
-            <element signature="e#561#562#0" expanded="false" />
-            <element signature="e#597#598#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1455,7 +1363,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="10" column="1" selection-start-line="10" selection-start-column="1" selection-end-line="10" selection-end-column="1" />
-          <folding />
+          <folding>
+            <element signature="imports" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1463,7 +1373,20 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
           <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-          <folding />
+          <folding>
+            <element signature="e#386#387#0" expanded="false" />
+            <element signature="e#411#412#0" expanded="false" />
+            <element signature="e#444#445#0" expanded="false" />
+            <element signature="e#472#473#0" expanded="false" />
+            <element signature="e#503#504#0" expanded="false" />
+            <element signature="e#530#531#0" expanded="false" />
+            <element signature="e#570#571#0" expanded="false" />
+            <element signature="e#602#603#0" expanded="false" />
+            <element signature="e#630#631#0" expanded="false" />
+            <element signature="e#657#658#0" expanded="false" />
+            <element signature="e#694#695#0" expanded="false" />
+            <element signature="e#726#727#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1491,25 +1414,94 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/ViewModelContext.java">
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_11/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+          <caret line="2591" column="29" selection-start-line="2591" selection-start-column="29" selection-end-line="2591" selection-end-column="29" />
           <folding>
-            <element signature="e#2433#2434#0" expanded="true" />
-            <element signature="e#2465#2466#0" expanded="true" />
-            <element signature="e#2626#2627#0" expanded="true" />
-            <element signature="e#2657#2658#0" expanded="true" />
-            <element signature="e#2720#2721#0" expanded="true" />
-            <element signature="e#2760#2761#0" expanded="true" />
+            <element signature="e#0#129201#0" expanded="false" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#3070#3081#0" expanded="false" />
+            <element signature="e#3171#3182#0" expanded="false" />
+            <element signature="e#3270#3281#0" expanded="false" />
+            <element signature="e#3373#3390#0" expanded="false" />
+            <element signature="e#3420#3421#0" expanded="false" />
+            <element signature="e#3460#3461#0" expanded="false" />
+            <element signature="e#6136#6137#0" expanded="false" />
+            <element signature="e#6196#6197#0" expanded="false" />
+            <element signature="e#44570#44586#0" expanded="false" />
+            <element signature="e#45417#45418#0" expanded="false" />
+            <element signature="e#45478#45479#0" expanded="false" />
+            <element signature="e#57498#57499#0" expanded="false" />
+            <element signature="e#57570#57571#0" expanded="false" />
+            <element signature="e#60372#60373#0" expanded="false" />
+            <element signature="e#60408#60409#0" expanded="false" />
+            <element signature="e#60467#60468#0" expanded="false" />
+            <element signature="e#60509#60510#0" expanded="false" />
+            <element signature="e#61023#61024#0" expanded="false" />
+            <element signature="e#61059#61060#0" expanded="false" />
+            <element signature="e#65672#65673#0" expanded="false" />
+            <element signature="e#65707#65708#0" expanded="false" />
+            <element signature="e#66729#66730#0" expanded="false" />
+            <element signature="e#66775#66776#0" expanded="false" />
+            <element signature="e#66832#66833#0" expanded="false" />
+            <element signature="e#66877#66878#0" expanded="false" />
+            <element signature="e#68342#68343#0" expanded="false" />
+            <element signature="e#68388#68389#0" expanded="false" />
+            <element signature="e#68832#68833#0" expanded="false" />
+            <element signature="e#68878#68879#0" expanded="false" />
+            <element signature="e#69283#69284#0" expanded="false" />
+            <element signature="e#69329#69330#0" expanded="false" />
+            <element signature="e#69729#69730#0" expanded="false" />
+            <element signature="e#69775#69776#0" expanded="false" />
+            <element signature="e#71679#71687#0" expanded="false" />
+            <element signature="e#71746#71764#0" expanded="false" />
+            <element signature="e#78471#78472#0" expanded="false" />
+            <element signature="e#78546#78547#0" expanded="false" />
+            <element signature="e#78649#78650#0" expanded="false" />
+            <element signature="e#78680#78681#0" expanded="false" />
+            <element signature="e#78832#78833#0" expanded="false" />
+            <element signature="e#78868#78869#0" expanded="false" />
+            <element signature="e#79070#79071#0" expanded="false" />
+            <element signature="e#79139#79140#0" expanded="false" />
+            <element signature="e#80056#80057#0" expanded="false" />
+            <element signature="e#80109#80110#0" expanded="false" />
+            <element signature="e#81436#81437#0" expanded="false" />
+            <element signature="e#81467#81468#0" expanded="false" />
+            <element signature="e#81631#81632#0" expanded="false" />
+            <element signature="e#81671#81672#0" expanded="false" />
+            <element signature="e#81807#81808#0" expanded="false" />
+            <element signature="e#81839#81840#0" expanded="false" />
+            <element signature="e#82017#82018#0" expanded="false" />
+            <element signature="e#82059#82060#0" expanded="false" />
+            <element signature="e#82184#82185#0" expanded="false" />
+            <element signature="e#82216#82217#0" expanded="false" />
+            <element signature="e#82346#82347#0" expanded="false" />
+            <element signature="e#82376#82377#0" expanded="false" />
+            <element signature="e#82775#82776#0" expanded="false" />
+            <element signature="e#82807#82808#0" expanded="false" />
+            <element signature="e#83724#83725#0" expanded="false" />
+            <element signature="e#83760#83761#0" expanded="false" />
+            <element signature="e#84684#84685#0" expanded="false" />
+            <element signature="e#84721#84722#0" expanded="false" />
+            <element signature="e#84894#84895#0" expanded="false" />
+            <element signature="e#84946#84947#0" expanded="false" />
+            <element signature="e#85114#85115#0" expanded="false" />
+            <element signature="e#85154#85155#0" expanded="false" />
+            <element signature="e#85543#85544#0" expanded="false" />
+            <element signature="e#85573#85574#0" expanded="false" />
+            <element signature="e#97474#97475#0" expanded="false" />
+            <element signature="e#97542#97543#0" expanded="false" />
+            <element signature="e#107043#107044#0" expanded="false" />
+            <element signature="e#107108#107109#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Constants.java">
+    <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.40420562">
-          <caret line="17" column="0" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="36" column="20" selection-start-line="36" selection-start-column="20" selection-end-line="36" selection-end-column="20" />
           <folding />
         </state>
       </provider>
@@ -1517,40 +1509,75 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/ViewModelBase.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="44" column="0" selection-start-line="44" selection-start-column="0" selection-end-line="44" selection-end-column="0" />
+          <caret line="110" column="40" selection-start-line="110" selection-start-column="40" selection-end-line="110" selection-end-column="40" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/ViewModelContext.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.7586207">
+          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="59" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_11/javafx-src.zip!/javafx/beans/property/BooleanPropertyBase.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.48511904">
+          <caret line="51" column="37" selection-start-line="51" selection-start-column="37" selection-end-line="51" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_11/javafx-src.zip!/javafx/beans/property/SimpleBooleanProperty.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35714287">
+          <caret line="35" column="58" selection-start-line="35" selection-start-column="58" selection-end-line="35" selection-end-column="58" />
+          <folding>
+            <element signature="e#1235#1236#0" expanded="false" />
+            <element signature="e#1297#1298#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/layout/BoardLayout.fxml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-4.172414">
+          <caret line="45" column="19" selection-start-line="45" selection-start-column="19" selection-end-line="45" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/view/BoardView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="69" column="61" selection-start-line="69" selection-start-column="61" selection-end-line="69" selection-end-column="61" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="70" selection-start-line="24" selection-start-column="70" selection-end-line="24" selection-end-column="70" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/BoardViewModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="113" column="53" selection-start-line="113" selection-start-column="53" selection-end-line="113" selection-end-column="53" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/view/BoardView.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="82" column="26" selection-start-line="82" selection-start-column="26" selection-end-line="82" selection-end-column="26" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_11/javafx-src.zip!/javafx/fxml/FXMLLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="2591" column="29" selection-start-line="2591" selection-start-column="29" selection-end-line="2591" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5376623">
-          <caret line="19" column="56" selection-start-line="19" selection-start-column="56" selection-end-line="19" selection-end-column="56" />
-          <folding />
+        <state vertical-scroll-proportion="0.64155847">
+          <caret line="225" column="0" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="0" />
+          <folding>
+            <element signature="e#1143#1144#0" expanded="true" />
+            <element signature="e#1178#1179#0" expanded="true" />
+            <element signature="e#1229#1230#0" expanded="true" />
+            <element signature="e#1262#1263#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

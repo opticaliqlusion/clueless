@@ -42,4 +42,7 @@
 
     <Button fx:id="btnStartGame" text="Start Game" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
             GridPane.rowSpan="1" alignment="TOP_CENTER" />
+
+    <Button fx:id="btnEndTurn" text="End Turn" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
+            GridPane.rowSpan="1" alignment="TOP_CENTER" />
 </GridPane>

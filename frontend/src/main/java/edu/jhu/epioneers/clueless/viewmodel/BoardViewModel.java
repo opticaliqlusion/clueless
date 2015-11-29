@@ -1,21 +1,26 @@
 package edu.jhu.epioneers.clueless.viewmodel;
 
 import com.google.gson.reflect.TypeToken;
+import com.sun.javafx.tk.Toolkit;
 import edu.jhu.epioneers.clueless.Constants;
 import edu.jhu.epioneers.clueless.communication.*;
 import edu.jhu.epioneers.clueless.model.BoardState;
+import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ObservableBooleanValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
 /**
  * Represents the game board and corresponding logic
  */
 public class BoardViewModel extends ViewModelBase {
     private BooleanProperty canStartGame;
+    private BooleanProperty canEndTurn;
     private StringProperty statusText;
     private BooleanProperty canMove;
 
@@ -26,6 +31,10 @@ public class BoardViewModel extends ViewModelBase {
      */
     public BooleanProperty canStartGameProperty() {
         return canStartGame;
+    }
+
+    public BooleanProperty canEndTurnProperty() {
+        return canEndTurn;
     }
 
     /**
@@ -51,6 +60,7 @@ public class BoardViewModel extends ViewModelBase {
         canStartGame = new SimpleBooleanProperty(false);
         statusText = new SimpleStringProperty("");
         canMove = new SimpleBooleanProperty(false);
+        canEndTurn = new SimpleBooleanProperty(false);
 
         Sync();
     }
@@ -111,8 +121,14 @@ public class BoardViewModel extends ViewModelBase {
     }
 
     private void setStateProperties() {
-        canStartGame.setValue(boardState==BoardState.ReadyToStart);
-        statusText.setValue(boardState.toString());
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                canStartGame.setValue(boardState==BoardState.ReadyToStart);
+                statusText.setValue(boardState.toString());
+                canEndTurn.setValue(boardState==BoardState.BaseTurn);
+            }
+        });
     }
 
     /**
@@ -199,7 +215,20 @@ public class BoardViewModel extends ViewModelBase {
      * Sends the end turn request to the server
      */
     public void endTurn() {
+        ViewModelContext context = getContext();
+        GamePlayerRequestBase request = new GamePlayerRequestBase();
+        request.setIdPlayer(context.getIdPlayer());
+        request.setIdGame(context.getIdGame());
 
+        Response<GetBoardStateResponse> response = requestHandler.makePOSTRequest(Constants.END_TURN_PATH,request,
+                new TypeToken<Response<GetBoardStateResponse>>() {
+                }.getType());
+
+        if(response.getHttpStatusCode()==response.HTTP_OK) {
+            syncFromData(response.getData());
+        } else {
+            //TODO Error scenario
+        }
     }
 
     /**

@@ -26,6 +26,9 @@ import java.util.concurrent.TimeUnit;
 public class BoardView extends ViewBase<BoardViewModel> {
 
     @FXML
+    Button btnEndTurn;
+
+    @FXML
     Label lblStatus;
 
     @FXML
@@ -70,6 +73,14 @@ public class BoardView extends ViewBase<BoardViewModel> {
             @Override
             public void handle(ActionEvent event) {
                 getModel().startGame();
+            }
+        });
+
+        btnEndTurn.visibleProperty().bind(getModel().canEndTurnProperty());
+        btnEndTurn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getModel().endTurn();
             }
         });
 
