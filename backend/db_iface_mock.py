@@ -358,8 +358,9 @@ def end_player_turn(idGame, idPlayer):
     if not player in game.players:
         raise NoSuchObjectException('No player found for idGame=%d and idPlayer=%d' % (idGame, idPlayer))
 
-    if not game.turn_state == TurnState.WAITING_FOR_END:
-        raise GameStateViolation('idGame=%d not in state WAITING_FOR_END' % (idGame,))
+    # TODO This needs tobe altered or removed
+    #if not game.turn_state == TurnState.WAITING_FOR_END:
+    #    raise GameStateViolation('idGame=%d not in state WAITING_FOR_END' % (idGame,))
 
     if not game.players[game.player_current_turn_index].id == idPlayer:
         raise GameStateViolation(

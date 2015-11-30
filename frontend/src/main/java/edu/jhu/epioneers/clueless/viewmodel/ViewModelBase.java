@@ -4,6 +4,7 @@ import com.google.gson.reflect.TypeToken;
 import edu.jhu.epioneers.clueless.Constants;
 import edu.jhu.epioneers.clueless.communication.*;
 import edu.jhu.epioneers.clueless.model.ModelBase;
+import edu.jhu.epioneers.clueless.model.RoomModel;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -13,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 /**
  * Base class for each view model, contains common methods and abstract definitions
@@ -72,10 +74,21 @@ public abstract class ViewModelBase {
         return context.getAllCharacters();
     }
 
-    protected ArrayList<IdNameType> getAllRooms() {
+    public ArrayList<RoomModel> getAllRooms() {
         if(context.getAllRooms()==null) {
-            context.setAllRooms((IdNameTypeListResponse) requestHandler.makeGETRequest(Constants.GET_ALL_ROOMS_PATH,
-                    new TypeToken<Response<IdNameTypeListResponse>>(){}.getType()).getData());
+            Response<IdNameTypeListResponse> response = requestHandler.makeGETRequest(Constants.GET_ALL_ROOMS_PATH,
+                    new TypeToken<Response<IdNameTypeListResponse>>() {
+                    }.getType());
+
+            if(response.getHttpStatusCode() == response.HTTP_OK) {
+                ArrayList<RoomModel> allRooms = new ArrayList<>();
+
+                response.getData().stream().forEach(r->allRooms.add(new RoomModel(r)));
+
+                context.setAllRooms(allRooms);
+            } else {
+                //TODO Error scenario
+            }
         }
 
         return context.getAllRooms();

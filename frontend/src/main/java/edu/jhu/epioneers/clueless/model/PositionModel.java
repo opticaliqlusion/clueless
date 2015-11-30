@@ -7,12 +7,12 @@ public class PositionModel extends ModelBase {
     /**
      * x position of the entity
      */
-    private int x;
+    protected int x;
 
     /**
      * y position of the entity
      */
-    private int y;
+    protected int y;
 
     public int getX() {
         return x;

@@ -18,7 +18,7 @@ public final class Constants {
     public static final String START_GAME_PATH="start_game";
     public static final String GET_PENDING_GAMES_PATH="get_pending_games";
     public static final String GET_CHARACTERS_PATH="get_characters";
-    public static final String GET_ALL_ROOMS_PATH="get_all_rooms";
+    public static final String GET_ALL_ROOMS_PATH="get_room_names";
     public static final String GET_ALL_CARDS_PATH="get_all_cards";
     public static final String JOIN_GAME_PATH="join_game";
     public static final String GET_BOARD_STATE_PATH="get_board_state";
