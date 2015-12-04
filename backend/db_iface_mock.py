@@ -13,9 +13,10 @@ log_message_dict = {
         'start_game':'playerId=%s started the game',
         'move_player':'playerId=%s moved from %s to %s',
         'make_suggestion':'playerId=%s made suggestion %s',
-        'render_disprobal':'playerId=%s disproved suggestion by revealing %s',
+        'render_disproval':'playerId=%s disproved suggestion by revealing %s',
         'make_accusation':'playerId=%s made accusation %s, resulting in %s',
         'end_player_turn':'playerId=%s ended their turn',
+        'generic':'%s',
     }
 
 class GameStateViolation(Exception):
@@ -77,9 +78,12 @@ class Game(PersistableBase):
         self.players = []
         self.character_map = []
         self.player_current_turn_index = 0
+        self.player_current_disprover_index = 0
         self.turn_state = None
         self.log = []
-        self.solution = []
+        self.current_suggestion = []
+        self.solution = {'weapon':None, 'character':None, 'room':None}
+        self.suggesting_player = None
 
         super(Game, self).__init__()
 
@@ -90,17 +94,20 @@ class Game(PersistableBase):
         playerCards = None
         if idPlayer:
             player = [i for i in self.players if i.id == idPlayer][0]
-            playerCards = [i.id for i in player.cards]
+            playerCards = [{'id':i.id, 'type':i.type} for i in player.cards]
 
         return {
+            'idPlayer':idPlayer,
             # TODO Hack if room or char map is null
-            'playerGameIdMap': {i.id: (None if i.room is None else i.room.id) for i in self.players},
+            'playerGameIdMap': {i.id: (None if not i.room else i.room.id) for i in self.players},
             # TODO I don't think we need this?
             # 'characterMap': {self.players[i].id: self.character_map[i] for i in range(len(self.character_map))},
             'idCurrentTurn': self.players[self.player_current_turn_index].id,
+            'idCurrentDisprover': self.players[self.player_current_disprover_index].id if self.player_current_disprover_index else 0,
             'gameState': self.meta_state,
             'turnState': self.turn_state,
             'cardIds': playerCards,
+            'currentSuggestion': [i.id for i in self.current_suggestion],
             'logs': self.log,
             'lastLogId': 0,
             'idGame': self.id,
@@ -122,6 +129,7 @@ class Room(PersistableBase):
         self.name = name
         self.type = type
         self.adjacent_rooms = []
+        self.card = None
         super(Room, self).__init__()
 
     def __repr__(self):
@@ -215,7 +223,7 @@ for i in rooms_adjacent:
 
 # create room cards
 for room in [i for i in Room.static_list if i.type == RoomTypes.ROOM]:
-    r = Card(room.name, CardTypes.ROOM)
+    room.card = Card(room.name, CardTypes.ROOM)
 
 # create the characters
 char_name_list = ['Char 1', 'Char 2', 'Char 3', 'Char 4', 'Char 5', 'Char 6']
@@ -274,6 +282,11 @@ def start_game(idGame, idPlayer):
     assert (len(card_list_weapons) == 6)
     assert (len(card_list_characters) == 6)
 
+    # create the solution. dont tell anyone
+    game.solution['room'] = card_list_rooms.pop()
+    game.solution['weapon'] = card_list_weapons.pop()
+    game.solution['character'] = card_list_characters.pop()
+    
     i = 0
     while card_list_rooms and card_list_weapons and card_list_characters:
 
@@ -346,9 +359,78 @@ def move_player(idGame, idPlayer, idRoom):
     player.room = Room.get_by_id(idRoom)
 
     # TODO change this to TurnState.MAKING_SUGGESTION, this is just for testing
-    game.turn_state = TurnState.WAITING_FOR_END
+    game.turn_state = TurnState.MAKING_SUGGESTION
     state = game.serialize(idPlayer=idPlayer)
     game.log.append(log_message_dict['move_player'] % (idPlayer, oldRoom.id, player.room.id))
+    return state
+
+def make_suggestion(idGame, idPlayer, cards):
+    game, player = Game.get_by_id(idGame), Player.get_by_id(idPlayer)
+
+    if not game.turn_state == TurnState.MAKING_SUGGESTION:
+        raise GameStateViolation('idGame=%d not in state MAKING_SUGGESTION' % (idGame,))
+
+    if not game.players[game.player_current_turn_index].id == idPlayer:
+        raise GameStateViolation(
+            'it is idPlayer=%d turn, NOT idPlayer=%d' % (game.players[game.player_current_turn_index].id, idPlayer))
+
+    # make sure we have a card of each type
+    try:
+        weapon_card = Card.get_by_id(cards['weapon'])
+        character_card = Card.get_by_id(cards['character'])
+        room_card = player.room.card
+    except Exception, e:
+        raise GameStateViolation('Invalid suggestion of cards')
+
+    game.turn_state = TurnState.SOLICITING_DISPROVALS
+
+    # @TODO problems here if there is only one player?
+    game.player_current_disprover_index = (game.player_current_turn_index + 1) % len(game.players)
+
+    card_list = [weapon_card, character_card,  room_card]
+    game.current_suggestion = card_list
+
+    state = game.serialize(idPlayer=idPlayer)
+    game.log.append(log_message_dict['make_suggestion'] % (idPlayer, str(card_list)))
+    return state
+
+def submit_disproval(idGame, idPlayer, idCard):
+    game, player = Game.get_by_id(idGame), Player.get_by_id(idPlayer)
+
+    if not game.turn_state == TurnState.SOLICITING_DISPROVALS:
+        raise GameStateViolation('idGame=%d not in state SOLICITING_DISPROVALS' % (idGame,))
+
+    if not game.players[game.player_current_disprover_index].id == idPlayer:
+        raise GameStateViolation(
+            'it is idPlayer=%d disproval, NOT idPlayer=%d' % (game.players[game.player_current_disprover_index].id, idPlayer))
+
+    # if you do not make a disproval, you must not own any qualifying cards
+    if not idCard and any([i in game.currentSuggestion for i in player.cards]):
+        raise GameStateViolation('idPlayer=%d can and must disprove' % (idPlayer,))
+
+    # if you make a disproval, you must have that card
+    if idCard not in [i.id for i in player.cards]:
+        raise GameStateViolation('idPlayer=%d does not own idCard=%d' % (idCard,))
+
+    if idCard: # disproval rendered
+        game.turn_state = TurnState.WAITING_FOR_END
+        game.player_current_disprover_index = None
+        game.current_suggestion = []
+        state = game.serialize(idPlayer=idPlayer)
+        game.log.append(log_message_dict['render_disproval'] % (idPlayer, idCard))
+
+    else: # cant disprove
+        game.player_current_disprover_index = (game.player_current_disprover_index + 1) % len(game.players)
+
+        # sometimes, nobody can disprove
+        if game.player_current_disprover_index == game.player_current_turn_index:
+            game.turn_state = TurnState.WAITING_FOR_END
+            game.log.append('Disproval step ended without any disprovals')
+        else:
+            game.log.append('idPlayer=%d cannot disprove' % (idPlayer))
+
+        state = game.serialize(idPlayer=idPlayer)
+
     return state
 
 def end_player_turn(idGame, idPlayer):
@@ -373,3 +455,7 @@ def end_player_turn(idGame, idPlayer):
     game.log.append(log_message_dict['end_player_turn'] % (idPlayer,))
 
     return state
+    
+def get_solution(idGame):
+    game = Game.get_by_id(idGame)
+    return game.solution

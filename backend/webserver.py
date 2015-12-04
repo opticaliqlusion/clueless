@@ -53,6 +53,13 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         elif self.path.startswith('/get_valid_moves'):
             response = logic_engine.get_valid_moves(int(query['idGame'][0]), int(query['idPlayer'][0]))
 
+        # for testing only, unless you want the game to be really easy, you cheating f%&@
+        elif self.path.startswith('/get_solution'):
+            response = logic_engine.get_solution(int(query['idGame'][0]))
+
+        else:
+            print("query not recognized:%s" % (path,))
+
         self.send_response(200)
         self.send_header("Content-type", "application/json")
         self.end_headers()
@@ -89,9 +96,13 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         elif self.path == '/disprove_suggestion':
             response = logic_engine.disprove_suggestion(jsondata['idGame'], jsondata['idPlayer'], jsondata['idCard'])
-            
+
         elif self.path == '/end_player_turn':
             response = logic_engine.end_player_turn(jsondata['idGame'], jsondata['idPlayer'])
+
+        else:
+            print("query not recognized")
+            import pdb; pdb.set_trace()
 
         response = self.getSuccessData(response)
         self.send_response(200)

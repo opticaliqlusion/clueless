@@ -35,16 +35,19 @@ def move_player(idGame, idPlayer, idRoom):
     return db_iface.move_player(idGame, idPlayer, idRoom)
 
 def make_suggestion(idGame, idPlayer, cards):
-    return
+    return db_iface.make_suggestion(idGame, idPlayer, cards)
 
 def make_accusation(idGame, idPlayer, cards):
     return
 
 def disprove_suggestion(idGame, idPlayer, idCard):
-    return
+    return db_iface.submit_disproval(idGame, idPlayer, idCard)
 
 def end_player_turn(idGame, idPlayer):
     return db_iface.end_player_turn(idGame, idPlayer)
+
+def get_solution(idGame):
+    return db_iface.get_solution(idGame)
 
 def main():
     return
