@@ -33,6 +33,9 @@ import java.util.concurrent.TimeUnit;
 public class BoardView extends ViewBase<BoardViewModel> {
 
     @FXML
+    Button btnBeginAccusation;
+
+    @FXML
     Button btnEndTurn;
 
     @FXML
@@ -66,6 +69,9 @@ public class BoardView extends ViewBase<BoardViewModel> {
     Button btnMakeSuggestion;
 
     @FXML
+    Button btnMakeAccusation;
+
+    @FXML
     ComboBox<ModelBase> comboDisproveSelect;
 
     @FXML
@@ -76,6 +82,18 @@ public class BoardView extends ViewBase<BoardViewModel> {
 
     @FXML
     GridPane grdStart;
+
+    @FXML
+    ComboBox<ModelBase> comboRoom;
+
+    @FXML
+    Button btnCancelAccusation;
+
+    @FXML
+    TextArea txtLog;
+
+    @FXML
+    TextArea txtCards;
 
     @Override
     protected BoardViewModel createModel() {
@@ -97,6 +115,8 @@ public class BoardView extends ViewBase<BoardViewModel> {
         });
 
         btnEndTurn.visibleProperty().bind(getModel().canEndTurnProperty());
+        btnBeginAccusation.visibleProperty().bind(getModel().canEndTurnProperty());
+
         btnEndTurn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -113,16 +133,27 @@ public class BoardView extends ViewBase<BoardViewModel> {
             }
         });
 
+        EventHandler<ActionEvent> cancelAction = new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getModel().cancelAction();
+            }
+        };
+
         btnCancelAction.visibleProperty().bind(getModel().canCancelProperty());
+        btnCancelAccusation.visibleProperty().bind(getModel().isAccusationProperty());
+
+        btnCancelAction.setOnAction(cancelAction);
+        btnCancelAccusation.setOnAction(cancelAction);
 
         grdSuggestion.visibleProperty().bind(getModel().canMakeSuggestionProperty());
-        grdTurn.visibleProperty().bind(getModel().canMakeSuggestionProperty().not()
-                .and(getModel().canDisproveSuggestionProperty().not())
-                .and(getModel().canStartGameProperty().not()));
+        grdTurn.visibleProperty().bind(getModel().isBaseTurnProperty());
 
         comboWeapon.setItems(getModel().getWeaponCards());
 
         comboCharacter.setItems(getModel().getCharacterCards());
+
+        comboRoom.setItems(getModel().getRoomCards());
 
         Callback<ListView<ModelBase>, ListCell<ModelBase>> modelBaseComboFactory = new Callback<ListView<ModelBase>, ListCell<ModelBase>>() {
 
@@ -149,15 +180,31 @@ public class BoardView extends ViewBase<BoardViewModel> {
 
         comboWeapon.setCellFactory(modelBaseComboFactory);
         comboCharacter.setCellFactory(modelBaseComboFactory);
+        comboRoom.setCellFactory(modelBaseComboFactory);
 
         comboWeapon.getSelectionModel().selectFirst();
         comboCharacter.getSelectionModel().selectFirst();
+        comboRoom.getSelectionModel().selectFirst();
+
+        comboRoom.visibleProperty().bind(getModel().isAccusationProperty());
+
+        btnMakeSuggestion.visibleProperty().bind(getModel().isAccusationProperty().not());
+        btnMakeAccusation.visibleProperty().bind(getModel().isAccusationProperty());
 
         btnMakeSuggestion.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 getModel().submitSuggestion((comboWeapon.getSelectionModel().getSelectedItem()).getId(),
                         (comboCharacter.getSelectionModel().getSelectedItem()).getId());
+            }
+        });
+
+        btnMakeAccusation.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getModel().submitAccusation((comboWeapon.getSelectionModel().getSelectedItem()).getId(),
+                        (comboCharacter.getSelectionModel().getSelectedItem()).getId(),
+                        (comboRoom.getSelectionModel().getSelectedItem()).getId());
             }
         });
 
@@ -172,7 +219,21 @@ public class BoardView extends ViewBase<BoardViewModel> {
             }
         });
 
+        btnBeginAccusation.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getModel().beginAccusation();
+            }
+        });
+
         grdDisprove.visibleProperty().bind(getModel().canDisproveSuggestionProperty());
+
+        txtLog.disableProperty().setValue(true);
+        txtCards.disableProperty().setValue(true);
+
+        txtLog.textProperty().bind(getModel().logTextProperty());
+        txtCards.textProperty().bind(getModel().cardsTextProperty());
+
 
         createBoard();
         scheduleSync();

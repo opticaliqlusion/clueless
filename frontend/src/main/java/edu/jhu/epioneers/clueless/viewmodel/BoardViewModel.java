@@ -25,23 +25,36 @@ import java.util.stream.Collectors;
  * Represents the game board and corresponding logic
  */
 public class BoardViewModel extends ViewModelBase {
-    private BooleanProperty canStartGame;
-    private BooleanProperty canEndTurn;
-    private StringProperty statusText;
-    private BooleanProperty canMove;
-    private BooleanProperty canCancel;
-    private BooleanProperty canDisproveSuggestion;
 
-    /**
-     * Indicates if the user can make a suggestion
-     */
-    private BooleanProperty canMakeSuggestion;
+    private BooleanProperty canStartGame = new SimpleBooleanProperty(false);
+    private BooleanProperty canEndTurn = new SimpleBooleanProperty(false);
+    private StringProperty statusText = new SimpleStringProperty("");
+    private BooleanProperty canMove = new SimpleBooleanProperty(false);
+    private BooleanProperty canCancel = new SimpleBooleanProperty(false);
+    private BooleanProperty canDisproveSuggestion = new SimpleBooleanProperty(false);
+    private BooleanProperty isAccusation = new SimpleBooleanProperty(false);
+    private BooleanProperty canMakeSuggestion = new SimpleBooleanProperty(false);
+    private BooleanProperty isBaseTurn = new SimpleBooleanProperty(false);
+    private StringProperty logText = new SimpleStringProperty("");
+    private StringProperty cardsText = new SimpleStringProperty("");
 
     private boolean movedDuringCurrentTurn;
 
     private ObservableList<Integer> availableMoves = FXCollections.observableArrayList();
     private GetBoardStateResponse lastData;
     private ObservableList<ModelBase> disprovalCards = FXCollections.observableArrayList();
+
+    public StringProperty logTextProperty() {
+        return logText;
+    }
+
+    public StringProperty cardsTextProperty() {
+        return cardsText;
+    }
+
+    public BooleanProperty isBaseTurnProperty() {
+        return isBaseTurn;
+    }
 
     /**
      * Indicates if the user can start the game
@@ -76,15 +89,6 @@ public class BoardViewModel extends ViewModelBase {
 
     public BoardViewModel(RequestHandler requestHandler) {
         super(requestHandler);
-
-        canStartGame = new SimpleBooleanProperty(false);
-        statusText = new SimpleStringProperty("");
-        canMove = new SimpleBooleanProperty(false);
-        canCancel = new SimpleBooleanProperty(false);
-        canEndTurn = new SimpleBooleanProperty(false);
-        canMakeSuggestion = new SimpleBooleanProperty(false);
-        canDisproveSuggestion = new SimpleBooleanProperty(false);
-
         Sync();
     }
 
@@ -111,6 +115,21 @@ public class BoardViewModel extends ViewModelBase {
     }
 
     private void syncFromData(GetBoardStateResponse data) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                String newLogText="";
+                ArrayList<String> logs = data.getLogs();
+
+                for(String log : logs) {
+                    newLogText+=log+"\n";
+                }
+
+                logText.setValue(newLogText);
+            }
+        });
+
+
         ViewModelContext context = getContext();
         int gameState = data.getGameState();
         int turnState = data.getTurnState();
@@ -178,6 +197,7 @@ public class BoardViewModel extends ViewModelBase {
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
+                                isBaseTurn.setValue(true);
                                 canMove.setValue(true);
                                 movedDuringCurrentTurn=false;
                             }
@@ -187,7 +207,13 @@ public class BoardViewModel extends ViewModelBase {
                         setCharacterOverlays(playerMaps);
                     }
                 } else if(boardState==BoardState.WaitingForDisprover) {
-                    canMove.setValue(false);
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            canMove.setValue(false);
+                            isBaseTurn.setValue(true);
+                        }
+                    });
                     boardState=BoardState.BaseTurn;
                 }
             } else {
@@ -277,6 +303,12 @@ public class BoardViewModel extends ViewModelBase {
             case WaitingForDisprover:
                 statusText.setValue("Waiting for someone to disprove your suggestion.");
                 break;
+            case GameOverWin:
+                statusText.setValue("You have won the game!");
+                break;
+            case GameOverFail:
+                statusText.setValue("Your accusation was incorrect.  You have lost the game!");
+                break;
             default:
                 statusText.setValue(boardState.toString());
                 break;
@@ -355,11 +387,16 @@ public class BoardViewModel extends ViewModelBase {
                 boardState=BoardState.BaseTurn;
 
                 if(getAllRooms().stream().filter(r -> r.getId()==idRoom).findFirst().orElse(null).getType()==0) { //TODO Magic number
+                    boardState=BoardState.StartSuggestion;
                     canMakeSuggestion.setValue(true);
+                    isAccusation.setValue(false);
+                    isBaseTurn.setValue(false);
+                } else {
+                    isBaseTurn.setValue(true);
+                    canEndTurn.setValue(true);
+                    canCancel.setValue(false);
                 }
 
-                canEndTurn.setValue(true);
-                canCancel.setValue(false);
                 setCharacterOverlays(response.getData().getPlayerGameIdMap());
             } else {
                 //TODO Trigger error scenario
@@ -383,6 +420,7 @@ public class BoardViewModel extends ViewModelBase {
 
         if(response.getHttpStatusCode()==response.HTTP_OK) {
             syncFromData(response.getData());
+            isBaseTurn.setValue(false);
         } else {
             //TODO Error scenario
         }
@@ -396,6 +434,7 @@ public class BoardViewModel extends ViewModelBase {
         canMove.setValue(movedDuringCurrentTurn);
         canCancel.setValue(false);
         setCharacterOverlays(lastData.getPlayerGameIdMap());
+        isBaseTurn.setValue(true);
     }
 
     /**
@@ -432,9 +471,6 @@ public class BoardViewModel extends ViewModelBase {
 
     /**
      * Sends the disprove suggestion request to the server.  Only one of the id fields will contain a value.
-     * @param weaponId The id of the weapon being disproven
-     * @param characterId The id of the chracter being disproven
-     * @param roomId The id of the room being disproven
      */
     public void disproveSuggestion(int idCard) {
         DisproveSuggestionRequest request = new DisproveSuggestionRequest();
@@ -459,8 +495,39 @@ public class BoardViewModel extends ViewModelBase {
     /**
      * Sends the make accusation request to the server.
      */
-    public void makeAccusation() {
+    public void beginAccusation() {
+        canMakeSuggestion.setValue(true);
+        isAccusation.setValue(true);
+        boardState=BoardState.MakeAccusation;
+        isBaseTurn.setValue(false);
 
+        setStatusText();
+    }
+
+    public void submitAccusation(int weaponId, int characterId, int roomId) {
+        setModelDisposed(true);
+        canMakeSuggestion.setValue(false);
+
+        MakeSuggestionRequest request = new MakeSuggestionRequest();
+
+        //boardState=BoardState.GameOverWin;
+        boardState=BoardState.GameOverFail;
+        setStatusText();
+
+        /*
+        Response<GetBoardStateResponse> response = requestHandler.makePOSTRequest(Constants.MAKE_ACCUSATION_PATH,request,
+                new TypeToken<Response<GetBoardStateResponse>>() {
+                }.getType());
+
+        if(response.getHttpStatusCode()==response.HTTP_OK) {
+            syncFromData(response.getData());
+            canDisproveSuggestion.set(false);
+            boardState=BoardState.WaitingForTurn;
+            setStateProperties();
+        } else {
+            //TODO Error scenario
+        }
+        */
     }
 
     public ObservableList<ModelBase> getDisprovalCards() {
@@ -469,5 +536,9 @@ public class BoardViewModel extends ViewModelBase {
 
     public BooleanProperty canDisproveSuggestionProperty() {
         return canDisproveSuggestion;
+    }
+
+    public BooleanProperty isAccusationProperty() {
+        return isAccusation;
     }
 }

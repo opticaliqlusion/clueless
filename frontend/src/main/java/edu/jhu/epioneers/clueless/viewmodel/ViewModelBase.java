@@ -31,6 +31,10 @@ public abstract class ViewModelBase {
     private ViewModelContext context = ViewModelContext.getInstance();
     private boolean modelDisposed = false;
 
+    protected void setModelDisposed(boolean value) {
+        modelDisposed=value;
+    }
+
     public ViewModelBase(RequestHandler requestHandler) {
         this.requestHandler = requestHandler;
     }

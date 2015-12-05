@@ -416,11 +416,11 @@ def submit_disproval(idGame, idPlayer, idCard):
     if not idCard and any([i in game.current_suggestion for i in player.cards]):
         raise GameStateViolation('idPlayer=%d can and must disprove' % (idPlayer,))
 
-    # if you make a disproval, you must have that card
-    if idCard not in [i.id for i in player.cards]:
-        raise GameStateViolation('idPlayer=%d does not own idCard=%d' % (idCard,))
-
     if idCard: # disproval rendered
+        # if you make a disproval, you must have that card
+        if idCard not in [i.id for i in player.cards]:
+            raise GameStateViolation('idPlayer=%d does not own idCard=%d' % (idCard,))
+
         game.turn_state = TurnState.WAITING_FOR_END
         game.player_current_disprover_index = None
         game.current_suggestion = []

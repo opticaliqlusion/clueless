@@ -44,7 +44,9 @@ public enum BoardState {
     /**
      * Waiting for a disprover of your suggestion
      */
-    WaitingForDisprover(8);
+    WaitingForDisprover(8),
+    GameOverWin(9),
+    GameOverFail(9);
 
     private int value;
 

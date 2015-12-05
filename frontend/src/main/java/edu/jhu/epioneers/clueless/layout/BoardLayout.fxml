@@ -1,9 +1,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.TextArea?>
 <GridPane fx:controller="edu.jhu.epioneers.clueless.view.BoardView"
           xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10">
 
@@ -31,8 +31,16 @@
                   GridPane.rowSpan="1"/>
         <ComboBox fx:id="comboCharacter" GridPane.rowIndex="2" GridPane.columnSpan="1" GridPane.columnIndex="1"
                   GridPane.rowSpan="1"/>
-        <Button fx:id="btnMakeSuggestion" text="Make Suggestion" GridPane.rowIndex="3" GridPane.columnSpan="1" GridPane.columnIndex="1"
+        <ComboBox fx:id="comboRoom" GridPane.rowIndex="3" GridPane.columnSpan="1" GridPane.columnIndex="1"
+                  GridPane.rowSpan="1"/>
+        <Button fx:id="btnMakeSuggestion" text="Make Suggestion" GridPane.rowIndex="4" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1"/>
+        <Button fx:id="btnMakeAccusation" text="Make Accusation" GridPane.rowIndex="4" GridPane.columnSpan="1" GridPane.columnIndex="1"
+                GridPane.rowSpan="1"/>
+
+        <Button fx:id="btnCancelAccusation" text="Cancel" GridPane.rowIndex="6" GridPane.columnSpan="1" GridPane.columnIndex="1"
+                GridPane.rowSpan="1" alignment="TOP_CENTER" />
+
     </GridPane>
 
     <GridPane fx:id="grdStart" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1">
@@ -44,10 +52,21 @@
         <Button fx:id="btnBeginMove" text="Begin Move" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1" alignment="TOP_CENTER" />
 
+        <Button fx:id="btnBeginAccusation" text="Make Accusation" GridPane.rowIndex="3" GridPane.columnSpan="1" GridPane.columnIndex="1"
+                GridPane.rowSpan="1" alignment="TOP_CENTER" />
+
         <Button fx:id="btnCancelAction" text="Cancel" GridPane.rowIndex="3" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1" alignment="TOP_CENTER" />
 
         <Button fx:id="btnEndTurn" text="End Turn" GridPane.rowIndex="5" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1" alignment="TOP_CENTER" />
     </GridPane>
+
+    <GridPane fx:id="grdChat" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="1" hgap="0" vgap="0">
+        <TextArea fx:id="txtLog" text="Test" />
+    </GridPane>
+    <GridPane fx:id="grdCards" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="1" hgap="0" vgap="0">
+        <TextArea fx:id="txtCards" text="Cards" />
+    </GridPane>
+
 </GridPane>
