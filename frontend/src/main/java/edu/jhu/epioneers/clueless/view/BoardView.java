@@ -5,21 +5,16 @@ import edu.jhu.epioneers.clueless.communication.RequestHandler;
 import edu.jhu.epioneers.clueless.model.ModelBase;
 import edu.jhu.epioneers.clueless.model.RoomModel;
 import edu.jhu.epioneers.clueless.viewmodel.BoardViewModel;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableObjectValue;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.geometry.VPos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
-
-import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
 import javafx.util.Callback;
 
@@ -251,6 +246,11 @@ public class BoardView extends ViewBase<BoardViewModel> {
             grdBoard.add(roomImage, room.getY(), room.getX());
             Label textOverlay = new Label();
             textOverlay.textProperty().bind(room.textOverlayProperty());
+            textOverlay.setStyle("-fx-color: black; -fx-background-color: white;");
+            GridPane.setMargin(textOverlay, new Insets(10, 0, 0, 0));
+            GridPane.setHalignment(textOverlay, HPos.CENTER );
+            GridPane.setValignment(textOverlay, VPos.TOP);
+
             grdBoard.add(textOverlay, room.getY(), room.getX());
 
             EventHandler<MouseEvent> moveHandler = new EventHandler<MouseEvent>() {

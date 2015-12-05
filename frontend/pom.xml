@@ -20,7 +20,7 @@
                 <directory>src/main/resources</directory>
                 <targetPath>images</targetPath>
                 <includes>
-                    <include>*.jpg</include>
+                    <include>*</include>
                 </includes>
             </resource>
         </resources>
