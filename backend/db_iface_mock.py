@@ -94,7 +94,7 @@ class Game(PersistableBase):
         playerCards = None
         if idPlayer:
             player = [i for i in self.players if i.id == idPlayer][0]
-            playerCards = [{'id':i.id, 'type':i.type} for i in player.cards]
+            playerCards = [i.id for i in player.cards]
 
         return {
             'idPlayer':idPlayer,
@@ -376,8 +376,16 @@ def make_suggestion(idGame, idPlayer, cards):
 
     # make sure we have a card of each type
     try:
-        weapon_card = Card.get_by_id(cards['weapon'])
-        character_card = Card.get_by_id(cards['character'])
+        # TODO Phil's mad Python skills
+        card1 = Card.get_by_id(cards[0])
+
+        if card1.type == CardTypes.WEAPON:
+            weapon_card = card1
+            character_card = Card.get_by_id(cards[1])
+        else:
+            weapon_card = Card.get_by_id(cards[1])
+            character_card = card1
+
         room_card = player.room.card
     except Exception, e:
         raise GameStateViolation('Invalid suggestion of cards')
@@ -405,7 +413,7 @@ def submit_disproval(idGame, idPlayer, idCard):
             'it is idPlayer=%d disproval, NOT idPlayer=%d' % (game.players[game.player_current_disprover_index].id, idPlayer))
 
     # if you do not make a disproval, you must not own any qualifying cards
-    if not idCard and any([i in game.currentSuggestion for i in player.cards]):
+    if not idCard and any([i in game.current_suggestion for i in player.cards]):
         raise GameStateViolation('idPlayer=%d can and must disprove' % (idPlayer,))
 
     # if you make a disproval, you must have that card

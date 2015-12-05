@@ -5,6 +5,7 @@ import com.sun.javafx.tk.Toolkit;
 import edu.jhu.epioneers.clueless.Constants;
 import edu.jhu.epioneers.clueless.communication.*;
 import edu.jhu.epioneers.clueless.model.BoardState;
+import edu.jhu.epioneers.clueless.model.ModelBase;
 import edu.jhu.epioneers.clueless.model.RoomModel;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -29,11 +30,18 @@ public class BoardViewModel extends ViewModelBase {
     private StringProperty statusText;
     private BooleanProperty canMove;
     private BooleanProperty canCancel;
+    private BooleanProperty canDisproveSuggestion;
+
+    /**
+     * Indicates if the user can make a suggestion
+     */
+    private BooleanProperty canMakeSuggestion;
 
     private boolean movedDuringCurrentTurn;
 
     private ObservableList<Integer> availableMoves = FXCollections.observableArrayList();
     private GetBoardStateResponse lastData;
+    private ObservableList<ModelBase> disprovalCards = FXCollections.observableArrayList();
 
     /**
      * Indicates if the user can start the game
@@ -57,10 +65,9 @@ public class BoardViewModel extends ViewModelBase {
         return canCancel;
     }
 
-    /**
-     * Indicates if the user can make a suggestion
-     */
-    private boolean canMakeSuggestion;
+    public BooleanProperty canMakeSuggestionProperty() {
+        return canMakeSuggestion;
+    }
 
     /**
      * Indicates the current state of the game board
@@ -75,6 +82,8 @@ public class BoardViewModel extends ViewModelBase {
         canMove = new SimpleBooleanProperty(false);
         canCancel = new SimpleBooleanProperty(false);
         canEndTurn = new SimpleBooleanProperty(false);
+        canMakeSuggestion = new SimpleBooleanProperty(false);
+        canDisproveSuggestion = new SimpleBooleanProperty(false);
 
         Sync();
     }
@@ -113,8 +122,52 @@ public class BoardViewModel extends ViewModelBase {
         } else if(gameState==1) {  //Game in progress
             int idCurrentTurn = data.getIdCurrentTurn();
 
-            if(idCurrentTurn==context.getIdPlayer()) { //Current user's turn
+            //User needs to disprove
+            if(data.getTurnState()==2) {
+                if(data.getIdCurrentDisprover()==context.getIdPlayer()&& boardState == BoardState.WaitingForTurn) {
+                    disprovalCards.clear();
 
+                    //TODO Ugly
+                    for(Integer cardId : data.getCurrentSuggestion()) {
+                        if(data.getCardIds().stream().filter(c->c.equals(cardId)).findFirst().orElse(null)!=null) {
+                            ModelBase card;
+                            if((card=getCharacterCards().stream().filter(c->c.getId()==cardId).findFirst().orElse(null))!=null) {
+                                disprovalCards.add(card);
+                            } else if((card=getWeaponCards().stream().filter(c->c.getId()==cardId).findFirst().orElse(null))!=null) {
+                                disprovalCards.add(card);
+                            } else {
+                                disprovalCards.add(getRoomCards().stream().filter(c->c.getId()==cardId).findFirst().orElse(null));
+                            }
+                        }
+                    }
+
+                    if(disprovalCards.size()>0) {
+                        boardState = BoardState.DisproveSuggestion;
+
+                        Platform.runLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                canDisproveSuggestion.setValue(true);
+                            }
+                        });
+                    } else {
+                        DisproveSuggestionRequest request = new DisproveSuggestionRequest();
+                        request.setIdGame(getContext().getIdGame());
+                        request.setIdPlayer(getContext().getIdPlayer());
+
+                        Response<GetBoardStateResponse> response = requestHandler.makePOSTRequest(Constants.DISPROVE_PATH, request,
+                                new TypeToken<Response<GetBoardStateResponse>>() {
+                                }.getType());
+
+                        if(response.getHttpStatusCode()==response.HTTP_OK) {
+                            //TODO Do nothing?
+                        } else {
+                            //TODO Error scenario
+                        }
+                    }
+                }
+            }
+            else if(idCurrentTurn==context.getIdPlayer()) { //Current user's turn
                 //Update only if the user does not know it is already their turn
                 if(boardState==BoardState.ReadyToStart
                         || boardState== BoardState.WaitingForPlayers
@@ -132,9 +185,10 @@ public class BoardViewModel extends ViewModelBase {
 
                         boardState=BoardState.BaseTurn;
                         setCharacterOverlays(playerMaps);
-                    } else if(turnState==2) { //Disapproval flow
-                        boardState=BoardState.DisproveSuggestion;
                     }
+                } else if(boardState==BoardState.WaitingForDisprover) {
+                    canMove.setValue(false);
+                    boardState=BoardState.BaseTurn;
                 }
             } else {
                 boardState=BoardState.WaitingForTurn;
@@ -220,6 +274,9 @@ public class BoardViewModel extends ViewModelBase {
             case GameOver:
                 statusText.setValue("The game has ended.");
                 break;
+            case WaitingForDisprover:
+                statusText.setValue("Waiting for someone to disprove your suggestion.");
+                break;
             default:
                 statusText.setValue(boardState.toString());
                 break;
@@ -296,6 +353,11 @@ public class BoardViewModel extends ViewModelBase {
 
             if(response.getHttpStatusCode()==response.HTTP_OK) {
                 boardState=BoardState.BaseTurn;
+
+                if(getAllRooms().stream().filter(r -> r.getId()==idRoom).findFirst().orElse(null).getType()==0) { //TODO Magic number
+                    canMakeSuggestion.setValue(true);
+                }
+
                 canEndTurn.setValue(true);
                 canCancel.setValue(false);
                 setCharacterOverlays(response.getData().getPlayerGameIdMap());
@@ -303,20 +365,6 @@ public class BoardViewModel extends ViewModelBase {
                 //TODO Trigger error scenario
             }
         }
-    }
-
-    /**
-     * Sends the secret passage request to the server
-     */
-    public void takeSecretPassage() {
-
-    }
-
-    /**
-     * Begins the suggestion flow
-     */
-    public void beginSuggestion() {
-
     }
 
     /**
@@ -356,7 +404,30 @@ public class BoardViewModel extends ViewModelBase {
      * @param characterId The id of the character being suggested
      */
     public void submitSuggestion(int weaponId, int characterId) {
+        MakeSuggestionRequest request = new MakeSuggestionRequest();
+        request.setIdPlayer(getContext().getIdPlayer());
+        request.setIdGame(getContext().getIdGame());
 
+        ArrayList<Integer> cards = new ArrayList<Integer>();
+
+        cards.add(weaponId);
+        cards.add(characterId);
+        request.setCards(cards);
+
+        Response<GetBoardStateResponse> response = requestHandler.makePOSTRequest(Constants.MAKE_SUGGESTION_PATH,request,
+                new TypeToken<Response<GetBoardStateResponse>>() {
+                }.getType());
+
+        if(response.getHttpStatusCode()==response.HTTP_OK) {
+            syncFromData(response.getData());
+            canMakeSuggestion.setValue(false);
+            canMove.setValue(false);
+            canCancel.setValue(false);
+            boardState=BoardState.WaitingForDisprover;
+            setStateProperties();
+        } else {
+            //TODO Error scenario
+        }
     }
 
     /**
@@ -365,8 +436,24 @@ public class BoardViewModel extends ViewModelBase {
      * @param characterId The id of the chracter being disproven
      * @param roomId The id of the room being disproven
      */
-    public void disproveSuggestion(Integer weaponId, Integer characterId, Integer roomId) {
+    public void disproveSuggestion(int idCard) {
+        DisproveSuggestionRequest request = new DisproveSuggestionRequest();
+        request.setIdCard(idCard);
+        request.setIdPlayer(getContext().getIdPlayer());
+        request.setIdGame(getContext().getIdGame());
 
+        Response<GetBoardStateResponse> response = requestHandler.makePOSTRequest(Constants.DISPROVE_PATH,request,
+                new TypeToken<Response<GetBoardStateResponse>>() {
+                }.getType());
+
+        if(response.getHttpStatusCode()==response.HTTP_OK) {
+            syncFromData(response.getData());
+            canDisproveSuggestion.set(false);
+            boardState=BoardState.WaitingForTurn;
+            setStateProperties();
+        } else {
+            //TODO Error scenario
+        }
     }
 
     /**
@@ -374,5 +461,13 @@ public class BoardViewModel extends ViewModelBase {
      */
     public void makeAccusation() {
 
+    }
+
+    public ObservableList<ModelBase> getDisprovalCards() {
+        return disprovalCards;
+    }
+
+    public BooleanProperty canDisproveSuggestionProperty() {
+        return canDisproveSuggestion;
     }
 }

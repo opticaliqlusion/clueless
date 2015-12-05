@@ -97,7 +97,7 @@ public class LobbyViewModel extends ViewModelBase {
     }
 
     public void selectedGameChanged(GameSummaryModel selectedModel) {
-        _joinGameDisabled.setValue(selectedModel == null || !selectedModel.canJoin());
+        _joinGameDisabled.setValue(!(selectedModel != null && selectedModel.canJoin()));
     }
 
     /**

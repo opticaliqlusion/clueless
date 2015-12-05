@@ -3,6 +3,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.control.ComboBox?>
 <GridPane fx:controller="edu.jhu.epioneers.clueless.view.BoardView"
           xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10">
 
@@ -15,17 +16,38 @@
     <GridPane fx:id="grdBoard" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="1" hgap="0" vgap="0">
     </GridPane>
 
-    <GridPane GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1">
+
+    <GridPane fx:id="grdDisprove" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1">
+        <ComboBox fx:id="comboDisproveSelect" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
+                  GridPane.rowSpan="1"/>
+
+        <Button fx:id="btnDisproveSuggestion" text="Disprove" GridPane.rowIndex="3" GridPane.columnSpan="1" GridPane.columnIndex="1"
+                GridPane.rowSpan="1"/>
+
+    </GridPane>
+
+    <GridPane fx:id="grdSuggestion" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1">
+        <ComboBox fx:id="comboWeapon" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
+                  GridPane.rowSpan="1"/>
+        <ComboBox fx:id="comboCharacter" GridPane.rowIndex="2" GridPane.columnSpan="1" GridPane.columnIndex="1"
+                  GridPane.rowSpan="1"/>
+        <Button fx:id="btnMakeSuggestion" text="Make Suggestion" GridPane.rowIndex="3" GridPane.columnSpan="1" GridPane.columnIndex="1"
+                GridPane.rowSpan="1"/>
+    </GridPane>
+
+    <GridPane fx:id="grdStart" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1">
         <Button fx:id="btnStartGame" text="Start Game" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1" alignment="TOP_CENTER" />
+    </GridPane>
 
+    <GridPane fx:id="grdTurn" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1">
         <Button fx:id="btnBeginMove" text="Begin Move" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1" alignment="TOP_CENTER" />
 
-        <Button fx:id="btnEndTurn" text="End Turn" GridPane.rowIndex="2" GridPane.columnSpan="1" GridPane.columnIndex="1"
+        <Button fx:id="btnCancelAction" text="Cancel" GridPane.rowIndex="3" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1" alignment="TOP_CENTER" />
 
-        <Button fx:id="btnCancelAction" text="Cancel" GridPane.rowIndex="2" GridPane.columnSpan="1" GridPane.columnIndex="1"
+        <Button fx:id="btnEndTurn" text="End Turn" GridPane.rowIndex="5" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1" alignment="TOP_CENTER" />
     </GridPane>
 </GridPane>

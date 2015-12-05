@@ -104,6 +104,11 @@ public abstract class ViewModelBase {
         return context.getCharacterCards();
     }
 
+    public ObservableList<ModelBase> getRoomCards() {
+        setUpCards();
+        return context.getRoomCards();
+    }
+
     private void setUpCards() {
         //Lazy init
         if(context.getWeaponCards()==null) {

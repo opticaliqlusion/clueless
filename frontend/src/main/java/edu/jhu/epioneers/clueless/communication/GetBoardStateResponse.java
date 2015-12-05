@@ -19,6 +19,11 @@ public class GetBoardStateResponse {
      */
     private int idCurrentTurn;
 
+    /**
+     * Id of current player in disprover flow
+     */
+    private int idCurrentDisprover;
+
     /***
      * Current state of the game
      */
@@ -40,6 +45,8 @@ public class GetBoardStateResponse {
      * Id of the current player
      */
     private int idPlayer;
+
+    private ArrayList<Integer> currentSuggestion;
 
     /***
      * The list of cards for the current player
@@ -116,5 +123,21 @@ public class GetBoardStateResponse {
 
     public void setTurnState(int turnState) {
         this.turnState = turnState;
+    }
+
+    public int getIdCurrentDisprover() {
+        return idCurrentDisprover;
+    }
+
+    public void setIdCurrentDisprover(int idCurrentDisprover) {
+        this.idCurrentDisprover = idCurrentDisprover;
+    }
+
+    public ArrayList<Integer> getCurrentSuggestion() {
+        return currentSuggestion;
+    }
+
+    public void setCurrentSuggestion(ArrayList<Integer> currentSuggestion) {
+        this.currentSuggestion = currentSuggestion;
     }
 }

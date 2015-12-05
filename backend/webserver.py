@@ -95,7 +95,7 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             response = logic_engine.make_accusation(jsondata['idGame'], jsondata['idPlayer'], jsondata['cards'])
 
         elif self.path == '/disprove_suggestion':
-            response = logic_engine.disprove_suggestion(jsondata['idGame'], jsondata['idPlayer'], jsondata['idCard'])
+            response = logic_engine.disprove_suggestion(jsondata['idGame'], jsondata['idPlayer'], jsondata['idCard'] if 'idCard' in jsondata.keys() else None)
 
         elif self.path == '/end_player_turn':
             response = logic_engine.end_player_turn(jsondata['idGame'], jsondata['idPlayer'])

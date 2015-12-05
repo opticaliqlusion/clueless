@@ -2,6 +2,7 @@ package edu.jhu.epioneers.clueless.view;
 
 import edu.jhu.epioneers.clueless.Constants;
 import edu.jhu.epioneers.clueless.communication.RequestHandler;
+import edu.jhu.epioneers.clueless.model.ModelBase;
 import edu.jhu.epioneers.clueless.model.RoomModel;
 import edu.jhu.epioneers.clueless.viewmodel.BoardViewModel;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,8 +13,7 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -21,6 +21,8 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import javafx.scene.input.MouseEvent;
+import javafx.util.Callback;
+
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -48,6 +50,33 @@ public class BoardView extends ViewBase<BoardViewModel> {
     @FXML
     Button btnCancelAction;
 
+    @FXML
+    GridPane grdSuggestion;
+
+    @FXML
+    GridPane grdTurn;
+
+    @FXML
+    ComboBox<ModelBase> comboWeapon;
+
+    @FXML
+    ComboBox<ModelBase> comboCharacter;
+
+    @FXML
+    Button btnMakeSuggestion;
+
+    @FXML
+    ComboBox<ModelBase> comboDisproveSelect;
+
+    @FXML
+    Button btnDisproveSuggestion;
+
+    @FXML
+    GridPane grdDisprove;
+
+    @FXML
+    GridPane grdStart;
+
     @Override
     protected BoardViewModel createModel() {
         return new BoardViewModel(new RequestHandler());
@@ -56,11 +85,13 @@ public class BoardView extends ViewBase<BoardViewModel> {
     @Override
     protected void initialize() {
         lblStatus.textProperty().bind(getModel().statusTextProperty());
-        btnStartGame.visibleProperty().bind(getModel().canStartGameProperty());
+
+        grdStart.visibleProperty().bind(getModel().canStartGameProperty());
 
         btnStartGame.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+
                 getModel().startGame();
             }
         });
@@ -83,6 +114,65 @@ public class BoardView extends ViewBase<BoardViewModel> {
         });
 
         btnCancelAction.visibleProperty().bind(getModel().canCancelProperty());
+
+        grdSuggestion.visibleProperty().bind(getModel().canMakeSuggestionProperty());
+        grdTurn.visibleProperty().bind(getModel().canMakeSuggestionProperty().not()
+                .and(getModel().canDisproveSuggestionProperty().not())
+                .and(getModel().canStartGameProperty().not()));
+
+        comboWeapon.setItems(getModel().getWeaponCards());
+
+        comboCharacter.setItems(getModel().getCharacterCards());
+
+        Callback<ListView<ModelBase>, ListCell<ModelBase>> modelBaseComboFactory = new Callback<ListView<ModelBase>, ListCell<ModelBase>>() {
+
+            @Override
+            public ListCell call(ListView param) {
+                final ListCell<ModelBase> cell = new ListCell<ModelBase>(){
+
+                    @Override
+                    protected void updateItem(ModelBase t, boolean bln) {
+                        super.updateItem(t, bln);
+
+                        if(t != null){
+                            setText(t.getName());
+                        }else{
+                            setText(null);
+                        }
+                    }
+
+                };
+
+                return cell;
+            }
+        };
+
+        comboWeapon.setCellFactory(modelBaseComboFactory);
+        comboCharacter.setCellFactory(modelBaseComboFactory);
+
+        comboWeapon.getSelectionModel().selectFirst();
+        comboCharacter.getSelectionModel().selectFirst();
+
+        btnMakeSuggestion.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getModel().submitSuggestion((comboWeapon.getSelectionModel().getSelectedItem()).getId(),
+                        (comboCharacter.getSelectionModel().getSelectedItem()).getId());
+            }
+        });
+
+        comboDisproveSelect.setCellFactory(modelBaseComboFactory);
+
+        comboDisproveSelect.setItems(getModel().getDisprovalCards());
+
+        btnDisproveSuggestion.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getModel().disproveSuggestion((comboDisproveSelect.getSelectionModel().getSelectedItem()).getId());
+            }
+        });
+
+        grdDisprove.visibleProperty().bind(getModel().canDisproveSuggestionProperty());
 
         createBoard();
         scheduleSync();
