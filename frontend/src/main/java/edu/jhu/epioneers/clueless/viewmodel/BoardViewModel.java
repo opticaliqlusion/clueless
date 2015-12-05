@@ -115,7 +115,7 @@ public class BoardViewModel extends ViewModelBase {
     }
 
     private void syncFromData(GetBoardStateResponse data) {
-        Platform.runLater(new Runnable() {
+        Platform.runLater(new Runnable() { //TODO Sync only when necessary
             @Override
             public void run() {
                 String newLogText="";
@@ -139,6 +139,30 @@ public class BoardViewModel extends ViewModelBase {
         if(gameState==0) {  //Game has not started
             boardState = playerMaps.size()>1?BoardState.ReadyToStart:BoardState.WaitingForPlayers;
         } else if(gameState==1) {  //Game in progress
+                Platform.runLater(new Runnable() {  //TODO Sync only when necessary, careful about failed accusation
+                    @Override
+                    public void run() {
+                        String newCardsText="";
+                        ArrayList<Integer> cardIds = data.getCardIds();
+
+                        if(cardIds!=null) {
+
+                            ArrayList<ModelBase> allCards = new ArrayList<ModelBase>();
+                            allCards.addAll(getWeaponCards());
+                            allCards.addAll(getCharacterCards());
+                            allCards.addAll(getRoomCards());
+
+                            for(Integer cardId : cardIds) {
+                                ModelBase card = allCards.stream().filter(c -> c.getId() == cardId).findFirst().orElse(null);
+
+                                newCardsText += card.getName() + " ";
+                            }
+
+                            cardsText.setValue(newCardsText);
+                        }
+                    }
+                });
+
             int idCurrentTurn = data.getIdCurrentTurn();
 
             //User needs to disprove

@@ -62,8 +62,8 @@
             <file leaf-file-name="BoardViewModel.java" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/BoardViewModel.java">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state vertical-scroll-proportion="0.7045144">
-                    <caret line="209" column="54" selection-start-line="209" selection-start-column="54" selection-end-line="209" selection-end-column="54" />
+                  <state vertical-scroll-proportion="0.65800273">
+                    <caret line="160" column="61" selection-start-line="160" selection-start-column="61" selection-end-line="160" selection-end-column="61" />
                     <folding>
                       <element signature="imports" expanded="true" />
                       <element signature="e#2123#2124#0" expanded="true" />
@@ -74,15 +74,16 @@
                       <element signature="e#2318#2319#0" expanded="true" />
                       <element signature="e#2435#2436#0" expanded="true" />
                       <element signature="e#2470#2471#0" expanded="true" />
-                      <element signature="e#6230#6231#0" expanded="true" />
-                      <element signature="e#6330#6331#0" expanded="true" />
-                      <element signature="e#16985#16994#0" expanded="true" />
-                      <element signature="e#19861#19862#0" expanded="true" />
-                      <element signature="e#19898#19899#0" expanded="true" />
-                      <element signature="e#19960#19961#0" expanded="true" />
-                      <element signature="e#20004#20005#0" expanded="true" />
-                      <element signature="e#20057#20058#0" expanded="true" />
-                      <element signature="e#20092#20093#0" expanded="true" />
+                      <element signature="e#5238#5249#0" expanded="true" />
+                      <element signature="e#7313#7314#0" expanded="true" />
+                      <element signature="e#7413#7414#0" expanded="true" />
+                      <element signature="e#18068#18077#0" expanded="true" />
+                      <element signature="e#20944#20945#0" expanded="true" />
+                      <element signature="e#20981#20982#0" expanded="true" />
+                      <element signature="e#21043#21044#0" expanded="true" />
+                      <element signature="e#21087#21088#0" expanded="true" />
+                      <element signature="e#21140#21141#0" expanded="true" />
+                      <element signature="e#21175#21176#0" expanded="true" />
                     </folding>
                   </state>
                 </provider>
@@ -206,8 +207,8 @@
       <file leaf-file-name="BoardLayout.fxml" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/layout/BoardLayout.fxml">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2972973">
-              <caret line="43" column="10" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
+            <state vertical-scroll-proportion="0.6036036">
+              <caret line="51" column="10" selection-start-line="51" selection-start-column="10" selection-end-line="51" selection-end-column="10" />
               <folding />
             </state>
           </provider>
@@ -1075,12 +1076,12 @@
       <workItem from="1448818235062" duration="15112000" />
       <workItem from="1449023342347" duration="1448000" />
       <workItem from="1449186173644" duration="243000" />
-      <workItem from="1449255249408" duration="21175000" />
+      <workItem from="1449255249408" duration="22351000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="157091000" />
+    <option name="totallyTimeSpent" value="158267000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -1094,7 +1095,7 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34680575" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.34680575" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32913387" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.19" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -1164,25 +1165,25 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/BoardViewModel.java</url>
-          <line>256</line>
+          <line>280</line>
           <properties />
           <option name="timeStamp" value="71" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/BoardViewModel.java</url>
-          <line>168</line>
+          <line>192</line>
           <properties />
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/BoardViewModel.java</url>
-          <line>146</line>
+          <line>170</line>
           <properties />
           <option name="timeStamp" value="84" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/BoardViewModel.java</url>
-          <line>475</line>
+          <line>499</line>
           <properties />
           <option name="timeStamp" value="86" />
         </line-breakpoint>
@@ -1598,8 +1599,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/BoardViewModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.7045144">
-          <caret line="209" column="54" selection-start-line="209" selection-start-column="54" selection-end-line="209" selection-end-column="54" />
+        <state vertical-scroll-proportion="0.65800273">
+          <caret line="160" column="61" selection-start-line="160" selection-start-column="61" selection-end-line="160" selection-end-column="61" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2123#2124#0" expanded="true" />
@@ -1610,23 +1611,24 @@
             <element signature="e#2318#2319#0" expanded="true" />
             <element signature="e#2435#2436#0" expanded="true" />
             <element signature="e#2470#2471#0" expanded="true" />
-            <element signature="e#6230#6231#0" expanded="true" />
-            <element signature="e#6330#6331#0" expanded="true" />
-            <element signature="e#16985#16994#0" expanded="true" />
-            <element signature="e#19861#19862#0" expanded="true" />
-            <element signature="e#19898#19899#0" expanded="true" />
-            <element signature="e#19960#19961#0" expanded="true" />
-            <element signature="e#20004#20005#0" expanded="true" />
-            <element signature="e#20057#20058#0" expanded="true" />
-            <element signature="e#20092#20093#0" expanded="true" />
+            <element signature="e#5238#5249#0" expanded="true" />
+            <element signature="e#7313#7314#0" expanded="true" />
+            <element signature="e#7413#7414#0" expanded="true" />
+            <element signature="e#18068#18077#0" expanded="true" />
+            <element signature="e#20944#20945#0" expanded="true" />
+            <element signature="e#20981#20982#0" expanded="true" />
+            <element signature="e#21043#21044#0" expanded="true" />
+            <element signature="e#21087#21088#0" expanded="true" />
+            <element signature="e#21140#21141#0" expanded="true" />
+            <element signature="e#21175#21176#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/layout/BoardLayout.fxml">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2972973">
-          <caret line="43" column="10" selection-start-line="43" selection-start-column="10" selection-end-line="43" selection-end-column="10" />
+        <state vertical-scroll-proportion="0.6036036">
+          <caret line="51" column="10" selection-start-line="51" selection-start-column="10" selection-end-line="51" selection-end-column="10" />
           <folding />
         </state>
       </provider>
