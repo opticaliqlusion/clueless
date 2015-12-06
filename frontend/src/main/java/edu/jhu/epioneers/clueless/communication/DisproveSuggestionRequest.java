@@ -4,13 +4,13 @@ package edu.jhu.epioneers.clueless.communication;
  *
  */
 public class DisproveSuggestionRequest extends GamePlayerRequestBase {
-    private int idCard;
+    private Integer idCard;
 
-    public int getIdCard() {
+    public Integer getIdCard() {
         return idCard;
     }
 
-    public void setIdCard(int idCard) {
+    public void setIdCard(Integer idCard) {
         this.idCard = idCard;
     }
 }

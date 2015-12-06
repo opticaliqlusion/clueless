@@ -43,6 +43,9 @@ def make_accusation(idGame, idPlayer, cards):
 def disprove_suggestion(idGame, idPlayer, idCard):
     return db_iface.submit_disproval(idGame, idPlayer, idCard)
 
+def add_log(idGame, idPlayer, logContent):
+    return db_iface.add_log(idGame, idPlayer, logContent)
+
 def end_player_turn(idGame, idPlayer):
     return db_iface.end_player_turn(idGame, idPlayer)
 

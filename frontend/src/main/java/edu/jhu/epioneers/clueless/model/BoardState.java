@@ -39,7 +39,14 @@ public enum BoardState {
     /***
      * Waiting for your turn
      */
-    WaitingForTurn(7);
+    WaitingForTurn(7),
+
+    /**
+     * Waiting for a disprover of your suggestion
+     */
+    WaitingForDisprover(8),
+    GameOverWin(9),
+    GameOverFail(9);
 
     private int value;
 

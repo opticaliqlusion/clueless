@@ -31,6 +31,10 @@ public abstract class ViewModelBase {
     private ViewModelContext context = ViewModelContext.getInstance();
     private boolean modelDisposed = false;
 
+    protected void setModelDisposed(boolean value) {
+        modelDisposed=value;
+    }
+
     public ViewModelBase(RequestHandler requestHandler) {
         this.requestHandler = requestHandler;
     }
@@ -46,6 +50,10 @@ public abstract class ViewModelBase {
             modelDisposed = true;
             Parent root = FXMLLoader.load(getClass().getResource(layout));
             Scene scene = new Scene(root);
+
+            String css = this.getClass().getResource(Constants.STYLESHEET).toExternalForm();
+            scene.getStylesheets().add(css);
+
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {
@@ -102,6 +110,11 @@ public abstract class ViewModelBase {
     public ObservableList<ModelBase> getCharacterCards() {
         setUpCards();
         return context.getCharacterCards();
+    }
+
+    public ObservableList<ModelBase> getRoomCards() {
+        setUpCards();
+        return context.getRoomCards();
     }
 
     private void setUpCards() {

@@ -19,7 +19,7 @@ public class GameSummaryModel extends ModelBase {
         GameSummaryModel castObject = (GameSummaryModel) obj;
 
         return castObject.getId() == getId()
-                && castObject.getName() == getName()
+                && castObject.getName().equals(getName())
                 && castObject.getCurrentPlayers() == getCurrentPlayers();
     }
 

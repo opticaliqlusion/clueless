@@ -24,8 +24,12 @@ public final class Constants {
     public static final String GET_BOARD_STATE_PATH="get_board_state";
     public static final String GET_VALID_MOVES_PATH="get_valid_moves";
     public static final String MOVE_PLAYER_REQUEST="move_player";
-
+    public static final String MAKE_SUGGESTION_PATH="make_suggestion";
+    public static final String MAKE_ACCUSATION_PATH="make_accusation";
     public static final String END_TURN_PATH="end_player_turn";
+    public static final String DISPROVE_PATH = "disprove_suggestion";
+    public static final String ADD_LOG_PATH = "add_log";
 
     public static final int SyncDelay = 1;
+    public static final String STYLESHEET = "/styles/clueless.css";
 }

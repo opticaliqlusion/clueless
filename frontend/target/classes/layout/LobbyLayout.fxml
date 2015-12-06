@@ -1,29 +1,24 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.control.Label?>
-<?import javafx.collections.*?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.cell.PropertyValueFactory?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.control.ListView?>
 <GridPane fx:controller="edu.jhu.epioneers.clueless.view.LobbyView"
           xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10">
-    <Label text="Join a game or create a new one" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="12" />
-    <TableView fx:id="tableView" GridPane.rowIndex="1" GridPane.columnSpan="8" GridPane.rowSpan="10">
-        <columns>
-            <TableColumn text="Game" visible="true">
-                <cellValueFactory><PropertyValueFactory property="name" />
-                </cellValueFactory>
-            </TableColumn>
-            <TableColumn text="Players" visible="true">
-                <cellValueFactory><PropertyValueFactory property="gameStatus" />
-                </cellValueFactory>
-            </TableColumn>
-        </columns>
-    </TableView>
-    <Button fx:id="btnNewGame" text="New Game" GridPane.rowIndex="1" GridPane.columnSpan="3" GridPane.columnIndex="8"
+    <columnConstraints>
+        <ColumnConstraints percentWidth="65"/>
+        <ColumnConstraints percentWidth="35" />
+    </columnConstraints>
+    <Label text="Join a game or create a new one" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" />
+
+    <ListView fx:id="lvGames" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.rowSpan="10">
+
+    </ListView>
+
+    <Button fx:id="btnNewGame" text="New Game" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
             GridPane.rowSpan="1" alignment="TOP_CENTER" />
 
-    <Button fx:id="btnJoinGame" text="Join Game" GridPane.rowIndex="2" GridPane.columnSpan="3" GridPane.columnIndex="8"
+    <Button fx:id="btnJoinGame" text="Join Game" GridPane.rowIndex="2" GridPane.columnSpan="1" GridPane.columnIndex="1"
             GridPane.rowSpan="1" alignment="TOP_CENTER" />
 </GridPane>

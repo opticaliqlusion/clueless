@@ -14,10 +14,19 @@ import java.net.URL;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        primaryStage.setWidth(Constants.StageSizeX);
+        primaryStage.setHeight(Constants.StageSizeY);
+        primaryStage.setResizable(false);
+
         URL resource = getClass().getResource(Constants.LobbyLayout);
         Parent root = FXMLLoader.load(resource);
+        Scene scene = new Scene(root, Constants.StageSizeX, Constants.StageSizeY);
+
+        String css = this.getClass().getResource(Constants.STYLESHEET).toExternalForm();
+        scene.getStylesheets().add(css);
         primaryStage.setTitle("ClueLess");
-        primaryStage.setScene(new Scene(root, Constants.StageSizeX, Constants.StageSizeY));
+        primaryStage.setScene(scene);
         primaryStage.show();
 
     }

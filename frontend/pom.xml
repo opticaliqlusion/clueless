@@ -17,10 +17,17 @@
                 </includes>
             </resource>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/main/resources/images</directory>
                 <targetPath>images</targetPath>
                 <includes>
-                    <include>*.jpg</include>
+                    <include>*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources/styles</directory>
+                <targetPath>styles</targetPath>
+                <includes>
+                    <include>*</include>
                 </includes>
             </resource>
         </resources>
