@@ -402,6 +402,10 @@ def make_suggestion(idGame, idPlayer, cards):
     game.log.append(log_message_dict['make_suggestion'] % (idPlayer, str(card_list)))
     return state
 
+def add_log(idGame, idPlayer, logContent):
+    game, player = Game.get_by_id(idGame), Player.get_by_id(idPlayer)
+    game.log.append("Player "+str(player.id)+": "+logContent)
+
 def submit_disproval(idGame, idPlayer, idCard):
     game, player = Game.get_by_id(idGame), Player.get_by_id(idPlayer)
 

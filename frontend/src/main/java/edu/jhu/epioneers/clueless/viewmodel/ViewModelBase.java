@@ -50,6 +50,10 @@ public abstract class ViewModelBase {
             modelDisposed = true;
             Parent root = FXMLLoader.load(getClass().getResource(layout));
             Scene scene = new Scene(root);
+
+            String css = this.getClass().getResource(Constants.STYLESHEET).toExternalForm();
+            scene.getStylesheets().add(css);
+
             stage.setScene(scene);
             stage.show();
         } catch (IOException e) {

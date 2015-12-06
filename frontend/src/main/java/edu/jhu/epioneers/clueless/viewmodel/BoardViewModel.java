@@ -35,8 +35,8 @@ public class BoardViewModel extends ViewModelBase {
     private BooleanProperty isAccusation = new SimpleBooleanProperty(false);
     private BooleanProperty canMakeSuggestion = new SimpleBooleanProperty(false);
     private BooleanProperty isBaseTurn = new SimpleBooleanProperty(false);
-    private StringProperty logText = new SimpleStringProperty("");
-    private StringProperty cardsText = new SimpleStringProperty("");
+    private ObservableList<String> logText = FXCollections.observableArrayList();
+    private ObservableList<String> cardsText = FXCollections.observableArrayList();
 
     private boolean movedDuringCurrentTurn;
 
@@ -44,11 +44,11 @@ public class BoardViewModel extends ViewModelBase {
     private GetBoardStateResponse lastData;
     private ObservableList<ModelBase> disprovalCards = FXCollections.observableArrayList();
 
-    public StringProperty logTextProperty() {
+    public ObservableList<String> logTextProperty() {
         return logText;
     }
 
-    public StringProperty cardsTextProperty() {
+    public ObservableList<String> cardsTextProperty() {
         return cardsText;
     }
 
@@ -115,20 +115,14 @@ public class BoardViewModel extends ViewModelBase {
     }
 
     private void syncFromData(GetBoardStateResponse data) {
-        Platform.runLater(new Runnable() { //TODO Sync only when necessary
-            @Override
-            public void run() {
-                String newLogText="";
-                ArrayList<String> logs = data.getLogs();
-
-                for(String log : logs) {
-                    newLogText+=log+"\n";
+        if(logText.size()!=data.getLogs().size()) {
+            Platform.runLater(new Runnable() { //TODO Sync only when necessary
+                @Override
+                public void run() {
+                    logText.setAll(data.getLogs());
                 }
-
-                logText.setValue(newLogText);
-            }
-        });
-
+            });
+        }
 
         ViewModelContext context = getContext();
         int gameState = data.getGameState();
@@ -139,13 +133,13 @@ public class BoardViewModel extends ViewModelBase {
         if(gameState==0) {  //Game has not started
             boardState = playerMaps.size()>1?BoardState.ReadyToStart:BoardState.WaitingForPlayers;
         } else if(gameState==1) {  //Game in progress
-                Platform.runLater(new Runnable() {  //TODO Sync only when necessary, careful about failed accusation
+                Platform.runLater(new Runnable() {
                     @Override
                     public void run() {
-                        String newCardsText="";
                         ArrayList<Integer> cardIds = data.getCardIds();
 
-                        if(cardIds!=null) {
+                        if(cardIds!=null && cardsText.size()!=cardIds.size()) {
+                            cardsText.clear();
 
                             ArrayList<ModelBase> allCards = new ArrayList<ModelBase>();
                             allCards.addAll(getWeaponCards());
@@ -154,11 +148,8 @@ public class BoardViewModel extends ViewModelBase {
 
                             for(Integer cardId : cardIds) {
                                 ModelBase card = allCards.stream().filter(c -> c.getId() == cardId).findFirst().orElse(null);
-
-                                newCardsText += card.getName() + " ";
+                                cardsText.add(card.getName());
                             }
-
-                            cardsText.setValue(newCardsText);
                         }
                     }
                 });
@@ -564,5 +555,16 @@ public class BoardViewModel extends ViewModelBase {
 
     public BooleanProperty isAccusationProperty() {
         return isAccusation;
+    }
+
+    public void addLog(String text) {
+        AddLogRequest request = new AddLogRequest();
+        request.setIdGame(getContext().getIdGame());
+        request.setIdPlayer(getContext().getIdPlayer());
+        request.setLogContent(text);
+
+        requestHandler.makePOSTRequest(Constants.ADD_LOG_PATH,request,
+                new TypeToken<Response<GetBoardStateResponse>>() {
+                }.getType());
     }
 }

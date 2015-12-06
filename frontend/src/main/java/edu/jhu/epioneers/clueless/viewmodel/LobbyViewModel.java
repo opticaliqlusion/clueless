@@ -7,6 +7,7 @@ import edu.jhu.epioneers.clueless.communication.RequestHandler;
 import edu.jhu.epioneers.clueless.communication.Response;
 import edu.jhu.epioneers.clueless.model.GameSummaryModel;
 import edu.jhu.epioneers.clueless.model.GameState;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -43,36 +44,40 @@ public class LobbyViewModel extends ViewModelBase {
                 new TypeToken<Response<GetPendingGamesReponse>>(){}.getType());
 
         if(games.getHttpStatusCode()==games.HTTP_OK) {
-            GetPendingGamesReponse gameData = games.getData();
-            Set<Map.Entry<Integer, ArrayList<Integer>>> gameEntrySet = gameData.getGames().entrySet();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    GetPendingGamesReponse gameData = games.getData();
+                    Set<Map.Entry<Integer, ArrayList<Integer>>> gameEntrySet = gameData.getGames().entrySet();
 
-            //Delete now unavailable
-            for(int i=0;i<_games.size();i++) {
-                GameSummaryModel existing = _games.get(i);
+                    //Delete now unavailable
+                    for(int i=0;i<_games.size();i++) {
+                        GameSummaryModel existing = _games.get(i);
 
-                if(gameEntrySet.stream().filter(c->c.getKey()==existing.getId()).count()==0) {
-                    _games.remove(i);
-                }
-            }
+                        if(gameEntrySet.stream().filter(c->c.getKey()==existing.getId()).count()==0) {
+                            _games.remove(i);
+                        }
+                    }
 
-            //Add and update
-            for(Map.Entry<Integer,ArrayList<Integer>> game : gameEntrySet) {
-                GameSummaryModel gameSummaryModel = new GameSummaryModel();
-                gameSummaryModel.setId(game.getKey());
-                gameSummaryModel.setName("Game "+game.getKey());
-                gameSummaryModel.setInUseCharacters(game.getValue());
+                    //Add and update
+                    for(Map.Entry<Integer,ArrayList<Integer>> game : gameEntrySet) {
+                        GameSummaryModel gameSummaryModel = new GameSummaryModel();
+                        gameSummaryModel.setId(game.getKey());
+                        gameSummaryModel.setName("Game "+game.getKey());
+                        gameSummaryModel.setInUseCharacters(game.getValue());
 
-                GameSummaryModel existing = _games.stream().filter(c -> c.getId()==gameSummaryModel.getId()).findFirst().orElse(null);
+                        GameSummaryModel existing = _games.stream().filter(c -> c.getId()==gameSummaryModel.getId()).findFirst().orElse(null);
 
-                if(existing==null) {
-                    _games.add(gameSummaryModel);
-                } else {
-                    if(!existing.equals(gameSummaryModel)) {
-                        _games.add(_games.indexOf(existing), gameSummaryModel);
-                        _games.remove(existing);
+                        if(existing==null) {
+                            _games.add(gameSummaryModel);
+                        } else {
+                            if(!existing.equals(gameSummaryModel)) {
+                                existing.setInUseCharacters(gameSummaryModel.getInUseCharacters());
+                            }
+                        }
                     }
                 }
-            }
+            });
         } else {
             //TODO Trigger error scenario
         }

@@ -3,7 +3,7 @@ package edu.jhu.epioneers.clueless.communication;
 /***
  * Request class for adding a log to the server
  */
-public class AddLogRequest {
+public class AddLogRequest extends GamePlayerRequestBase {
     /***
      * Content of the log to add
      */

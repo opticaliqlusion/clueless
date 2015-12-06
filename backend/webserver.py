@@ -99,7 +99,8 @@ class MyHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         elif self.path == '/end_player_turn':
             response = logic_engine.end_player_turn(jsondata['idGame'], jsondata['idPlayer'])
-
+        elif self.path == '/add_log':
+            response = logic_engine.add_log(jsondata['idGame'], jsondata['idPlayer'], jsondata['logContent'])
         else:
             print("query not recognized")
             import pdb; pdb.set_trace()

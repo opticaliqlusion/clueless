@@ -3,30 +3,38 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.TextField?>
 <GridPane fx:controller="edu.jhu.epioneers.clueless.view.BoardView"
           xmlns:fx="http://javafx.com/fxml" hgap="10" vgap="10">
 
     <columnConstraints>
-        <ColumnConstraints percentWidth="75"/>
-        <ColumnConstraints percentWidth="25" />
+        <ColumnConstraints percentWidth="65"/>
+        <ColumnConstraints percentWidth="35" />
     </columnConstraints>
+    <rowConstraints>
+        <RowConstraints percentHeight="4"/>
+        <RowConstraints percentHeight="19"/>
+        <RowConstraints percentHeight="70"/>
+        <RowConstraints percentHeight="7"/>
+    </rowConstraints>
 
     <Label fx:id="lblStatus" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" />
-    <GridPane fx:id="grdBoard" GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="1" hgap="0" vgap="0">
+    <GridPane fx:id="grdBoard" GridPane.rowIndex="1" GridPane.rowSpan="2" GridPane.columnIndex="0" GridPane.columnSpan="1" hgap="0" vgap="0">
     </GridPane>
 
 
-    <GridPane fx:id="grdDisprove" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1">
+    <GridPane fx:id="grdDisprove" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.rowSpan="1">
         <ComboBox fx:id="comboDisproveSelect" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
                   GridPane.rowSpan="1"/>
 
         <Button fx:id="btnDisproveSuggestion" text="Disprove" GridPane.rowIndex="3" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1"/>
-
     </GridPane>
 
-    <GridPane fx:id="grdSuggestion" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1">
+    <GridPane fx:id="grdSuggestion" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.rowSpan="1">
         <ComboBox fx:id="comboWeapon" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
                   GridPane.rowSpan="1"/>
         <ComboBox fx:id="comboCharacter" GridPane.rowIndex="2" GridPane.columnSpan="1" GridPane.columnIndex="1"
@@ -43,12 +51,12 @@
 
     </GridPane>
 
-    <GridPane fx:id="grdStart" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1">
+    <GridPane fx:id="grdStart" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.rowSpan="1">
         <Button fx:id="btnStartGame" text="Start Game" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1" alignment="TOP_CENTER" />
     </GridPane>
 
-    <GridPane fx:id="grdTurn" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1">
+    <GridPane fx:id="grdTurn" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.rowSpan="1">
         <Button fx:id="btnBeginMove" text="Begin Move" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1" alignment="TOP_CENTER" />
 
@@ -62,11 +70,14 @@
                 GridPane.rowSpan="1" alignment="TOP_CENTER" />
     </GridPane>
 
-    <GridPane fx:id="grdChat" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="1" hgap="0" vgap="0">
-        <TextArea fx:id="txtLog" text="Test" />
-    </GridPane>
-    <GridPane fx:id="grdCards" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="1" hgap="0" vgap="0">
-        <TextArea fx:id="txtCards" text="Cards" />
+    <GridPane fx:id="grdChat" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.rowSpan="1" styleClass="chatLog">
+        <ListView fx:id="lvLog" GridPane.rowIndex="0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowSpan="1"/>
+        <TextField fx:id="txtChat"  GridPane.rowIndex="1" GridPane.columnIndex="0" GridPane.columnSpan="1" GridPane.rowSpan="1" prefWidth="200"/>
+        <Button fx:id="btnChat" text="Chat"  GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="1" GridPane.rowSpan="1" prefWidth="50"/>
     </GridPane>
 
+    <HBox  GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowSpan="1">
+        <Label prefWidth="70" alignment="BOTTOM_RIGHT">Your Cards:</Label>
+        <ListView fx:id="lvCards" prefWidth="700"/>
+    </HBox>
 </GridPane>

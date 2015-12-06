@@ -28,6 +28,8 @@ public final class Constants {
     public static final String MAKE_ACCUSATION_PATH="make_accusation";
     public static final String END_TURN_PATH="end_player_turn";
     public static final String DISPROVE_PATH = "disprove_suggestion";
+    public static final String ADD_LOG_PATH = "add_log";
 
     public static final int SyncDelay = 1;
+    public static final String STYLESHEET = "/styles/clueless.css";
 }

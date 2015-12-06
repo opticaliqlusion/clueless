@@ -5,18 +5,24 @@ import edu.jhu.epioneers.clueless.communication.RequestHandler;
 import edu.jhu.epioneers.clueless.model.ModelBase;
 import edu.jhu.epioneers.clueless.model.RoomModel;
 import edu.jhu.epioneers.clueless.viewmodel.BoardViewModel;
+import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.VPos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Text;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -85,10 +91,16 @@ public class BoardView extends ViewBase<BoardViewModel> {
     Button btnCancelAccusation;
 
     @FXML
-    TextArea txtLog;
+    ListView<String> lvLog;
 
     @FXML
-    TextArea txtCards;
+    ListView<String> lvCards;
+
+    @FXML
+    Button btnChat;
+
+    @FXML
+    TextField txtChat;
 
     @Override
     protected BoardViewModel createModel() {
@@ -173,6 +185,22 @@ public class BoardView extends ViewBase<BoardViewModel> {
             }
         };
 
+        StringConverter<ModelBase> modelBaseStringConverter = new StringConverter<ModelBase>() {
+            @Override
+            public String toString(ModelBase model) {
+                return model == null ? "" : model.getName();
+            }
+
+            @Override
+            public ModelBase fromString(String userId) {
+                return null;
+            }
+        };
+
+        comboWeapon.setConverter(modelBaseStringConverter);
+        comboCharacter.setConverter(modelBaseStringConverter);
+        comboRoom.setConverter(modelBaseStringConverter);
+
         comboWeapon.setCellFactory(modelBaseComboFactory);
         comboCharacter.setCellFactory(modelBaseComboFactory);
         comboRoom.setCellFactory(modelBaseComboFactory);
@@ -204,7 +232,7 @@ public class BoardView extends ViewBase<BoardViewModel> {
         });
 
         comboDisproveSelect.setCellFactory(modelBaseComboFactory);
-
+        comboDisproveSelect.setConverter(modelBaseStringConverter);
         comboDisproveSelect.setItems(getModel().getDisprovalCards());
 
         btnDisproveSuggestion.setOnAction(new EventHandler<ActionEvent>() {
@@ -223,15 +251,63 @@ public class BoardView extends ViewBase<BoardViewModel> {
 
         grdDisprove.visibleProperty().bind(getModel().canDisproveSuggestionProperty());
 
-        txtLog.disableProperty().setValue(true);
-        txtCards.disableProperty().setValue(true);
+        lvLog.setItems(getModel().logTextProperty());
 
-        txtLog.textProperty().bind(getModel().logTextProperty());
-        txtCards.textProperty().bind(getModel().cardsTextProperty());
+        //Wraps log text
+        lvLog.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+            @Override
+            public ListCell<String> call(final ListView<String> list) {
+                return new ListCell<String>() {
+                    {
+                        Text text = new Text();
+                        text.wrappingWidthProperty().bind(list.widthProperty().subtract(15));
+                        text.textProperty().bind(itemProperty());
 
+                        setPrefWidth(0);
+                        setGraphic(text);
+                    }
+                };
+            }
+        });
+
+        lvLog.getItems().addListener((ListChangeListener<String>) (c -> {
+            c.next();
+            final int size = lvLog.getItems().size();
+            if (size > 0) {
+                lvLog.scrollTo(size - 1);
+            }
+        }));
+
+        lvCards.setItems(getModel().cardsTextProperty());
+        lvCards.setOrientation(Orientation.HORIZONTAL);
+
+        txtChat.setOnKeyPressed(new EventHandler<KeyEvent>()
+        {
+            @Override
+            public void handle(KeyEvent ke)
+            {
+                if (ke.getCode().equals(KeyCode.ENTER))
+                    submitChat();
+            }
+        });
+
+        btnChat.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                submitChat();
+            }
+        });
 
         createBoard();
         scheduleSync();
+    }
+
+    private void submitChat() {
+        String text = txtChat.textProperty().getValue();
+        if(text!=null && text.length()>0) {
+            txtChat.textProperty().setValue("");
+            getModel().addLog(text);
+        }
     }
 
     private void createBoard() {
