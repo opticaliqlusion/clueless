@@ -56,7 +56,7 @@ public class LobbyView extends ViewBase<LobbyViewModel> {
         lvGames.setCellFactory(ChoiceBoxListCell.forListView(new StringConverter<GameSummaryModel>() {
             @Override
             public String toString(GameSummaryModel object) {
-                return object.getName()+" ("+object.gameStatusProperty().getValue() +" players)";
+                return object.gameStatusProperty().getValue();
             }
 
             @Override
