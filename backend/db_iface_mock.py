@@ -84,6 +84,8 @@ class Game(PersistableBase):
         self.current_suggestion = []
         self.solution = {'weapon':None, 'character':None, 'room':None}
         self.suggesting_player = None
+        self.winner = None
+        self.losers = []
 
         super(Game, self).__init__()
 
@@ -103,7 +105,7 @@ class Game(PersistableBase):
             # TODO I don't think we need this?
             # 'characterMap': {self.players[i].id: self.character_map[i] for i in range(len(self.character_map))},
             'idCurrentTurn': self.players[self.player_current_turn_index].id,
-            'idCurrentDisprover': self.players[self.player_current_disprover_index].id if self.player_current_disprover_index else 0,
+            'idCurrentDisprover': self.players[self.player_current_disprover_index].id,
             'gameState': self.meta_state,
             'turnState': self.turn_state,
             'cardIds': playerCards,
@@ -111,7 +113,9 @@ class Game(PersistableBase):
             'logs': self.log,
             'lastLogId': 0,
             'idGame': self.id,
-            'idPlayer': idPlayer
+            'idPlayer': idPlayer,
+            'winner':self.winner.id if self.winner else None,
+            'losers':[i.id for i in self.losers],
             }
 
 class Room(PersistableBase):
@@ -286,7 +290,7 @@ def start_game(idGame, idPlayer):
     game.solution['room'] = card_list_rooms.pop()
     game.solution['weapon'] = card_list_weapons.pop()
     game.solution['character'] = card_list_characters.pop()
-    
+
     i = 0
     while card_list_rooms and card_list_weapons and card_list_characters:
 
@@ -455,7 +459,35 @@ def end_player_turn(idGame, idPlayer):
     game.log.append(log_message_dict['end_player_turn'] % (idPlayer,))
 
     return state
-    
+
 def get_solution(idGame):
     game = Game.get_by_id(idGame)
-    return game.solution
+    return { i:game.solution[i].id for i in game.solution }
+
+def make_accusation(idGame, idPlayer, accusation):
+    game, player = Game.get_by_id(idGame), Player.get_by_id(idPlayer)
+
+    if not player in game.players:
+        raise NoSuchObjectException('No player found for idGame=%d and idPlayer=%d' % (idGame, idPlayer))
+
+    # either you win, or you lose
+    #   good luck.
+
+    if accusation['room'] == game.solution['room'].id 
+        and accusation['weapon'] == game.solution['weapon'].id
+        and accusation['character'] == game.solution['character'].id:
+        game.winner = idPlayer
+        game.turn_state = None
+        game.meta_state = GameStates.FINISHED
+    else:
+        game.players.remove(player)
+        game.losers.append(player)
+        
+        # redistribute the loser's cards
+        
+        
+        # if there is only one person left, they win!
+        if game.players
+    
+
+    return state

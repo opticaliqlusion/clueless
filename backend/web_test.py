@@ -42,7 +42,6 @@ response = perform_webserver_query('join_game', postvalues={ 'idGame': game_crea
 print(response)
 playerid2 = response['data']['idPlayer']
 
-
 # start the game
 start_game_response = perform_webserver_query('start_game', postvalues={ 'idGame': response['data']['idGame'], 'idPlayer': playerid })
 print(start_game_response)
