@@ -485,9 +485,7 @@ def make_accusation(idGame, idPlayer, accusation):
     # either you win, or you lose
     #   good luck.
 
-    if accusation['room'] == game.solution['room'].id 
-        and accusation['weapon'] == game.solution['weapon'].id
-        and accusation['character'] == game.solution['character'].id:
+    if accusation['room'] == game.solution['room'].id and accusation['weapon'] == game.solution['weapon'].id and accusation['character'] == game.solution['character'].id:
         game.winner = idPlayer
         game.turn_state = None
         game.meta_state = GameStates.FINISHED
@@ -499,7 +497,4 @@ def make_accusation(idGame, idPlayer, accusation):
         
         
         # if there is only one person left, they win!
-        if game.players
-    
-
-    return state
+    return None
