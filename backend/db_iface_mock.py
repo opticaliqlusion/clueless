@@ -430,7 +430,7 @@ def submit_disproval(idGame, idPlayer, idCard):
             raise GameStateViolation('idPlayer=%d does not own idCard=%d' % (idCard,))
 
         game.turn_state = TurnState.WAITING_FOR_END
-        game.player_current_disprover_index = None
+        game.player_current_disprover_index = 0
         game.current_suggestion = []
         state = game.serialize(idPlayer=idPlayer)
         game.log.append(log_message_dict['render_disproval'] % (idPlayer, idCard))
