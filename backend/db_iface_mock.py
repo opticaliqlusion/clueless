@@ -503,8 +503,12 @@ def make_accusation(idGame, idPlayer, accusation):
             game.log.append('idPlayer=%d lost the game!' % (idPlayer,))
         else:
             game.log.append('idPlayer=%d won the game by default!' % (idPlayer,))
-
+    
+        # redistribute the loser's cards
+        
+        
+        # if there is only one person left, they win!
+        if game.players
+    
     state = game.serialize(idPlayer=idPlayer)
-
-
     return state
