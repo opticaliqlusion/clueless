@@ -347,10 +347,14 @@ public class BoardView extends ViewBase<BoardViewModel> {
         ses.schedule(new Runnable() {
             @Override
             public void run() {
-                getModel().Sync();
+                try{
+                    getModel().Sync();
 
-                if(!getModel().isModelDisposed()) {
-                    scheduleSync();
+                    if(!getModel().isModelDisposed()) {
+                        scheduleSync();
+                    }
+                } catch (Exception ex) {
+                    System.out.println(ex.toString());
                 }
             }
         }, Constants.SyncDelay, TimeUnit.SECONDS);

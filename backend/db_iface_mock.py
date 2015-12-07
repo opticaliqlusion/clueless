@@ -430,7 +430,7 @@ def submit_disproval(idGame, idPlayer, idCard):
             raise GameStateViolation('idPlayer=%d does not own idCard=%d' % (idCard,))
 
         game.turn_state = TurnState.WAITING_FOR_END
-        game.player_current_disprover_index = None
+        game.player_current_disprover_index = 0
         game.current_suggestion = []
         state = game.serialize(idPlayer=idPlayer)
         game.log.append(log_message_dict['render_disproval'] % (idPlayer, idCard))
@@ -485,23 +485,26 @@ def make_accusation(idGame, idPlayer, accusation):
     # either you win, or you lose
     #   good luck.
 
-    if accusation['room'] == game.solution['room'].id 
-        and accusation['weapon'] == game.solution['weapon'].id
-        and accusation['character'] == game.solution['character'].id:
+    if accusation['room'] == game.solution['room'].id and accusation['weapon'] == game.solution['weapon'].id and accusation['character'] == game.solution['character'].id:
         game.winner = idPlayer
         game.turn_state = None
         game.meta_state = GameStates.FINISHED
+        game.log.append('idPlayer=%d won the game!' % (idPlayer,))
     else:
         game.players.remove(player)
         game.losers.append(player)
-        
+
         # @todo redistribute the loser's cards
-        
-        
+
         # if there is only one person left, they win!
         if len(game.players) == 1:
             game.winner = game.players[0]
             game.meta_state = GameStates.FINISHED
-    
+            game.log.append('idPlayer=%d lost the game!' % (idPlayer,))
+        else:
+            game.log.append('idPlayer=%d won the game by default!' % (idPlayer,))
+
+    state = game.serialize(idPlayer=idPlayer)
+
 
     return state

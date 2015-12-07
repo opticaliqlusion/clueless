@@ -27,21 +27,14 @@ public class GameSummaryModel extends ModelBase {
 
     private GameState gameState;
     private ArrayList<Integer> inUseCharacters;
+    private StringProperty gameStatus = new SimpleStringProperty("");
 
     private int getCurrentPlayers() {
         return inUseCharacters.size();
     }
 
     public final StringProperty gameStatusProperty() {
-        StringProperty prop = new SimpleStringProperty();
-
-        if(gameState ==GameState.IN_PROCESS) {
-            prop.setValue("IN PROCESS");
-        } else {
-            prop.setValue(getCurrentPlayers() +"/"+ maximumPlayers);
-        }
-
-        return prop;
+        return gameStatus;
     }
 
     public boolean canJoin() {
@@ -58,5 +51,11 @@ public class GameSummaryModel extends ModelBase {
 
     public void setInUseCharacters(ArrayList<Integer> inUseCharacters) {
         this.inUseCharacters = inUseCharacters;
+
+        if(gameState ==GameState.IN_PROCESS) {
+            gameStatus.setValue("IN PROCESS");
+        } else {
+            gameStatus.setValue(getName()+" ("+getCurrentPlayers() +"/"+ maximumPlayers +" players)");
+        }
     }
 }

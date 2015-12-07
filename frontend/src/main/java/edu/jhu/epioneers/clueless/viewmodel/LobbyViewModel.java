@@ -72,7 +72,7 @@ public class LobbyViewModel extends ViewModelBase {
                             _games.add(gameSummaryModel);
                         } else {
                             if(!existing.equals(gameSummaryModel)) {
-                                existing.setInUseCharacters(gameSummaryModel.getInUseCharacters());
+                                _games.set(_games.indexOf(existing),gameSummaryModel);
                             }
                         }
                     }
