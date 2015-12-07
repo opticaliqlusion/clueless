@@ -495,11 +495,13 @@ def make_accusation(idGame, idPlayer, accusation):
         game.players.remove(player)
         game.losers.append(player)
         
-        # redistribute the loser's cards
+        # @todo redistribute the loser's cards
         
         
         # if there is only one person left, they win!
-        if game.players
+        if len(game.players) == 1:
+            game.winner = game.players[0]
+            game.meta_state = GameStates.FINISHED
     
 
     return state
