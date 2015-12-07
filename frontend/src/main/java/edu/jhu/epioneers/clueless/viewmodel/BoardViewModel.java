@@ -159,28 +159,36 @@ public class BoardViewModel extends ViewModelBase {
             //User needs to disprove
             if(data.getTurnState()==2) {
                 if(data.getIdCurrentDisprover()==context.getIdPlayer()&& boardState == BoardState.WaitingForTurn) {
-                    disprovalCards.clear();
+                    ArrayList<ModelBase> localDisproveCards = new ArrayList<ModelBase>();
 
                     //TODO Ugly
                     for(Integer cardId : data.getCurrentSuggestion()) {
                         if(data.getCardIds().stream().filter(c->c.equals(cardId)).findFirst().orElse(null)!=null) {
                             ModelBase card;
                             if((card=getCharacterCards().stream().filter(c->c.getId()==cardId).findFirst().orElse(null))!=null) {
-                                disprovalCards.add(card);
+                                localDisproveCards.add(card);
                             } else if((card=getWeaponCards().stream().filter(c->c.getId()==cardId).findFirst().orElse(null))!=null) {
-                                disprovalCards.add(card);
+                                localDisproveCards.add(card);
                             } else {
-                                disprovalCards.add(getRoomCards().stream().filter(c->c.getId()==cardId).findFirst().orElse(null));
+                                localDisproveCards.add(getRoomCards().stream().filter(c->c.getId()==cardId).findFirst().orElse(null));
                             }
                         }
                     }
 
-                    if(disprovalCards.size()>0) {
+                    Platform.runLater(new Runnable() {
+                        @Override
+                        public void run() {
+
+                        }
+                    });
+
+                    if(localDisproveCards.size()>0) {
                         boardState = BoardState.DisproveSuggestion;
 
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
+                                disprovalCards.setAll(localDisproveCards);
                                 canDisproveSuggestion.setValue(true);
                             }
                         });
