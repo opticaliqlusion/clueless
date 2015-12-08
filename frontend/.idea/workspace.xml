@@ -98,14 +98,12 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3355856">
-              <caret line="18" column="60" selection-start-line="18" selection-start-column="60" selection-end-line="18" selection-end-column="60" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
+            <state vertical-scroll-proportion="-0.44827586">
+              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -133,11 +131,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Constants.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Constants.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Constants.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="24" column="20" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
+            <state vertical-scroll-proportion="0.13742071">
+              <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -210,10 +208,10 @@
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/LobbyViewModel.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/communication/GetBoardStateResponse.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/view/BoardView.java" />
-        <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Constants.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/ViewModelBase.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/BoardViewModel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Constants.java" />
       </list>
     </option>
   </component>
@@ -1012,12 +1010,12 @@
       <workItem from="1449186173644" duration="243000" />
       <workItem from="1449255249408" duration="22393000" />
       <workItem from="1449334182822" duration="22139000" />
-      <workItem from="1449543625818" duration="7135000" />
+      <workItem from="1449543625818" duration="7218000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="187583000" />
+    <option name="totallyTimeSpent" value="187666000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
@@ -1586,14 +1584,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="24" column="20" selection-start-line="24" selection-start-column="20" selection-end-line="24" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/viewmodel/ViewModelBase.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1621,11 +1611,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3355856">
-          <caret line="18" column="60" selection-start-line="18" selection-start-column="60" selection-end-line="18" selection-end-column="60" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
+        <state vertical-scroll-proportion="-0.44827586">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/edu/jhu/epioneers/clueless/Constants.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.13742071">
+          <caret line="14" column="6" selection-start-line="14" selection-start-column="6" selection-end-line="14" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
