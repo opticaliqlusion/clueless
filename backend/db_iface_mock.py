@@ -102,8 +102,7 @@ class Game(PersistableBase):
             'idPlayer':idPlayer,
             # TODO Hack if room or char map is null
             'playerGameIdMap': {i.id: (None if not i.room else i.room.id) for i in self.players},
-            # TODO I don't think we need this?
-            # 'characterMap': {self.players[i].id: self.character_map[i] for i in range(len(self.character_map))},
+            'characterMap':  {i.id: i.idCharacter for i in self.players},
             'idCurrentTurn': self.players[self.player_current_turn_index].id,
             'idCurrentDisprover': self.players[self.player_current_disprover_index].id,
             'gameState': self.meta_state,
