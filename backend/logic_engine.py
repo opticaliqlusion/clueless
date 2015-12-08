@@ -38,7 +38,7 @@ def make_suggestion(idGame, idPlayer, cards):
     return db_iface.make_suggestion(idGame, idPlayer, cards)
 
 def make_accusation(idGame, idPlayer, cards):
-    return
+    return db_iface.make_accusation(idGame, idPlayer, cards)
 
 def disprove_suggestion(idGame, idPlayer, idCard):
     return db_iface.submit_disproval(idGame, idPlayer, idCard)

@@ -64,6 +64,7 @@ class Player(PersistableBase):
         self.idCharacter = idCharacter
         self.cards = []
         self.room = None
+        self.isPlaying = True
         super(Player, self).__init__()
 
 class Game(PersistableBase):
@@ -82,7 +83,7 @@ class Game(PersistableBase):
         self.turn_state = None
         self.log = []
         self.current_suggestion = []
-        self.solution = {'weapon':None, 'character':None, 'room':None}
+        self.solution = []
         self.suggesting_player = None
         self.winner = None
         self.losers = []
@@ -286,9 +287,9 @@ def start_game(idGame, idPlayer):
     assert (len(card_list_characters) == 6)
 
     # create the solution. dont tell anyone
-    game.solution['room'] = card_list_rooms.pop()
-    game.solution['weapon'] = card_list_weapons.pop()
-    game.solution['character'] = card_list_characters.pop()
+    game.solution.append(card_list_rooms.pop())
+    game.solution.append(card_list_weapons.pop())
+    game.solution.append(card_list_characters.pop())
 
     i = 0
     while card_list_rooms and card_list_weapons and card_list_characters:
@@ -359,7 +360,12 @@ def move_player(idGame, idPlayer, idRoom):
         raise GameStateViolation('idRoom=%d and idRoom=%d not adjacent' % (current_room.id, idRoom))
 
     oldRoom = player.room
-    player.room = Room.get_by_id(idRoom)
+    newRoom = Room.get_by_id(idRoom)
+
+    if newRoom.type == RoomTypes.HALL and any([i.room == newRoom for i in game.players]):
+        raise GameStateViolation('idRoom=%d of type HALL occupied' % (newRoom.id,))
+
+    player.room = newRoom
 
     # TODO change this to TurnState.MAKING_SUGGESTION, this is just for testing
     game.turn_state = TurnState.MAKING_SUGGESTION
@@ -455,7 +461,7 @@ def end_player_turn(idGame, idPlayer):
     if not player in game.players:
         raise NoSuchObjectException('No player found for idGame=%d and idPlayer=%d' % (idGame, idPlayer))
 
-    # TODO This needs tobe altered or removed
+    # TODO This needs to be altered or removed
     #if not game.turn_state == TurnState.WAITING_FOR_END:
     #    raise GameStateViolation('idGame=%d not in state WAITING_FOR_END' % (idGame,))
 
@@ -463,8 +469,13 @@ def end_player_turn(idGame, idPlayer):
         raise GameStateViolation(
             'it is idPlayer=%d turn, NOT idPlayer=%d' % (game.players[game.player_current_turn_index].id, idPlayer))
 
-    game.turn_state = TurnState.SELECTING_MOVE
     game.player_current_turn_index = (game.player_current_turn_index + 1) % len(game.players)
+    
+    # if the player has lost, skip their turn
+    if game.players[game.player_current_turn_index].isPlaying:
+        game.turn_state = TurnState.SELECTING_MOVE
+    else:
+        game.turn_state = TurnState.WAITING_FOR_END
 
     state = game.serialize(idPlayer=idPlayer)
     game.log.append(log_message_dict['end_player_turn'] % (idPlayer,))
@@ -473,7 +484,7 @@ def end_player_turn(idGame, idPlayer):
 
 def get_solution(idGame):
     game = Game.get_by_id(idGame)
-    return { i:game.solution[i].id for i in game.solution }
+    return [i.id for i in game.solution]
 
 def make_accusation(idGame, idPlayer, accusation):
     game, player = Game.get_by_id(idGame), Player.get_by_id(idPlayer)
@@ -481,27 +492,29 @@ def make_accusation(idGame, idPlayer, accusation):
     if not player in game.players:
         raise NoSuchObjectException('No player found for idGame=%d and idPlayer=%d' % (idGame, idPlayer))
 
+    if not game.players[game.player_current_turn_index].id == idPlayer:
+        raise GameStateViolation(
+            'it is idPlayer=%d turn, NOT idPlayer=%d' % (game.players[game.player_current_turn_index].id, idPlayer))
+
     # either you win, or you lose
     #   good luck.
 
-    if accusation['room'] == game.solution['room'].id and accusation['weapon'] == game.solution['weapon'].id and accusation['character'] == game.solution['character'].id:
+    if set([i.id for i in game.solution]) == set(accusation):
         game.winner = idPlayer
         game.turn_state = None
         game.meta_state = GameStates.FINISHED
         game.log.append('idPlayer=%d won the game!' % (idPlayer,))
     else:
-        game.players.remove(player)
         game.losers.append(player)
-
-        # @todo redistribute the loser's cards
+        player.isPlaying = False
 
         # if there is only one person left, they win!
         if len(game.players) == 1:
             game.winner = game.players[0]
             game.meta_state = GameStates.FINISHED
-            game.log.append('idPlayer=%d lost the game!' % (idPlayer,))
+            game.log.append('idPlayer=%d won the game!' % (game.winner.id,))
         else:
-            game.log.append('idPlayer=%d won the game by default!' % (idPlayer,))
+            game.log.append('idPlayer=%d lost the game by default!' % (idPlayer,))
 
     state = game.serialize(idPlayer=idPlayer)
     return state
