@@ -9,6 +9,10 @@ import java.util.HashMap;
 public class GetBoardStateResponse {
     private int idGame;
 
+    private Integer winner;
+
+    private ArrayList<Integer> losers;
+
     /***
      * Maps player ids to rooms
      */
@@ -150,5 +154,21 @@ public class GetBoardStateResponse {
 
     public void setCharacterMap(HashMap<Integer, Integer> characterMap) {
         this.characterMap = characterMap;
+    }
+
+    public Integer getWinner() {
+        return winner;
+    }
+
+    public void setWinner(Integer winner) {
+        this.winner = winner;
+    }
+
+    public ArrayList<Integer> getLosers() {
+        return losers;
+    }
+
+    public void setLosers(ArrayList<Integer> losers) {
+        this.losers = losers;
     }
 }

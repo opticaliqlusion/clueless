@@ -1,10 +1,13 @@
 package edu.jhu.epioneers.clueless;
 
 import javafx.application.Application;
+import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.net.URL;
 
@@ -14,6 +17,14 @@ import java.net.URL;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                //TODO This doesn't quite work
+                Constants.GlobalDisposed=true;
+            }
+        });
 
         primaryStage.setWidth(Constants.StageSizeX);
         primaryStage.setHeight(Constants.StageSizeY);

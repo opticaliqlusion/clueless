@@ -154,6 +154,6 @@ public abstract class ViewModelBase {
     }
 
     public boolean isModelDisposed() {
-        return modelDisposed;
+        return Constants.GlobalDisposed || modelDisposed;
     }
 }

@@ -296,7 +296,11 @@ public class BoardViewModel extends ViewModelBase {
     private void setStatusText() {
         switch (boardState) {
             case WaitingForTurn:
-                statusText.setValue("Waiting for your turn to begin.");
+                ArrayList<Integer> losers = lastData.getLosers();
+
+                statusText.setValue(losers==null || losers.stream().anyMatch(c->c.equals(getContext().getIdPlayer()))?
+                                "You have lost.  Please remain in the game to help disprove suggestions."
+                                :"Waiting for your turn to begin.");
                 break;
             case WaitingForPlayers:
                 statusText.setValue("Waiting for another player to join.");
@@ -528,29 +532,40 @@ public class BoardViewModel extends ViewModelBase {
     }
 
     public void submitAccusation(int weaponId, int characterId, int roomId) {
-        setModelDisposed(true);
         canMakeSuggestion.setValue(false);
 
+        ArrayList<Integer> cards = new ArrayList<Integer>();
+        cards.add(weaponId);
+        cards.add(characterId);
+        cards.add(roomId);
+
         MakeSuggestionRequest request = new MakeSuggestionRequest();
+        request.setIdPlayer(getContext().getIdPlayer());
+        request.setIdGame(getContext().getIdGame());
+        request.setCards(cards);
 
-        //boardState=BoardState.GameOverWin;
-        boardState=BoardState.GameOverFail;
-        setStatusText();
-
-        /*
         Response<GetBoardStateResponse> response = requestHandler.makePOSTRequest(Constants.MAKE_ACCUSATION_PATH,request,
                 new TypeToken<Response<GetBoardStateResponse>>() {
                 }.getType());
 
         if(response.getHttpStatusCode()==response.HTTP_OK) {
-            syncFromData(response.getData());
-            canDisproveSuggestion.set(false);
-            boardState=BoardState.WaitingForTurn;
+            GetBoardStateResponse data = response.getData();
+
+            //You have won
+            if(data.getWinner()!=null) {
+                setModelDisposed(true);
+                boardState=BoardState.GameOverWin;
+                setStatusText();
+            } else { //You lose
+                boardState=BoardState.WaitingForTurn;
+                canDisproveSuggestion.set(false);
+                setStatusText();
+            }
+
             setStateProperties();
         } else {
             //TODO Error scenario
         }
-        */
     }
 
     public ObservableList<ModelBase> getDisprovalCards() {
