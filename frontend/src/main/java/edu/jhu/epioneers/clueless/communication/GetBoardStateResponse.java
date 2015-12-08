@@ -14,6 +14,9 @@ public class GetBoardStateResponse {
      */
     private HashMap<Integer,Integer> playerGameIdMap;
 
+
+    private HashMap<Integer,Integer> characterMap;
+
     /**
      * Id of the player for which the current turn is associated
      */
@@ -139,5 +142,13 @@ public class GetBoardStateResponse {
 
     public void setCurrentSuggestion(ArrayList<Integer> currentSuggestion) {
         this.currentSuggestion = currentSuggestion;
+    }
+
+    public HashMap<Integer, Integer> getCharacterMap() {
+        return characterMap;
+    }
+
+    public void setCharacterMap(HashMap<Integer, Integer> characterMap) {
+        this.characterMap = characterMap;
     }
 }

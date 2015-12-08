@@ -1,7 +1,6 @@
 package edu.jhu.epioneers.clueless.viewmodel;
 
 import com.google.gson.reflect.TypeToken;
-import com.sun.javafx.tk.Toolkit;
 import edu.jhu.epioneers.clueless.Constants;
 import edu.jhu.epioneers.clueless.communication.*;
 import edu.jhu.epioneers.clueless.model.BoardState;
@@ -12,14 +11,10 @@ import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ObservableBooleanValue;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Represents the game board and corresponding logic
@@ -214,7 +209,7 @@ public class BoardViewModel extends ViewModelBase {
                 if(boardState==BoardState.ReadyToStart
                         || boardState== BoardState.WaitingForPlayers
                         || boardState== BoardState.WaitingForTurn) {
-                    setCharacterOverlays(playerMaps);
+                    setCharacterOverlays(playerMaps, data);
                     if(turnState==0 || turnState==1) { //Base turn
 
                         Platform.runLater(new Runnable() {
@@ -227,7 +222,7 @@ public class BoardViewModel extends ViewModelBase {
                         });
 
                         boardState=BoardState.BaseTurn;
-                        setCharacterOverlays(playerMaps);
+                        setCharacterOverlays(playerMaps, data);
                     }
                 } else if(boardState==BoardState.WaitingForDisprover) {
                     Platform.runLater(new Runnable() {
@@ -241,7 +236,7 @@ public class BoardViewModel extends ViewModelBase {
                 }
             } else {
                 boardState=BoardState.WaitingForTurn;
-                setCharacterOverlays(playerMaps);
+                setCharacterOverlays(playerMaps, data);
             }
         } else if(gameState==2) { //Game over
             boardState=BoardState.GameOver;
@@ -250,8 +245,11 @@ public class BoardViewModel extends ViewModelBase {
             setStateProperties();
     }
 
-    private void setCharacterOverlays(HashMap<Integer, Integer> playerMaps) {
+    private void setCharacterOverlays(HashMap<Integer, Integer> playerMaps, GetBoardStateResponse data) {
         try {
+            HashMap<Integer, Integer> characterMap = data.getCharacterMap();
+            ArrayList<ModelBase> characters = getAllCharacters();
+
             //Set character locations over rooms
             for(RoomModel room : getAllRooms()) {
                 StringJoiner joiner = new StringJoiner("\n");
@@ -259,7 +257,8 @@ public class BoardViewModel extends ViewModelBase {
                 for (Map.Entry<Integer, Integer> playerMap : playerMaps.entrySet()) {
                     try {
                         if(playerMap.getValue()==room.getId()) {
-                            joiner.add("Player "+playerMap.getKey());
+                            Integer characterId = characterMap.entrySet().stream().filter(c -> c.getKey().equals(playerMap.getKey())).findFirst().orElse(null).getValue();
+                            joiner.add(characters.stream().filter(c->c.getId()==characterId).findFirst().orElse(null).getName());
                         }
                     } catch (NullPointerException ex) {}//TODO Handle this hack
                 }
@@ -420,7 +419,7 @@ public class BoardViewModel extends ViewModelBase {
                     canCancel.setValue(false);
                 }
 
-                setCharacterOverlays(response.getData().getPlayerGameIdMap());
+                setCharacterOverlays(response.getData().getPlayerGameIdMap(), response.getData());
             } else {
                 //TODO Trigger error scenario
             }
@@ -456,8 +455,9 @@ public class BoardViewModel extends ViewModelBase {
         boardState=BoardState.BaseTurn;
         canMove.setValue(movedDuringCurrentTurn);
         canCancel.setValue(false);
-        setCharacterOverlays(lastData.getPlayerGameIdMap());
+        setCharacterOverlays(lastData.getPlayerGameIdMap(), lastData);
         isBaseTurn.setValue(true);
+        canMakeSuggestion.setValue(false);
     }
 
     /**
