@@ -125,7 +125,18 @@ public class BoardViewModel extends ViewModelBase {
         HashMap<Integer, Integer> playerMaps = data.getPlayerGameIdMap();
 
         //TODO fix magic numbers
-        if(gameState==0) {  //Game has not started
+        if(data.getWinner()!=null) {
+            if(data.getWinner()==getContext().getIdPlayer()) {
+                boardState = BoardState.GameOverWin;
+            } else {
+                boardState = BoardState.GameOverFail;
+            }
+
+            setStatusText();
+            setModelDisposed(true);
+            return;
+        }
+        else if(gameState==0) {  //Game has not started
             boardState = playerMaps.size()>1?BoardState.ReadyToStart:BoardState.WaitingForPlayers;
         } else if(gameState==1) {  //Game in progress
                 Platform.runLater(new Runnable() {
