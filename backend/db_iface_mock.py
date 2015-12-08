@@ -484,6 +484,7 @@ def end_player_turn(idGame, idPlayer):
 
 def get_solution(idGame):
     game = Game.get_by_id(idGame)
+    print('Game solution=%s' % (str(game.solution)))
     return [i.id for i in game.solution]
 
 def make_accusation(idGame, idPlayer, accusation):
@@ -509,7 +510,7 @@ def make_accusation(idGame, idPlayer, accusation):
         player.isPlaying = False
 
         # if there is only one person left, they win!
-        if len(game.players) == 1:
+        if len([i for i in game.players if i.isPlaying]) == 1:
             game.winner = game.players[0]
             game.meta_state = GameStates.FINISHED
             game.log.append('idPlayer=%d won the game!' % (game.winner.id,))
