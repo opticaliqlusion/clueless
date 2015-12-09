@@ -26,6 +26,7 @@ public class ChooseCharacterView extends ViewBase<ChooseCharacterViewModel> {
 
     @FXML
     public Button btnJoinGame;
+    public Button btnCancel;
 
     @Override
     protected ChooseCharacterViewModel createModel() {
@@ -55,6 +56,13 @@ public class ChooseCharacterView extends ViewBase<ChooseCharacterViewModel> {
                 if(selected!=null) {
                     model.chooseCharacter((Stage) btnJoinGame.getScene().getWindow(), selected.getId());
                 }
+            }
+        });
+        
+        btnCancel.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+            	model.cancelGame((Stage)btnCancel.getScene().getWindow());
             }
         });
     }

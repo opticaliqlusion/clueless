@@ -16,4 +16,6 @@
 
     <Button fx:id="btnJoinGame" text="Join Game" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
             GridPane.rowSpan="1" alignment="TOP_CENTER" />
+    <Button fx:id="btnCancel" text="Cancel" GridPane.rowIndex="2" GridPane.columnSpan="1" GridPane.columnIndex="1"
+            GridPane.rowSpan="1" alignment="TOP_CENTER" />
 </GridPane>
