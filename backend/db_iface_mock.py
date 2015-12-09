@@ -442,7 +442,7 @@ def submit_disproval(idGame, idPlayer, idCard):
         game.player_current_disprover_index = 0
         game.current_suggestion = []
         state = game.serialize(idPlayer=idPlayer)
-        game.log.append(log_message_dict['render_disproval'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], idCard))
+        game.log.append(log_message_dict['render_disproval'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], Card.get_by_id(idCard).name))
 
     else: # cant disprove
         game.player_current_disprover_index = (game.player_current_disprover_index + 1) % len(game.players)
