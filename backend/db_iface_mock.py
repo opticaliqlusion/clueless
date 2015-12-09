@@ -511,22 +511,32 @@ def make_accusation(idGame, idPlayer, accusation):
     # either you win, or you lose
     #   good luck.
 
+    print("Parsing accusation : %s vice solution=%s" % (accusation,game.solution))
+    
     if set([i.id for i in game.solution]) == set(accusation):
-        game.winner = idPlayer
+        print("PLAYER WON: %s" % (player))
+        game.winner = player
+        game.losers = [i for i in game.players if i != player]
+        for i in game.losers:
+            i.isPlaying = False
         game.turn_state = None
         game.meta_state = GameStates.FINISHED
         game.log.append('%s won the game!' % (PlayersNames[Player.get_by_id(idPlayer).idCharacter],))
     else:
+        print("PLAYER LOST: %s" % (player))
         game.losers.append(player)
         player.isPlaying = False
+        game.log.append('%s lost the game' % (PlayersNames[player.idCharacter],))
 
         # if there is only one person left, they win!
-        if len([i for i in game.players if i.isPlaying]) == 1:
-            game.winner = game.players[0]
+        playersRemaining = [i for i in game.players if i.isPlaying]
+        if len(playersRemaining) == 1:
+            game.winner = playersRemaining[0]
+            print("PLAYER WON: %s" % (game.winner))
             game.meta_state = GameStates.FINISHED
-            game.log.append('%s won the game!' % (PlayersNames[Player.get_by_id(game.winner.id).idCharacter],))
-        else:
-            game.log.append('%s lost the game by default!' % (PlayersNames[Player.get_by_id(idPlayer).idCharacter],))
+            game.log.append('%s won the game by default!' % (PlayersNames[Player.get_by_id(game.winner.id).idCharacter],))
+
+            
 
     state = game.serialize(idPlayer=idPlayer)
     return state
