@@ -14,6 +14,7 @@ import javafx.beans.property.StringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.awt.Color;
 import java.util.*;
 
 /**
@@ -264,23 +265,34 @@ public class BoardViewModel extends ViewModelBase {
             //Set character locations over rooms
             for(RoomModel room : getAllRooms()) {
                 StringJoiner joiner = new StringJoiner("\n");
-
+                Boolean isPlayer = false;
                 for (Map.Entry<Integer, Integer> playerMap : playerMaps.entrySet()) {
                     try {
+                    	
                         if(playerMap.getValue()==room.getId()) {
-                            Integer characterId = characterMap.entrySet().stream().filter(c -> c.getKey().equals(playerMap.getKey())).findFirst().orElse(null).getValue();
+                        	Integer characterId = characterMap.entrySet().stream().filter(c -> c.getKey().equals(playerMap.getKey())).findFirst().orElse(null).getValue();
                             joiner.add(characters.stream().filter(c->c.getId()==characterId).findFirst().orElse(null).getName());
+                            if(getContext().getIdCharacter()==characterId){
+                            	isPlayer = true;
+                            }
                         }
+                       
+                        
                     } catch (NullPointerException ex) {}//TODO Handle this hack
                 }
 
                 String newText = joiner.toString();
-
+                Boolean isThePlayer = isPlayer;
                 if(!room.textOverlayProperty().getValue().equals(newText)) {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
                             room.textOverlayProperty().setValue(newText);
+                            if(isThePlayer){
+                            	room.getStyle().setValue("-fx-color: black; -fx-background-color: yellow;");
+                            } else {
+                            	room.getStyle().setValue("-fx-color: black; -fx-background-color: white;");
+                            }
                         }
                     });
                 }

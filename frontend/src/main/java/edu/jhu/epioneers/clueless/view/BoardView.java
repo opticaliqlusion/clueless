@@ -340,7 +340,7 @@ public class BoardView extends ViewBase<BoardViewModel> {
             grdBoard.add(roomImage, room.getY(), room.getX());
             Label textOverlay = new Label();
             textOverlay.textProperty().bind(room.textOverlayProperty());
-            textOverlay.setStyle("-fx-color: black; -fx-background-color: white;");
+            textOverlay.styleProperty().bind(room.getStyle());
             GridPane.setMargin(textOverlay, new Insets(10, 0, 0, 0));
             GridPane.setHalignment(textOverlay, HPos.CENTER );
             GridPane.setValignment(textOverlay, VPos.TOP);

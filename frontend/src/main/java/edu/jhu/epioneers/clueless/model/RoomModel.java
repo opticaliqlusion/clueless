@@ -1,5 +1,7 @@
 package edu.jhu.epioneers.clueless.model;
 
+import java.awt.Color;
+
 import edu.jhu.epioneers.clueless.communication.IdNameType;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -12,7 +14,8 @@ public class RoomModel extends PositionModel {
     private String imageResourceName;
 
     private StringProperty textOverlay;
-
+    private StringProperty fxColor = new SimpleStringProperty("-fx-color: black; -fx-background-color: white;");
+    		
     public RoomModel(IdNameType baseRoomData) {
         setName(baseRoomData.getName());
         setId(baseRoomData.getId());
@@ -128,7 +131,7 @@ public class RoomModel extends PositionModel {
         }
     }
 
-    public int getType() {
+	public int getType() {
         return type;
     }
 
@@ -147,4 +150,8 @@ public class RoomModel extends PositionModel {
     public StringProperty textOverlayProperty() {
         return textOverlay;
     }
+
+	public StringProperty getStyle() {
+		return fxColor;
+	}
 }
