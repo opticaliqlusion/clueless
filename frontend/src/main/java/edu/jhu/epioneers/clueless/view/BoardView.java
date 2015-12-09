@@ -5,6 +5,8 @@ import edu.jhu.epioneers.clueless.communication.RequestHandler;
 import edu.jhu.epioneers.clueless.model.ModelBase;
 import edu.jhu.epioneers.clueless.model.RoomModel;
 import edu.jhu.epioneers.clueless.viewmodel.BoardViewModel;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -295,6 +297,22 @@ public class BoardView extends ViewBase<BoardViewModel> {
             @Override
             public void handle(ActionEvent event) {
                 submitChat();
+            }
+        });
+
+        grdDisprove.visibleProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                comboDisproveSelect.getSelectionModel().clearSelection();
+            }
+        });
+
+        grdSuggestion.visibleProperty().addListener(new ChangeListener<Boolean>() {
+            @Override
+            public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                comboWeapon.getSelectionModel().clearSelection();
+                comboCharacter.getSelectionModel().clearSelection();
+                comboRoom.getSelectionModel().clearSelection();
             }
         });
 
