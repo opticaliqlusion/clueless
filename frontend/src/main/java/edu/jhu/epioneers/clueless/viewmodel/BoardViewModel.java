@@ -274,6 +274,7 @@ public class BoardViewModel extends ViewModelBase {
                             joiner.add(characters.stream().filter(c->c.getId()==characterId).findFirst().orElse(null).getName());
                             if(getContext().getIdCharacter()==characterId){
                             	isPlayer = true;
+                            	joiner.add("(You)");
                             }
                         }
                        
