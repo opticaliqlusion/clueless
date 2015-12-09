@@ -7,3 +7,4 @@ frontend/.idea/
 frontend/target/
 *.pyc
 *.class
+.idea/*
