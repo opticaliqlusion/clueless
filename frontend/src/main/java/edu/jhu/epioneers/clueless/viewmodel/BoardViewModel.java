@@ -271,10 +271,11 @@ public class BoardViewModel extends ViewModelBase {
                     	
                         if(playerMap.getValue()==room.getId()) {
                         	Integer characterId = characterMap.entrySet().stream().filter(c -> c.getKey().equals(playerMap.getKey())).findFirst().orElse(null).getValue();
-                            joiner.add(characters.stream().filter(c->c.getId()==characterId).findFirst().orElse(null).getName());
                             if(getContext().getIdCharacter()==characterId){
+                                joiner.add(characters.stream().filter(c->c.getId()==characterId).findFirst().orElse(null).getName() + "(you)");
                             	isPlayer = true;
-                            	joiner.add("(You)");
+                            } else {
+                                joiner.add(characters.stream().filter(c->c.getId()==characterId).findFirst().orElse(null).getName());
                             }
                         }
                        
