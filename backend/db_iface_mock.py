@@ -15,9 +15,10 @@ log_message_dict = {
         'start_game':'%s started the game',
         'move_player':'%s moved from %s to %s',
         'make_suggestion':'%s made suggestion %s',
-        'render_disproval':'%s disproved suggestion by revealing %s',
+        'render_disproval':'%s disproved suggestion by revealing %s',   
         'make_accusation':'%s made accusation %s, resulting in %s',
         'end_player_turn':'%s ended their turn',
+        'join_game':'%s joined the game',
         'generic':'%s',
     }
 
@@ -268,6 +269,7 @@ def add_player_to_game(idGame, idPlayer, idCharacter):
         player = Player.get_by_id(idPlayer)
 
     game.players.append(player)
+    game.log.append(log_message_dict['join_game'] % (PlayersNames[idCharacter],))
 
     return {'idGame': game.id, 'idPlayer': player.id, 'idCharacter': player.idCharacter}
 
