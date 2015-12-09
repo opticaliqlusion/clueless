@@ -83,4 +83,13 @@ public class ChooseCharacterViewModel extends ViewModelBase {
     public ObservableList<ModelBase> getAvailableCharacters() {
         return availableCharacters;
     }
+
+    /**
+     * Cancels new game
+     * @param stage Current stage
+     */
+    public void cancelGame(Stage stage) {
+        getContext().setSelectedGame(null);
+        changeScene(stage, Constants.LobbyLayout);
+    }
 }
