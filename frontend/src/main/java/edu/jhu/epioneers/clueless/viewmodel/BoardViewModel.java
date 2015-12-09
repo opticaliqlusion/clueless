@@ -563,7 +563,7 @@ public class BoardViewModel extends ViewModelBase {
             GetBoardStateResponse data = response.getData();
 
             //You have won
-            if(data.getWinner()!=null) {
+            if(data.getWinner()==getContext().getIdPlayer()) {
                 setModelDisposed(true);
                 boardState=BoardState.GameOverWin;
                 setStatusText();
