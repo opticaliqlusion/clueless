@@ -364,6 +364,7 @@ def move_player(idGame, idPlayer, idRoom):
     oldRoom = player.room
     newRoom = Room.get_by_id(idRoom)
 
+
     if newRoom.type == RoomTypes.HALL and any([i.room == newRoom for i in game.players]):
         raise GameStateViolation('idRoom=%d of type HALL occupied' % (newRoom.id,))
 
@@ -372,7 +373,7 @@ def move_player(idGame, idPlayer, idRoom):
     # TODO change this to TurnState.MAKING_SUGGESTION, this is just for testing
     game.turn_state = TurnState.MAKING_SUGGESTION
     state = game.serialize(idPlayer=idPlayer)
-    game.log.append(log_message_dict['move_player'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], oldRoom.id, player.room.id))
+    game.log.append(log_message_dict['move_player'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], oldRoom.name, player.room.name))
     return state
 
 def make_suggestion(idGame, idPlayer, cards):
@@ -408,9 +409,10 @@ def make_suggestion(idGame, idPlayer, cards):
 
     card_list = [weapon_card, character_card,  room_card]
     game.current_suggestion = card_list
-
+    card_string = "" + character_card.name + " in the " + room_card.name + " with the " + weapon_card.name + "."
+    
     state = game.serialize(idPlayer=idPlayer)
-    game.log.append(log_message_dict['make_suggestion'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], str(card_list)))
+    game.log.append(log_message_dict['make_suggestion'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], card_string))
     return state
 
 def add_log(idGame, idPlayer, logContent):
@@ -515,7 +517,7 @@ def make_accusation(idGame, idPlayer, accusation):
         if len([i for i in game.players if i.isPlaying]) == 1:
             game.winner = game.players[0]
             game.meta_state = GameStates.FINISHED
-            game.log.append('%s won the game!' % (Player.get_by_id(game.winner.id),))
+            game.log.append('%s won the game!' % (PlayersNames[Player.get_by_id(game.winner.id).idCharacter],))
         else:
             game.log.append('%s lost the game by default!' % (PlayersNames[Player.get_by_id(idPlayer).idCharacter],))
 
