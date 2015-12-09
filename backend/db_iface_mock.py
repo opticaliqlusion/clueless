@@ -335,7 +335,12 @@ def get_valid_moves(idGame, idPlayer):
     if not player in game.players:
         raise NoSuchObjectException('No player found for idGame=%d and %s' % (idGame, PlayersNames[Player.get_by_id(idPlayer).idCharacter]))
 
-    return [i.id for i in player.room.adjacent_rooms]
+    moves =[i.id for i in player.room.adjacent_rooms];
+    for room in moves:
+        if Room.get_by_id(room).type == RoomTypes.HALL and any([i.room == Room.get_by_id(room) for i in game.players]):
+            moves.remove(room)
+
+    return moves
 
 def get_board_state(idGame, idPlayer):
     game = Game.get_by_id(idGame)
