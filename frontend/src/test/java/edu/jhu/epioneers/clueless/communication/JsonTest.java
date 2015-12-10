@@ -74,7 +74,7 @@ public class JsonTest {
         String result = gson.toJson(new Response<GetBoardStateResponse>(model));
 
         //Assert
-        assert(result.equals("{\"httpStatusCode\":200,\"data\":{\"idGame\":0,\"playerGameIdMap\":{\"1\":1,\"2\":3,\"3\":2},\"idCurrentTurn\":1,\"gameState\":4,\"turnState\":0,\"logs\":[\"This is a log\"],\"lastLogId\":4,\"idPlayer\":2,\"cardIds\":[1,2,3]}}"));
+        assert(result.equals("{\"httpStatusCode\":200,\"data\":{\"idGame\":0,\"playerGameIdMap\":{\"1\":1,\"2\":3,\"3\":2},\"idCurrentTurn\":1,\"idCurrentDisprover\":0,\"gameState\":4,\"turnState\":0,\"logs\":[\"This is a log\"],\"lastLogId\":4,\"idPlayer\":2,\"cardIds\":[1,2,3]}}"));
     }
 
     @Test
