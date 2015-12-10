@@ -456,6 +456,7 @@ def submit_disproval(idGame, idPlayer, idCard):
         # sometimes, nobody can disprove
         if game.player_current_disprover_index == game.player_current_turn_index:
             game.turn_state = TurnState.WAITING_FOR_END
+            game.log.append('%s cannot disprove' % (PlayersNames[Player.get_by_id(idPlayer).idCharacter]))
             game.log.append('Disproval step ended without any disprovals')
         else:
             game.log.append('%s cannot disprove' % (PlayersNames[Player.get_by_id(idPlayer).idCharacter]))
