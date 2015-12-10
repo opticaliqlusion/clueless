@@ -482,11 +482,10 @@ def end_player_turn(idGame, idPlayer):
     game.player_current_turn_index = (game.player_current_turn_index + 1) % len(game.players)
     
     # if the player has lost, skip their turn
-    if game.players[game.player_current_turn_index].isPlaying:
-        game.turn_state = TurnState.SELECTING_MOVE
-    else:
-        game.turn_state = TurnState.WAITING_FOR_END
-
+    while(game.players[game.player_current_turn_index].isPlaying == False):
+        game.player_current_turn_index = (game.player_current_turn_index + 1) % len(game.players)
+    game.turn_state = TurnState.SELECTING_MOVE
+    
     state = game.serialize(idPlayer=idPlayer)
     game.log.append(log_message_dict['end_player_turn'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter],))
 

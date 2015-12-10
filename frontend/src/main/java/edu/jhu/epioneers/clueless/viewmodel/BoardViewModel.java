@@ -576,15 +576,16 @@ public class BoardViewModel extends ViewModelBase {
         if(response.getHttpStatusCode()==response.HTTP_OK) {
             GetBoardStateResponse data = response.getData();
 
-            //You have won
-            if(data.getWinner()==getContext().getIdPlayer()) {
+            //See if you won or lost 
+            if(data.getLosers().contains(getContext().getIdPlayer())) {
+                endTurn();
+                canDisproveSuggestion.set(false);
+                setStatusText();
+            } else { 
                 setModelDisposed(true);
                 boardState=BoardState.GameOverWin;
                 setStatusText();
-            } else { //You lose
-                boardState=BoardState.WaitingForTurn;
-                canDisproveSuggestion.set(false);
-                setStatusText();
+
             }
 
             setStateProperties();
