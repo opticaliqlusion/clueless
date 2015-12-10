@@ -398,6 +398,7 @@ public class BoardViewModel extends ViewModelBase {
      */
     public void beginMove() {
         boardState=BoardState.StartMove;
+        movedDuringCurrentTurn=false;
         canCancel.setValue(true);
 
         ViewModelContext context = getContext();
@@ -486,7 +487,7 @@ public class BoardViewModel extends ViewModelBase {
      */
     public void cancelAction() {
         boardState=BoardState.BaseTurn;
-        canMove.setValue(movedDuringCurrentTurn);
+        canMove.setValue(!movedDuringCurrentTurn);
         canCancel.setValue(false);
         setCharacterOverlays(lastData.getPlayerGameIdMap(), lastData);
         isBaseTurn.setValue(true);

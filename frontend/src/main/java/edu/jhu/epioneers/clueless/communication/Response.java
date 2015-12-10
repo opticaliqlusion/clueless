@@ -15,7 +15,7 @@ public class Response<T> {
         httpStatusCode = HTTP_OK;
     }
     /**
-     * HTTP status code of the repsonse
+     * HTTP status code of the response
      */
     private int httpStatusCode;
 
