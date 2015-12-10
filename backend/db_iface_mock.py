@@ -99,6 +99,9 @@ class Game(PersistableBase):
     def __repr__(self):
         return '<Game(id=%d)>' % (self.id,)
 
+    def append_to_log(self, msg, acl=None):
+        self.log.append({'msg':msg, 'acl':acl if acl else [i.id for i in self.players]})
+        
     def serialize(self, idPlayer=None):
         playerCards = None
         if idPlayer:
@@ -116,7 +119,7 @@ class Game(PersistableBase):
             'turnState': self.turn_state,
             'cardIds': playerCards,
             'currentSuggestion': [i.id for i in self.current_suggestion],
-            'logs': self.log,
+            'logs': [i['msg'] for i in self.log if idPlayer in i['acl']],
             'lastLogId': 0,
             'idGame': self.id,
             'winner':self.winner.id if self.winner else None,
@@ -270,7 +273,7 @@ def add_player_to_game(idGame, idPlayer, idCharacter):
         player = Player.get_by_id(idPlayer)
 
     game.players.append(player)
-    game.log.append(log_message_dict['join_game'] % (PlayersNames[idCharacter],))
+    game.append_to_log(log_message_dict['join_game'] % (PlayersNames[idCharacter],))
 
     return {'idGame': game.id, 'idPlayer': player.id, 'idCharacter': player.idCharacter}
 
@@ -327,7 +330,7 @@ def start_game(idGame, idPlayer):
     state = game.serialize(idPlayer=idPlayer)
 
     # push the log
-    game.log.append(log_message_dict['start_game'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter],))
+    game.append_to_log(log_message_dict['start_game'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter],))
     return state
 
 
@@ -380,7 +383,7 @@ def move_player(idGame, idPlayer, idRoom):
     # TODO change this to TurnState.MAKING_SUGGESTION, this is just for testing
     game.turn_state = TurnState.MAKING_SUGGESTION
     state = game.serialize(idPlayer=idPlayer)
-    game.log.append(log_message_dict['move_player'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], oldRoom.name, player.room.name))
+    game.append_to_log(log_message_dict['move_player'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], oldRoom.name, player.room.name))
     return state
 
 def make_suggestion(idGame, idPlayer, cards):
@@ -415,7 +418,7 @@ def make_suggestion(idGame, idPlayer, cards):
     game.current_suggestion = card_list
     card_string = "" + character_card.name + " in the " + room_card.name + " with the " + weapon_card.name + "."
 
-    game.log.append(log_message_dict['make_suggestion'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], card_string))
+    game.append_to_log(log_message_dict['make_suggestion'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], card_string))
 
     # Move player
     movePlayer = next((player for player in Player.static_list if player.idCharacter == character_card.idCharacter), None)
@@ -423,7 +426,7 @@ def make_suggestion(idGame, idPlayer, cards):
     if movePlayer is not None and movePlayer.id != player.id and movePlayer.room != player.room:
         movePlayer.wasMoved = True
         movePlayer.room = player.room
-        game.log.append(log_message_dict['suggestion_movement'] % (PlayersNames[movePlayer.idCharacter]))
+        game.append_to_log(log_message_dict['suggestion_movement'] % (PlayersNames[movePlayer.idCharacter]))
 
     player.wasMoved = False
     state = game.serialize(idPlayer=idPlayer)
@@ -432,7 +435,7 @@ def make_suggestion(idGame, idPlayer, cards):
 
 def add_log(idGame, idPlayer, logContent):
     game, player = Game.get_by_id(idGame), Player.get_by_id(idPlayer)
-    game.log.append("" + PlayersNames[Player.get_by_id(idPlayer).idCharacter] + ": "+logContent)
+    game.append_to_log("" + PlayersNames[Player.get_by_id(idPlayer).idCharacter] + ": "+logContent)
 
 def submit_disproval(idGame, idPlayer, idCard):
     game, player = Game.get_by_id(idGame), Player.get_by_id(idPlayer)
@@ -457,7 +460,8 @@ def submit_disproval(idGame, idPlayer, idCard):
         game.player_current_disprover_index = 0
         game.current_suggestion = []
         state = game.serialize(idPlayer=idPlayer)
-        game.log.append(log_message_dict['render_disproval'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], Card.get_by_id(idCard).name))
+        game.append_to_log(log_message_dict['render_disproval'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], Card.get_by_id(idCard).name), acl=[game.players[game.player_current_turn_index].id])
+        game.append_to_log('Suggestion has been disproved.')
 
     else: # cant disprove
         game.player_current_disprover_index = (game.player_current_disprover_index + 1) % len(game.players)
@@ -465,10 +469,10 @@ def submit_disproval(idGame, idPlayer, idCard):
         # sometimes, nobody can disprove
         if game.player_current_disprover_index == game.player_current_turn_index:
             game.turn_state = TurnState.WAITING_FOR_END
-            game.log.append('%s cannot disprove' % (PlayersNames[Player.get_by_id(idPlayer).idCharacter]))
-            game.log.append('Disproval step ended without any disprovals')
+            game.append_to_log('%s cannot disprove' % (PlayersNames[Player.get_by_id(idPlayer).idCharacter]))
+            game.append_to_log('Disproval step ended without any disprovals')
         else:
-            game.log.append('%s cannot disprove' % (PlayersNames[Player.get_by_id(idPlayer).idCharacter]))
+            game.append_to_log('%s cannot disprove' % (PlayersNames[Player.get_by_id(idPlayer).idCharacter]))
 
         state = game.serialize(idPlayer=idPlayer)
 
@@ -498,7 +502,7 @@ def end_player_turn(idGame, idPlayer):
     game.turn_state = TurnState.SELECTING_MOVE
     
     state = game.serialize(idPlayer=idPlayer)
-    game.log.append(log_message_dict['end_player_turn'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter],))
+    game.append_to_log(log_message_dict['end_player_turn'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter],))
 
     return state
 
@@ -522,7 +526,7 @@ def make_accusation(idGame, idPlayer, accusation):
 
     print("Parsing accusation : %s vice solution=%s" % (accusation,game.solution))
     card_string = "" + Card.get_by_id(accusation[1]).name + " in the " + Card.get_by_id(accusation[2]).name + " with the " + Card.get_by_id(accusation[0]).name + "."
-    game.log.append(log_message_dict['make_accusation'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], card_string))
+    game.append_to_log(log_message_dict['make_accusation'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], card_string))
     if set([i.id for i in game.solution]) == set(accusation):
         print("PLAYER WON: %s" % (player))
         game.winner = player
@@ -531,12 +535,12 @@ def make_accusation(idGame, idPlayer, accusation):
             i.isPlaying = False
         game.turn_state = None
         game.meta_state = GameStates.FINISHED
-        game.log.append('%s won the game!' % (PlayersNames[Player.get_by_id(idPlayer).idCharacter],))
+        game.append_to_log('%s won the game!' % (PlayersNames[Player.get_by_id(idPlayer).idCharacter],))
     else:
         print("PLAYER LOST: %s" % (player))
         game.losers.append(player)
         player.isPlaying = False
-        game.log.append('%s lost the game' % (PlayersNames[player.idCharacter],))
+        game.append_to_log('%s lost the game' % (PlayersNames[player.idCharacter],))
 
         # if there is only one person left, they win!
         playersRemaining = [i for i in game.players if i.isPlaying]
@@ -544,7 +548,7 @@ def make_accusation(idGame, idPlayer, accusation):
             game.winner = playersRemaining[0]
             print("PLAYER WON: %s" % (game.winner))
             game.meta_state = GameStates.FINISHED
-            game.log.append('%s won the game by default!' % (PlayersNames[Player.get_by_id(game.winner.id).idCharacter],))
+            game.append_to_log('%s won the game by default!' % (PlayersNames[Player.get_by_id(game.winner.id).idCharacter],))
 
             
 
