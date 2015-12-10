@@ -319,53 +319,57 @@ public class BoardViewModel extends ViewModelBase {
     }
 
     private void setStatusText() {
-        switch (boardState) {
-            case WaitingForTurn:
-                ArrayList<Integer> losers = lastData.getLosers();
-
-                statusText.setValue(losers==null || losers.stream().anyMatch(c->c.equals(getContext().getIdPlayer()))?
-                                "You have lost.  Please remain in the game to help disprove suggestions."
-                                :"Waiting for your turn to begin.");
-                break;
-            case WaitingForPlayers:
-                statusText.setValue("Waiting for another player to join.");
-                break;
-            case ReadyToStart:
-                statusText.setValue("Game is ready to begin.");
-                break;
-            case BaseTurn:
-                statusText.setValue("It is your turn.  Choose an action");
-                break;
-            case StartMove:
-                statusText.setValue("Click the board to move.");
-                break;
-            case StartSuggestion:
-                statusText.setValue("Choose values to make a suggestion.");
-                break;
-            case DisproveSuggestion:
-                statusText.setValue("Choose values to disprove a suggestion.");
-                break;
-            case MakeAccusation:
-                statusText.setValue("Choose values to make an accusation.");
-                break;
-            case GameOver:
-                statusText.setValue("The game has ended.");
-                break;
-            case WaitingForDisprover:
-                statusText.setValue("Waiting for someone to disprove your suggestion.");
-                break;
-            case GameOverWin:
-                statusText.setValue("You have won the game!");
-                break;
-            case GameOverFail:
-                statusText.setValue("Your accusation was incorrect.  You have lost the game!");
-                break;
-            default:
-                statusText.setValue(boardState.toString());
-                break;
-
+    	Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
+	        switch (boardState) {
+	            case WaitingForTurn:
+	                ArrayList<Integer> losers = lastData.getLosers();
+	
+	                statusText.setValue(losers==null || losers.stream().anyMatch(c->c.equals(getContext().getIdPlayer()))?
+	                                "You have lost.  Please remain in the game to help disprove suggestions."
+	                                :"Waiting for your turn to begin.");
+	                break;
+	            case WaitingForPlayers:
+	                statusText.setValue("Waiting for another player to join.");
+	                break;
+	            case ReadyToStart:
+	                statusText.setValue("Game is ready to begin.");
+	                break;
+	            case BaseTurn:
+	                statusText.setValue("It is your turn.  Choose an action");
+	                break;
+	            case StartMove:
+	                statusText.setValue("Click the board to move.");
+	                break;
+	            case StartSuggestion:
+	                statusText.setValue("Choose values to make a suggestion.");
+	                break;
+	            case DisproveSuggestion:
+	                statusText.setValue("Choose values to disprove a suggestion.");
+	                break;
+	            case MakeAccusation:
+	                statusText.setValue("Choose values to make an accusation.");
+	                break;
+	            case GameOver:
+	                statusText.setValue("The game has ended.");
+	                break;
+	            case WaitingForDisprover:
+	                statusText.setValue("Waiting for someone to disprove your suggestion.");
+	                break;
+	            case GameOverWin:
+	                statusText.setValue("You have won the game!");
+	                break;
+	            case GameOverFail:
+	                statusText.setValue("You have lost the game!");
+	                break;
+	            default:
+	                statusText.setValue(boardState.toString());
+	                break;
+	
+	       }
         }
-
+    	});
     }
 
     /**

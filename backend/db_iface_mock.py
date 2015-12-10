@@ -17,7 +17,7 @@ log_message_dict = {
         'move_player':'%s moved from %s to %s',
         'make_suggestion':'%s made suggestion %s',
         'render_disproval':'%s disproved suggestion by revealing %s',   
-        'make_accusation':'%s made accusation %s, resulting in %s',
+        'make_accusation':'%s made accusation %s',
         'end_player_turn':'%s ended their turn',
         'join_game':'%s joined the game',
         'generic':'%s',
@@ -289,7 +289,10 @@ def start_game(idGame, idPlayer):
     assert (len(card_list_rooms) == 9)
     assert (len(card_list_weapons) == 6)
     assert (len(card_list_characters) == 6)
-
+    random.shuffle(card_list_rooms);
+    random.shuffle(card_list_weapons);
+    random.shuffle(card_list_characters);
+    
     # create the solution. dont tell anyone
     game.solution.append(card_list_rooms.pop())
     game.solution.append(card_list_weapons.pop())
@@ -511,7 +514,8 @@ def make_accusation(idGame, idPlayer, accusation):
     #   good luck.
 
     print("Parsing accusation : %s vice solution=%s" % (accusation,game.solution))
-    
+    card_string = "" + Card.get_by_id(accusation[1]).name + " in the " + Card.get_by_id(accusation[2]).name + " with the " + Card.get_by_id(accusation[0]).name + "."
+    game.log.append(log_message_dict['make_accusation'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], card_string))
     if set([i.id for i in game.solution]) == set(accusation):
         print("PLAYER WON: %s" % (player))
         game.winner = player
