@@ -8,8 +8,9 @@ RoomTypes = enum('ROOM', 'HALL')
 GameStates = enum('PENDING', 'PLAYING', 'FINISHED')
 TurnState = enum('SELECTING_MOVE', 'MAKING_SUGGESTION', 'SOLICITING_DISPROVALS', 'WAITING_FOR_END')
 CardTypes = enum('WEAPON', 'ROOM', 'CHARACTER')
-
-PlayersNames = ['', 'Miss Scarlet','Col. Mustard', 'Mrs. White', 'Mr. Green', 'Mrs. Peacock', 'Prof. Plum']
+char_name_list = ['Miss Scarlet','Col. Mustard', 'Mrs. White', 'Mr. Green', 'Mrs. Peacock', 'Prof. Plum']
+PlayersNames = ['']
+PlayersNames.extend(char_name_list)
 
 log_message_dict = {
         'start_game':'%s started the game',
@@ -233,7 +234,6 @@ for room in [i for i in Room.static_list if i.type == RoomTypes.ROOM]:
     room.card = Card(room.name, CardTypes.ROOM)
 
 # create the characters
-char_name_list = ['Miss Scarlet','Col. Mustard', 'Mrs. White', 'Mr. Green', 'Mrs. Peacock', 'Prof. Plum']
 for i in range(len(char_name_list)):
     character = Character(char_name_list[i])
 
@@ -296,18 +296,17 @@ def start_game(idGame, idPlayer):
     game.solution.append(card_list_characters.pop())
 
     i = 0
-    while card_list_rooms and card_list_weapons and card_list_characters:
+    allPlayerCards = []
+    allPlayerCards.extend(card_list_rooms)
+    allPlayerCards.extend(card_list_weapons)
+    allPlayerCards.extend(card_list_characters)
+    random.shuffle(allPlayerCards)
 
-        if card_list_rooms:
-            game.players[i].cards.append(card_list_rooms.pop())
-
-        if card_list_weapons:
-            game.players[i].cards.append(card_list_weapons.pop())
-
-        if card_list_characters:
-            game.players[i].cards.append(card_list_characters.pop())
-
+    while allPlayerCards:
+        if allPlayerCards:
+            game.players[i].cards.append(allPlayerCards.pop())
         i = (i + 1) % len(game.players)
+        
     # TODO Is this a requirement? Or are positions predetermined?
     # generate players' starting positions, randomly
     card_list_rooms = [Room.get_by_name(i.name) for i in Card.static_list if i.type == CardTypes.ROOM]

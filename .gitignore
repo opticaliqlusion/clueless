@@ -8,3 +8,4 @@ frontend/target/
 *.pyc
 *.class
 .idea/*
+.recommenders/
