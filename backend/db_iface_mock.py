@@ -21,6 +21,7 @@ log_message_dict = {
         'end_player_turn':'%s ended their turn',
         'join_game':'%s joined the game',
         'generic':'%s',
+        'suggestion_movement':'%s has been moved by the suggestion'
     }
 
 class GameStateViolation(Exception):
@@ -69,6 +70,7 @@ class Player(PersistableBase):
         self.cards = []
         self.room = None
         self.isPlaying = True
+        self.wasMoved = False
         super(Player, self).__init__()
 
 class Game(PersistableBase):
@@ -117,9 +119,9 @@ class Game(PersistableBase):
             'logs': self.log,
             'lastLogId': 0,
             'idGame': self.id,
-            'idPlayer': idPlayer,
             'winner':self.winner.id if self.winner else None,
             'losers':[i.id for i in self.losers],
+            'wasMoved': player.wasMoved
             }
 
 class Room(PersistableBase):
@@ -162,24 +164,14 @@ class Card(PersistableBase):
     def __repr__(self):
         return '<Card(id=%d, name=%s)>' % (self.id, self.name)
 
-card_names_and_types = [
-    ('Rope', CardTypes.WEAPON),
-    ('Lead Pipe', CardTypes.WEAPON),
-    ('Knife', CardTypes.WEAPON),
-    ('Wrench', CardTypes.WEAPON),
-    ('Candlestick', CardTypes.WEAPON),
-    ('Revolver', CardTypes.WEAPON),
-    ('Miss Scarlet', CardTypes.CHARACTER),
-    ('Colonel Mustard', CardTypes.CHARACTER),
-    ('Mrs. White', CardTypes.CHARACTER),
-    ('Mr. Green', CardTypes.CHARACTER),
-    ('Mrs. Peacock', CardTypes.CHARACTER),
-    ('Professor Plum', CardTypes.CHARACTER),
+weapon_names_and_types = [
+    ('Rope'),
+    ('Lead Pipe'),
+    ('Knife'),
+    ('Wrench'),
+    ('Candlestick'),
+    ('Revolver'),
 ]
-
-# create character and weapon cards
-for name, type in card_names_and_types:
-    card = Card(name, type)
 
 rooms_adjacent_with_halls = [
     ('Study', 'Hall'),
@@ -229,13 +221,22 @@ for i in rooms_adjacent:
     room_a.adjacent_rooms.append(room_b)
     room_b.adjacent_rooms.append(room_a)
 
-# create room cards
-for room in [i for i in Room.static_list if i.type == RoomTypes.ROOM]:
-    room.card = Card(room.name, CardTypes.ROOM)
 
 # create the characters
 for i in range(len(char_name_list)):
     character = Character(char_name_list[i])
+
+# create room cards
+for room in [i for i in Room.static_list if i.type == RoomTypes.ROOM]:
+    room.card = Card(room.name, CardTypes.ROOM)
+
+# create character and weapon cards
+for name in weapon_names_and_types:
+    card = Card(name, CardTypes.WEAPON)
+
+for character in Character.static_list:
+    card = Card(character.name, CardTypes.CHARACTER)
+    card.idCharacter = character.id
 
 # static stuff
 def get_characters():
@@ -360,9 +361,6 @@ def move_player(idGame, idPlayer, idRoom):
     if not player in game.players:
         raise NoSuchObjectException('No player found for idGame=%d and %s' % (idGame, PlayersNames[Player.get_by_id(idPlayer).idCharacter]))
 
-    if not game.turn_state == TurnState.SELECTING_MOVE:
-        raise GameStateViolation('idGame=%d not in state SELECTING_MOVE' % (idGame,))
-
     if not game.players[game.player_current_turn_index].id == idPlayer:
         raise GameStateViolation(
             'it is %s\'s turn, NOT %s\'s' % (PlayersNames[Player.get_by_id(game.players[game.player_current_turn_index].id).idCharacter], PlayersNames[Player.get_by_id(idPlayer).idCharacter]))
@@ -387,9 +385,6 @@ def move_player(idGame, idPlayer, idRoom):
 
 def make_suggestion(idGame, idPlayer, cards):
     game, player = Game.get_by_id(idGame), Player.get_by_id(idPlayer)
-
-    if not game.turn_state == TurnState.MAKING_SUGGESTION:
-        raise GameStateViolation('idGame=%d not in state MAKING_SUGGESTION' % (idGame,))
 
     if not game.players[game.player_current_turn_index].id == idPlayer:
         raise GameStateViolation(
@@ -419,9 +414,20 @@ def make_suggestion(idGame, idPlayer, cards):
     card_list = [weapon_card, character_card,  room_card]
     game.current_suggestion = card_list
     card_string = "" + character_card.name + " in the " + room_card.name + " with the " + weapon_card.name + "."
-    
-    state = game.serialize(idPlayer=idPlayer)
+
     game.log.append(log_message_dict['make_suggestion'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], card_string))
+
+    # Move player
+    movePlayer = next((player for player in Player.static_list if player.idCharacter == character_card.idCharacter), None)
+
+    if movePlayer is not None and movePlayer.id != player.id and movePlayer.room != player.room:
+        movePlayer.wasMoved = True
+        movePlayer.room = player.room
+        game.log.append(log_message_dict['suggestion_movement'] % (PlayersNames[movePlayer.idCharacter]))
+
+    player.wasMoved = False
+    state = game.serialize(idPlayer=idPlayer)
+
     return state
 
 def add_log(idGame, idPlayer, logContent):
@@ -471,6 +477,7 @@ def submit_disproval(idGame, idPlayer, idCard):
 def end_player_turn(idGame, idPlayer):
     game = Game.get_by_id(idGame)
     player = Player.get_by_id(idPlayer)
+    player.wasMoved = False
 
     if not player in game.players:
         raise NoSuchObjectException('No player found for idGame=%d and %s' % (idGame, PlayersNames[Player.get_by_id(idPlayer).idCharacter]))

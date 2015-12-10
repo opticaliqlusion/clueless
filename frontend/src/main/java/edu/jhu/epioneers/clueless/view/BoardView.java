@@ -104,6 +104,8 @@ public class BoardView extends ViewBase<BoardViewModel> {
     @FXML
     TextField txtChat;
 
+    @FXML
+    Button btnInitSuggestion;
     @Override
     protected BoardViewModel createModel() {
         return new BoardViewModel(new RequestHandler());
@@ -313,6 +315,17 @@ public class BoardView extends ViewBase<BoardViewModel> {
                 comboWeapon.getSelectionModel().clearSelection();
                 comboCharacter.getSelectionModel().clearSelection();
                 comboRoom.getSelectionModel().clearSelection();
+            }
+        });
+
+        btnInitSuggestion.visibleProperty().bind(getModel()
+                .canMoveProperty().and(getModel().wasMovedProperty()
+                        .and(btnCancelAction.visibleProperty().not())));
+
+        btnInitSuggestion.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                getModel().initSuggestion();
             }
         });
 

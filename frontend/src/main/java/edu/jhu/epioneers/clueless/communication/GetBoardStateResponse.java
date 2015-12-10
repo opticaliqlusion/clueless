@@ -8,6 +8,7 @@ import java.util.HashMap;
  */
 public class GetBoardStateResponse {
     private int idGame;
+    private boolean wasMoved;
 
     private Integer winner;
 
@@ -170,5 +171,13 @@ public class GetBoardStateResponse {
 
     public void setLosers(ArrayList<Integer> losers) {
         this.losers = losers;
+    }
+
+    public boolean getWasMoved() {
+        return wasMoved;
+    }
+
+    public void setWasMoved(boolean wasMoved) {
+        this.wasMoved = wasMoved;
     }
 }

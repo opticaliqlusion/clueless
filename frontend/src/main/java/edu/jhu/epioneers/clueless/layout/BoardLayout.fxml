@@ -60,6 +60,9 @@
         <Button fx:id="btnBeginMove" text="Begin Move" GridPane.rowIndex="1" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1" alignment="TOP_CENTER" />
 
+        <Button fx:id="btnInitSuggestion" text="Make Suggestion" GridPane.rowIndex="2" GridPane.columnSpan="1" GridPane.columnIndex="1"
+                GridPane.rowSpan="1" alignment="TOP_CENTER" />
+
         <Button fx:id="btnBeginAccusation" text="Make Accusation" GridPane.rowIndex="3" GridPane.columnSpan="1" GridPane.columnIndex="1"
                 GridPane.rowSpan="1" alignment="TOP_CENTER" />
 

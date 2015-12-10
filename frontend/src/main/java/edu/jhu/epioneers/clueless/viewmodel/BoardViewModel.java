@@ -26,6 +26,7 @@ public class BoardViewModel extends ViewModelBase {
     private BooleanProperty canEndTurn = new SimpleBooleanProperty(false);
     private StringProperty statusText = new SimpleStringProperty("");
     private BooleanProperty canMove = new SimpleBooleanProperty(false);
+    private BooleanProperty wasMoved = new SimpleBooleanProperty(false);
     private BooleanProperty canCancel = new SimpleBooleanProperty(false);
     private BooleanProperty canDisproveSuggestion = new SimpleBooleanProperty(false);
     private BooleanProperty isAccusation = new SimpleBooleanProperty(false);
@@ -35,6 +36,7 @@ public class BoardViewModel extends ViewModelBase {
     private ObservableList<String> cardsText = FXCollections.observableArrayList();
 
     private boolean movedDuringCurrentTurn;
+    private boolean suggestedDuringCurrentTurn;
 
     private ObservableList<Integer> availableMoves = FXCollections.observableArrayList();
     private GetBoardStateResponse lastData;
@@ -68,6 +70,10 @@ public class BoardViewModel extends ViewModelBase {
      */
     public BooleanProperty canMoveProperty() {
         return canMove;
+    }
+
+    public BooleanProperty wasMovedProperty() {
+        return wasMoved;
     }
 
     public BooleanProperty canCancelProperty() {
@@ -166,6 +172,7 @@ public class BoardViewModel extends ViewModelBase {
             //User needs to disprove
             if(data.getTurnState()==2) {
                 if(data.getIdCurrentDisprover()==context.getIdPlayer()&& boardState == BoardState.WaitingForTurn) {
+                    setCharacterOverlays(playerMaps, data);
                     ArrayList<ModelBase> localDisproveCards = new ArrayList<ModelBase>();
 
                     //TODO Ugly
@@ -222,6 +229,7 @@ public class BoardViewModel extends ViewModelBase {
                         || boardState== BoardState.WaitingForPlayers
                         || boardState== BoardState.WaitingForTurn) {
                     setCharacterOverlays(playerMaps, data);
+
                     if(turnState==0 || turnState==1) { //Base turn
 
                         Platform.runLater(new Runnable() {
@@ -230,6 +238,8 @@ public class BoardViewModel extends ViewModelBase {
                                 isBaseTurn.setValue(true);
                                 canMove.setValue(true);
                                 movedDuringCurrentTurn=false;
+                                suggestedDuringCurrentTurn=false;
+                                wasMovedProperty().setValue(data.getWasMoved());
                             }
                         });
 
@@ -240,7 +250,8 @@ public class BoardViewModel extends ViewModelBase {
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
-                            canMove.setValue(false);
+                            canMakeSuggestion.setValue(false);
+                            canMove.setValue(!movedDuringCurrentTurn);
                             isBaseTurn.setValue(true);
                         }
                     });
@@ -441,16 +452,15 @@ public class BoardViewModel extends ViewModelBase {
 
             if(response.getHttpStatusCode()==response.HTTP_OK) {
                 boardState=BoardState.BaseTurn;
-
+                canCancel.setValue(false);
                 if(getAllRooms().stream().filter(r -> r.getId()==idRoom).findFirst().orElse(null).getType()==0) { //TODO Magic number
-                    boardState=BoardState.StartSuggestion;
-                    canMakeSuggestion.setValue(true);
+                    boardState=suggestedDuringCurrentTurn?BoardState.BaseTurn:BoardState.StartSuggestion;
+                    canMakeSuggestion.setValue(!suggestedDuringCurrentTurn);
                     isAccusation.setValue(false);
-                    isBaseTurn.setValue(false);
+                    isBaseTurn.setValue(suggestedDuringCurrentTurn);
                 } else {
                     isBaseTurn.setValue(true);
                     canEndTurn.setValue(true);
-                    canCancel.setValue(false);
                 }
 
                 setCharacterOverlays(response.getData().getPlayerGameIdMap(), response.getData());
@@ -494,6 +504,10 @@ public class BoardViewModel extends ViewModelBase {
         canMakeSuggestion.setValue(false);
     }
 
+    public void initSuggestion() {
+        canMakeSuggestion.setValue(true);
+        isBaseTurn.setValue(false);
+    }
     /**
      * Sends the suggestion request to the server.  The room id is implicit based on location
      * @param weaponId The id of the weapon being suggested
@@ -515,11 +529,15 @@ public class BoardViewModel extends ViewModelBase {
                 }.getType());
 
         if(response.getHttpStatusCode()==response.HTTP_OK) {
-            syncFromData(response.getData());
+            lastData = response.getData();
+            setCharacterOverlays(lastData.getPlayerGameIdMap(), lastData);
+            syncFromData(lastData);
             canMakeSuggestion.setValue(false);
             canMove.setValue(false);
             canCancel.setValue(false);
+            wasMovedProperty().setValue(false);
             boardState=BoardState.WaitingForDisprover;
+            suggestedDuringCurrentTurn=true;
             setStateProperties();
         } else {
             //TODO Error scenario
