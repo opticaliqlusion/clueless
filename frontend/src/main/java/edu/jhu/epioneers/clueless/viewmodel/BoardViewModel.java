@@ -198,10 +198,11 @@ public class BoardViewModel extends ViewModelBase {
 
                     if(localDisproveCards.size()>0) {
                         boardState = BoardState.DisproveSuggestion;
-
+                        
                         Platform.runLater(new Runnable() {
                             @Override
                             public void run() {
+                            	disprovalCards.clear();
                                 disprovalCards.setAll(localDisproveCards);
                                 canDisproveSuggestion.setValue(true);
                             }
