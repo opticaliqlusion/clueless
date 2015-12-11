@@ -410,6 +410,7 @@ public class BoardViewModel extends ViewModelBase {
     public void beginMove() {
         boardState=BoardState.StartMove;
         movedDuringCurrentTurn=false;
+        canMove.setValue(false);
         canCancel.setValue(true);
 
         ViewModelContext context = getContext();

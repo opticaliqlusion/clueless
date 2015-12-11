@@ -93,6 +93,8 @@ class Game(PersistableBase):
         self.suggesting_player = None
         self.winner = None
         self.losers = []
+        self.turnCount = 0;
+        self.firstRound = True
 
         super(Game, self).__init__()
 
@@ -143,6 +145,7 @@ class Room(PersistableBase):
         self.type = type
         self.adjacent_rooms = []
         self.card = None
+        self.secretPassage = None
         super(Room, self).__init__()
 
     def __repr__(self):
@@ -223,6 +226,9 @@ for i in rooms_adjacent:
 
     room_a.adjacent_rooms.append(room_b)
     room_b.adjacent_rooms.append(room_a)
+    
+    room_a.secretPassage = room_b
+    room_b.secretPassage = room_a
 
 
 # create the characters
@@ -281,6 +287,8 @@ def start_game(idGame, idPlayer):
     # first, change the meta_state of the game
     game = Game.get_by_id(idGame)
     game.meta_state = GameStates.PLAYING
+    game.firstRound = True;
+    game.turnCount = 0;
 
     # establish who is going to go first
     game.player_current_turn_index = 0
@@ -346,6 +354,11 @@ def get_valid_moves(idGame, idPlayer):
         if Room.get_by_id(room).type == RoomTypes.HALL and any([i.room == Room.get_by_id(room) for i in game.players]):
             moves.remove(room)
 
+        if(game.firstRound) and Room.get_by_id(room).secretPassage != None and Room.get_by_id(room).secretPassage.id == player.room.id:
+            moves.remove(room)
+
+        
+    
     return moves
 
 def get_board_state(idGame, idPlayer):
@@ -480,6 +493,9 @@ def submit_disproval(idGame, idPlayer, idCard):
 
 def end_player_turn(idGame, idPlayer):
     game = Game.get_by_id(idGame)
+    game.turnCount = game.turnCount + 1
+    if (game.turnCount > len(game.players)):
+        game.firstRound = False;
     player = Player.get_by_id(idPlayer)
     player.wasMoved = False
 
