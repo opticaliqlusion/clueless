@@ -65,8 +65,9 @@ class Player(PersistableBase):
     def __repr__(self):
         return '<Player(id=%d)>' % (self.id,)
 
-    def __init__(self, idCharacter):
+    def __init__(self, idCharacter, idGame):
         self.idCharacter = idCharacter
+        self.idGame = idGame
         self.cards = []
         self.room = None
         self.isPlaying = True
@@ -274,7 +275,7 @@ def add_player_to_game(idGame, idPlayer, idCharacter):
         return
 
     if not idPlayer:
-        player = Player(idCharacter)
+        player = Player(idCharacter, game.id)
     else:
         player = Player.get_by_id(idPlayer)
 
@@ -434,7 +435,7 @@ def make_suggestion(idGame, idPlayer, cards):
     game.append_to_log(log_message_dict['make_suggestion'] % (PlayersNames[Player.get_by_id(idPlayer).idCharacter], card_string))
 
     # Move player
-    movePlayer = next((player for player in Player.static_list if player.idCharacter == character_card.idCharacter), None)
+    movePlayer = next((player for player in Player.static_list if player.idCharacter == character_card.idCharacter and player.idGame == idGame), None)
 
     if movePlayer is not None and movePlayer.id != player.id and movePlayer.room != player.room:
         movePlayer.wasMoved = True
