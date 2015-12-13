@@ -421,6 +421,7 @@ public class BoardViewModel extends ViewModelBase {
                 }.getType());
 
         if(response.getHttpStatusCode()==response.HTTP_OK) {
+        	availableMoves.clear();
             availableMoves.setAll(response.getData());
 
             for (Integer roomId : availableMoves) {
